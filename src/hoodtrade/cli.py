@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 
 import typer
+from rich import box
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -45,7 +46,7 @@ def _render(report: ScanReport) -> None:
         title = f"Hood Trade — {label.strip()}"
     else:
         title = "Hood Trade verdict"
-    console.print(Panel(head, title=title, border_style=style))
+    console.print(Panel(head, title=title, border_style=style, box=box.SIMPLE, expand=False, padding=(0, 1)))
 
     if report.summary:
         s = report.summary
@@ -60,7 +61,7 @@ def _render(report: ScanReport) -> None:
                 console.print(f"  → {r}")
         console.print()
 
-    table = Table(title="Findings", show_lines=False, expand=True)
+    table = Table(title="Findings", show_lines=False, expand=True, box=box.SIMPLE)
     table.add_column("check", style="dim", no_wrap=True)
     table.add_column("sev", no_wrap=True)
     table.add_column("finding")
