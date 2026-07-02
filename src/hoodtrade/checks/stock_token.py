@@ -20,20 +20,73 @@ from __future__ import annotations
 from ..models import CheckResult, Severity
 from .base import Context
 
-# Conservative signal: tokenized-equity symbols on RH Chain are commonly the ticker
-# with a wrapper suffix. We treat a short all-caps alpha symbol as a candidate and
-# surface the disclosure; false positives here are cheap (an extra info card).
-_EQUITY_HINTS = ("X", "STOCK", "RWA", "HOOD")
+# Known equity tickers Robinhood offers as tokenized stocks. Matching the exact
+# symbol (optionally with a common wrapper suffix like AAPLx) keeps this precise:
+# a memecoin or stablecoin will not accidentally trip the equity disclosure.
+_EQUITY_TICKERS = frozenset(
+    {
+        "AAPL",
+        "MSFT",
+        "NVDA",
+        "AMZN",
+        "GOOGL",
+        "GOOG",
+        "META",
+        "TSLA",
+        "AMD",
+        "NFLX",
+        "INTC",
+        "DIS",
+        "BA",
+        "JPM",
+        "V",
+        "MA",
+        "PYPL",
+        "SQ",
+        "COIN",
+        "HOOD",
+        "UBER",
+        "ABNB",
+        "SHOP",
+        "SPY",
+        "QQQ",
+        "KO",
+        "PEP",
+        "WMT",
+        "NKE",
+        "MCD",
+        "SBUX",
+        "GME",
+        "AMC",
+        "PLTR",
+        "SNAP",
+        "F",
+        "GM",
+        "T",
+        "BABA",
+    }
+)
+# Wrapper suffixes Robinhood-style tokenized equities append to the raw ticker.
+_WRAPPER_SUFFIXES = ("X", ".RH", "-RH")
+
+
+def _underlying_ticker(symbol: str) -> str | None:
+    """Return the equity ticker this symbol represents, or None if it isn't one."""
+    s = symbol.strip().upper()
+    if not s:
+        return None
+    if s in _EQUITY_TICKERS:
+        return s
+    for suffix in _WRAPPER_SUFFIXES:
+        if s.endswith(suffix):
+            base = s[: -len(suffix)]
+            if base in _EQUITY_TICKERS:
+                return base
+    return None
 
 
 def _looks_like_stock_token(symbol: str) -> bool:
-    s = symbol.strip().upper()
-    if not s or not s.isalnum():
-        return False
-    if any(s.endswith(h) or s.startswith(h) for h in _EQUITY_HINTS):
-        return True
-    # bare 1-5 letter ticker, no digits -> plausible equity ticker
-    return s.isalpha() and 1 <= len(s) <= 5
+    return _underlying_ticker(symbol) is not None
 
 
 class StockTokenDisclosureCheck:

@@ -68,21 +68,23 @@ async def test_ownership_active_owner_warns():
 @pytest.mark.parametrize(
     "symbol,expected",
     [
+        # Real equity tickers (and wrapped variants) -> disclosure fires.
         ("AAPL", True),
-        ("HOODX", True),
-        ("USDG", False),  # 4 letters but ends with G... treated as ticker candidate? check logic
+        ("TSLA", True),
+        ("AAPLX", True),  # wrapper suffix
+        ("HOOD", True),
+        # Non-equities must NOT trip the disclosure (these were false positives).
+        ("USDC", False),
+        ("WETH", False),
+        ("PEPE", False),
+        ("USDG", False),
+        ("SAFEHOOD", False),
         ("VERYLONGNAME", False),
         ("", False),
     ],
 )
 def test_stock_token_heuristic(symbol, expected):
-    # USDG is 4 alpha chars -> plausible ticker; assert the function is at least stable
-    result = _looks_like_stock_token(symbol)
-    assert isinstance(result, bool)
-    if symbol in ("AAPL", "HOODX"):
-        assert result is True
-    if symbol in ("VERYLONGNAME", ""):
-        assert result is False
+    assert _looks_like_stock_token(symbol) is expected
 
 
 async def test_stock_disclosure_emitted_for_ticker():
