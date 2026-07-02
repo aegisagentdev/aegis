@@ -13,8 +13,8 @@ from rich.text import Text
 from . import __version__
 from .ai import summarize
 from .config import load_settings
-from .engine import run_scan
-from .models import Direction, ScanReport, Severity, TradeRequest, Verdict
+from .engine import decide, run_scan
+from .models import CheckResult, Direction, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
 from .rpc import RpcClient
 
 app = typer.Typer(add_completion=False, help="Pre-trade safety scanner for Robinhood Chain.")
@@ -65,32 +65,88 @@ def _render(report: ScanReport) -> None:
         console.print(f"[dim]note: {note}[/dim]")
 
 
+def _cr(check: str, sev: Severity, score: int, title: str, detail: str) -> CheckResult:
+    return CheckResult(check=check, severity=sev, score=score, title=title, detail=detail)
+
+
+def _demo_report(request: TradeRequest) -> ScanReport:
+    """Generate a realistic demo report without any RPC calls."""
+    OK, WARN, INFO, DANGER = Severity.OK, Severity.WARN, Severity.INFO, Severity.DANGER
+    results = [
+        _cr("contract_exists", OK, 0, "Contract verified", "Bytecode found at token address (1.2 kB)."),
+        _cr("ownership", WARN, 15, "Active owner detected", "owner() returns a non-zero EOA."),
+        _cr("supply_sanity", OK, 0, "Supply within norms", "Total supply 1,000,000 tokens, 18 decimals."),
+        _cr("honeypot_transfer", OK, 0, "Transfer simulation passed", "transfer() did not revert."),
+        _cr("honeypot_approve", OK, 0, "Approve simulation passed", "approve() succeeded normally."),
+        _cr("token_self_holding", OK, 0, "Self-holding normal", "Token contract holds 2.1% of supply."),
+        _cr("burned_supply", INFO, 0, "No tokens burned", "Zero balance at burn address."),
+        _cr("pool_exists", OK, 0, "Pool found", "Uniswap V3 pool at 0x7a25...c3f1."),
+        _cr("pool_liquidity", WARN, 10, "Thin liquidity", "Depth ~$12,400 — trade is 8% of pool."),
+        _cr("pool_pair_integrity", OK, 0, "Pair tokens match", "token0/token1 match request."),
+        _cr("chain_identity", OK, 0, "Correct chain", "Chain id matches config."),
+        _cr("size_vs_depth", INFO, 5, "Moderate price impact", "Estimated slippage 0.8%."),
+        _cr("proxy_detection", OK, 0, "Not a proxy", "EIP-1967 slot is empty."),
+        _cr("code_size", OK, 0, "Code size normal", "Bytecode is 1,247 bytes."),
+        _cr("transfer_fee", DANGER, 30, "Transfer fee detected", "5% fee on transfers."),
+    ]
+    score = sum(r.score for r in results)
+    settings = load_settings()
+    settings.ai_enabled = False
+    verdict = decide(score, results, settings)
+    summary = RiskSummary(
+        headline="Caution — transfer fee and thin liquidity increase risk on this trade.",
+        key_risks=[
+            "Transfer fee detected: 5% fee on every transfer reduces the amount you receive.",
+            "Active owner: contract owner can call privileged functions (pause, mint, change fee).",
+            "Thin liquidity: pool depth is ~$12,400 — your $1,000 trade moves 8% of reserves.",
+        ],
+        what_to_check=[
+            "Confirm the token address against the project's official channels.",
+            "Check if the fee is documented — unlisted fees are a common rug-pull pattern.",
+            "Use a tight slippage limit (1-2%) and consider splitting the order.",
+        ],
+    )
+    return ScanReport(request=request, verdict=verdict, score=score, results=results, summary=summary, notes=[])
+
+
 @app.command()
 def scan(
-    token: str = typer.Option(..., help="Address of the token being traded."),
-    quote: str = typer.Option(..., help="Address of the counter asset (e.g. USDG)."),
-    amount: float = typer.Option(..., min=0.0, help="Trade notional in USD."),
+    token: str = typer.Option(None, help="Address of the token being traded."),
+    quote: str = typer.Option(None, help="Address of the counter asset (e.g. USDG)."),
+    amount: float = typer.Option(None, min=0.0, help="Trade notional in USD."),
     pool: str = typer.Option(None, help="Pool/pair address (enables depth + pairing checks)."),
     direction: Direction = typer.Option(Direction.BUY, help="buy | sell"),
     venue: str = typer.Option("uniswap", help="uniswap | pleiades | arcus | 0x | other"),
     no_ai: bool = typer.Option(False, "--no-ai", help="Skip the Claude summary; use the built-in template."),
     as_json: bool = typer.Option(False, "--json", help="Emit the full report as JSON."),
+    demo: bool = typer.Option(False, "--demo", help="Run with sample data (no RPC needed)."),
 ) -> None:
     """Scan a proposed swap and print a GO / CAUTION / NO-GO verdict."""
-    settings = load_settings()
-    if no_ai:
-        settings.ai_enabled = False
-    request = TradeRequest(token=token, quote=quote, amount_usd=amount, direction=direction, pool=pool, venue=venue)
-    report = asyncio.run(run_scan(request, settings))
-    if report.verdict is not Verdict.UNKNOWN:
-        report.summary = summarize(report, settings)
+    if demo:
+        request = TradeRequest(
+            token="0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+            quote="0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            amount_usd=amount or 1000.0,
+            direction=direction,
+        )
+        report = _demo_report(request)
+    else:
+        if not token or not quote or amount is None:
+            console.print("[bold red]Error:[/bold red] --token, --quote, and --amount are required (or use --demo)")
+            raise typer.Exit(code=2)
+        settings = load_settings()
+        if no_ai:
+            settings.ai_enabled = False
+        request = TradeRequest(token=token, quote=quote, amount_usd=amount, direction=direction, pool=pool, venue=venue)
+        report = asyncio.run(run_scan(request, settings))
+        if report.verdict is not Verdict.UNKNOWN:
+            report.summary = summarize(report, settings)
 
     if as_json:
         console.print_json(report.model_dump_json(indent=2))
     else:
         _render(report)
 
-    # Exit code encodes the verdict for scripting: 0 GO, 1 CAUTION, 2 NO-GO/UNKNOWN.
     raise typer.Exit(code={Verdict.GO: 0, Verdict.CAUTION: 1, Verdict.NO_GO: 2, Verdict.UNKNOWN: 2}[report.verdict])
 
 
