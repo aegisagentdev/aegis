@@ -17,5 +17,6 @@ def test_scan_missing_args():
 
 
 def test_doctor_bad_rpc():
-    result = runner.invoke(app, ["doctor"])
+    # Point doctor at an unreachable endpoint so the probe fails.
+    result = runner.invoke(app, ["doctor"], env={"HOODTRADE_RPC_URL": "http://127.0.0.1:59999"})
     assert result.exit_code != 0
