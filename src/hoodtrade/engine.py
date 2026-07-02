@@ -72,12 +72,17 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
     score = sum(r.score for r in results)
     verdict = decide(score, results, settings)
     name, symbol = _resolve_identity(ctx)
+    market = ctx.cache.get("market")
     return ScanReport(
         request=request,
         verdict=verdict,
         score=score,
         token_name=name,
         token_symbol=symbol,
+        price_usd=getattr(market, "price_usd", None),
+        market_cap=getattr(market, "market_cap", None),
+        liquidity_usd=getattr(market, "liquidity_usd", None),
+        volume_24h=getattr(market, "volume_24h", None),
         results=results,
         notes=notes,
     )

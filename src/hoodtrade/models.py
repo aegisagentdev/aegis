@@ -68,6 +68,10 @@ class ScanReport(BaseModel):
     score: int
     token_name: str | None = None
     token_symbol: str | None = None
+    price_usd: float | None = None
+    market_cap: float | None = None
+    liquidity_usd: float | None = None
+    volume_24h: float | None = None
     results: list[CheckResult] = Field(default_factory=list)
     summary: RiskSummary | None = None
     notes: list[str] = Field(default_factory=list, description="Operational notes (skipped checks, RPC errors).")
