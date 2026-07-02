@@ -33,6 +33,11 @@ class MarketLiquidityCheck:
             return []
 
         where = f"{m.dex or 'DEX'} {m.symbol or ''}".strip()
+        total_note = f" (pool total ${m.pooled_total_usd:,.0f})" if m.pooled_total_usd else ""
+        evidence = {"source": "dexscreener", "liquidity_usd": f"{liq:.0f}"}
+        if m.pooled_total_usd:
+            evidence["pooled_total_usd"] = f"{m.pooled_total_usd:.0f}"
+
         if liq < 5_000:
             return [
                 CheckResult(
@@ -41,10 +46,11 @@ class MarketLiquidityCheck:
                     score=70,
                     title=f"Very thin liquidity (${liq:,.0f})",
                     detail=(
-                        f"DexScreener reports only ${liq:,.0f} pooled on {where}. A book this thin "
-                        "means even a small sell craters the price and you may not be able to exit."
+                        f"Only ${liq:,.0f} of withdrawable ({m.quote_symbol or 'quote'}) liquidity on "
+                        f"{where}{total_note}. A book this thin means even a small sell craters the "
+                        "price and you may not be able to exit."
                     ),
-                    evidence={"source": "dexscreener", "liquidity_usd": f"{liq:.0f}"},
+                    evidence=evidence,
                 )
             ]
         if liq < 25_000:
@@ -55,10 +61,11 @@ class MarketLiquidityCheck:
                     score=25,
                     title=f"Low liquidity (${liq:,.0f})",
                     detail=(
-                        f"DexScreener reports ${liq:,.0f} pooled on {where}. Expect meaningful "
-                        "slippage and difficulty exiting a larger position."
+                        f"${liq:,.0f} of withdrawable ({m.quote_symbol or 'quote'}) liquidity on "
+                        f"{where}{total_note}. Expect meaningful slippage and difficulty exiting a "
+                        "larger position."
                     ),
-                    evidence={"source": "dexscreener", "liquidity_usd": f"{liq:.0f}"},
+                    evidence=evidence,
                 )
             ]
         return [
@@ -67,8 +74,11 @@ class MarketLiquidityCheck:
                 severity=Severity.OK,
                 score=0,
                 title=f"Liquidity ${liq:,.0f}",
-                detail=f"DexScreener reports ${liq:,.0f} pooled across {m.pair_count} pair(s).",
-                evidence={"source": "dexscreener", "liquidity_usd": f"{liq:.0f}"},
+                detail=(
+                    f"${liq:,.0f} of withdrawable ({m.quote_symbol or 'quote'}) liquidity"
+                    f"{total_note}, across {m.pair_count} pair(s)."
+                ),
+                evidence=evidence,
             )
         ]
 
