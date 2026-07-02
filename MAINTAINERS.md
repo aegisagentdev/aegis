@@ -4,7 +4,7 @@
 
 | Name | GitHub | Role | Focus |
 |------|--------|------|-------|
-| Yarik | [@hooddev](https://github.com/hooddev) | Lead maintainer | Architecture, engine, AI layer |
+| Yarik | [@hoodtrade](https://github.com/hoodtrade) | Lead maintainer | Architecture, engine, AI layer |
 
 ## Becoming a Maintainer
 

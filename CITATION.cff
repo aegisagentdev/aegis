@@ -4,9 +4,9 @@ type: software
 title: "Hood Trade"
 abstract: "Pre-trade safety scanner for Robinhood Chain — a 15-check battery that evaluates swap safety before signing."
 authors:
-  - alias: hooddev
-url: "https://github.com/hooddev/hoodtrade"
-repository-code: "https://github.com/hooddev/hoodtrade"
+  - alias: hoodtrade
+url: "https://github.com/hoodtrade/hoodtrade"
+repository-code: "https://github.com/hoodtrade/hoodtrade"
 license: MIT
 version: "0.2.0"
 date-released: "2026-07-02"

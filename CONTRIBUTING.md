@@ -3,7 +3,7 @@
 ## Setup
 
 ```bash
-git clone https://github.com/hooddev/hoodtrade
+git clone https://github.com/hoodtrade/hoodtrade
 cd hoodtrade
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'
