@@ -12,6 +12,7 @@ from .concentration import BurnedSupplyCheck, TokenSelfHoldingCheck
 from .contract import ContractExistsCheck, OwnershipCheck, SupplySanityCheck
 from .execution import ChainIdentityCheck, SequencingContextCheck, SizeVsDepthCheck
 from .honeypot import HoneypotApproveCheck, HoneypotTransferCheck
+from .market import MarketActivityCheck, MarketDepthCheck, MarketLiquidityCheck
 from .pool import PoolExistsCheck, PoolLiquidityCheck, PoolPairIntegrityCheck
 from .reputation import ReputationHoneypotCheck, ReputationPermissionsCheck, ReputationSourceCheck
 from .stock_token import StockTokenDisclosureCheck, StockTokenDivergenceCheck
@@ -33,6 +34,9 @@ def default_checks() -> list[Check]:
         PoolExistsCheck(),
         PoolPairIntegrityCheck(),
         PoolLiquidityCheck(),
+        MarketLiquidityCheck(),
+        MarketDepthCheck(),
+        MarketActivityCheck(),
         SizeVsDepthCheck(),
         StockTokenDisclosureCheck(),
         StockTokenDivergenceCheck(),
