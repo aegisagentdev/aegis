@@ -1,124 +1,137 @@
+<div align="center">
+
 # Hood Trade
 
+### Pre-trade safety scanner for Robinhood Chain
+
 [![CI](https://github.com/YarikRuuuu/hoodtrade/actions/workflows/ci.yml/badge.svg)](https://github.com/YarikRuuuu/hoodtrade/actions)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Robinhood Chain](https://img.shields.io/badge/chain-Robinhood%20L2-6C3BF5)](https://docs.robinhood.com/chain/)
+[![Claude AI](https://img.shields.io/badge/AI-Claude%20Opus%204.8-D97706?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48L3N2Zz4=)](https://anthropic.com)
 
-**A pre-trade safety scanner for [Robinhood Chain](https://docs.robinhood.com/chain/).**
+<br>
 
-Point it at a swap you're about to sign — it returns a **GO / CAUTION / NO-GO** verdict
-with the on-chain evidence behind it.
+Point it at a swap you're about to sign — get a **GO** / **CAUTION** / **NO-GO** verdict with on-chain evidence.
 
-Hood Trade is **read-only**. It never signs, never holds funds, never trades. It inspects —
-you decide.
+**Read-only.** Never signs. Never holds funds. Never trades. It inspects — you decide.
+
+<br>
+
+```
+╭─ Hood Trade verdict ──────────────────────────────────╮
+│  CAUTION   risk score 43                              │
+╰───────────────────────────────────────────────────────╯
+```
+
+</div>
 
 ---
 
-## Why
+## The Problem
 
-Robinhood Chain launched July 2026 as a permissionless Arbitrum-Orbit L2 with Uniswap,
-Pleiades, 0x, dYdX's Arcus, and Morpho live from day one. A permissionless chain that is
-days old is exactly where pre-trade checks matter most:
+Robinhood Chain launched July 2026 as a permissionless Arbitrum-Orbit L2. Permissionless + brand new = risk:
 
-- Anyone can deploy a token; the one you're buying may be hours old.
-- **Liquidity can be removed** — the Uniswap pool you trade into can be drained by whoever
-  provided it.
-- **Honeypot tokens** can let you buy but block sells — a `transfer()` that reverts for
-  non-whitelisted addresses is the classic pattern.
-- The headline product, **stock tokens, are tokenized debt instruments** (issued by
-  Robinhood Assets (Jersey) Limited), not equity — with counterparty risk and 24/7 vs.
-  market-hours divergence.
-- FCFS sequencing blunts gas-auction sandwiching, but MEV shifts to a latency race and
-  oracle-timing games; it isn't gone.
+| Risk | Why it matters |
+|:-----|:---------------|
+| **Unverified tokens** | Anyone can deploy; the token you're buying may be hours old |
+| **Rug pulls** | Uniswap liquidity can be removed — the pool can be drained |
+| **Honeypots** | Token lets you buy but blocks sells via a reverting `transfer()` |
+| **Stock token debt** | Tokenized equities are debt instruments, not shares — counterparty risk |
+| **Residual MEV** | FCFS sequencing blunts sandwiching, but latency races and oracle timing remain |
 
-Hood Trade turns those into a checklist that runs in seconds before you sign.
+Hood Trade turns these into a **15-check battery** that runs in seconds before you sign.
 
-## Architecture
+---
+
+## How It Works
 
 ```
-CLI (typer+rich)  →  Engine (run_scan)  →  Check Battery (15 checks)
-                                                 │
-                                          ┌──────┴──────┐
-                                          │   decide()  │  deterministic
-                                          └──────┬──────┘
-                                                 │
-                                          ┌──────┴──────┐
-                                          │ AI summary  │  Claude (optional)
-                                          └─────────────┘
+                          ┌─────────────────────────────────────────────┐
+                          │            Check Battery (15 checks)        │
+                          │                                             │
+  ┌──────────┐            │  Contract ── code? owner? supply? honeypot? │
+  │   CLI    │  Trade     │  Pool ────── exists? paired? liquid?        │          ┌──────────┐
+  │  typer   │──Request──▶│  Execution ─ chain-id? size? MEV context    │──Score──▶│  Engine  │
+  │  + rich  │            │  Concentration ─ self-hold? burned?         │          │ decide() │
+  └──────────┘            │  Stock ────── disclosure? divergence?       │          └────┬─────┘
+                          └─────────────────────────────────────────────┘               │
+                                                                                Verdict │
+                                                                            (deterministic)
+                                                                                       │
+                                                                                ┌──────▼──────┐
+                                                                                │ AI Summary  │
+                                                                                │   Claude    │
+                                                                                │ (optional)  │
+                                                                                └─────────────┘
 ```
 
-The **verdict is decided deterministically** by the engine — any `DANGER` finding forces NO-GO,
-and summed risk scores trigger CAUTION / NO-GO thresholds. A Claude-powered summary then explains
-the result in plain language — but **the AI never overrides the gate**. With no API key, the
-summary falls back to a built-in template and the scanner works fully offline.
+> **Key design**: the verdict is **deterministic** — any `DANGER` → NO-GO, score thresholds for CAUTION/NO-GO. Claude only *explains* findings; it **never overrides the gate**. No API key? Template fallback. Fully offline.
 
-See [docs/architecture.md](docs/architecture.md) for the full design rationale.
+---
 
 ## Check Reference
 
-| ID | Area | What it checks | Severity range |
-|---|---|---|---|
-| `EXEC-CHAINID` | Execution | RPC chain-id matches configured value | OK / DANGER |
-| `CONTRACT-EXISTS` | Contract | Token address has deployed code | OK / DANGER |
-| `CONTRACT-OWNER` | Contract | Owner / admin key status | OK / WARN |
-| `CONTRACT-SUPPLY` | Contract | Standard ERC-20 reads (name, symbol, totalSupply) | OK / WARN |
-| `CONTRACT-HONEYPOT` | Honeypot | Simulated transfer() to dead address | OK / DANGER |
-| `CONTRACT-APPROVE` | Honeypot | Simulated approve() call | OK / WARN |
-| `CONC-SELF` | Concentration | Token contract self-holds supply | OK / WARN / DANGER |
-| `CONC-BURNED` | Concentration | Burned supply ratio (thin float risk) | OK / WARN |
-| `POOL-EXISTS` | Pool | Pool address has deployed code | OK / INFO / DANGER |
-| `POOL-PAIR` | Pool | Pool pairs the expected token0/token1 | OK / DANGER |
-| `POOL-LIQUIDITY` | Pool | Active in-range liquidity (Uniswap V3) | OK / DANGER |
-| `EXEC-SIZE` | Execution | Trade size band vs. depth | OK / INFO / WARN |
-| `STOCK-DISCLOSURE` | Stock token | Debt-instrument disclosure for equity tickers | WARN |
-| `STOCK-DIVERGENCE` | Stock token | Off-hours / underlying price divergence | OK / INFO / WARN / DANGER |
-| `EXEC-MEV` | Execution | FCFS sequencing context and residual MEV | INFO |
+<table>
+<tr><th>ID</th><th>Area</th><th>What it checks</th><th>Severity</th></tr>
+<tr><td><code>CONTRACT-EXISTS</code></td><td>Contract</td><td>Token address has deployed bytecode</td><td>OK / DANGER</td></tr>
+<tr><td><code>CONTRACT-OWNER</code></td><td>Contract</td><td>Owner / admin key — renounced or active</td><td>OK / WARN</td></tr>
+<tr><td><code>CONTRACT-SUPPLY</code></td><td>Contract</td><td>ERC-20 reads: name, symbol, totalSupply</td><td>OK / WARN</td></tr>
+<tr><td><code>CONTRACT-HONEYPOT</code></td><td>Honeypot</td><td>Simulated <code>transfer()</code> to dead address</td><td>OK / DANGER</td></tr>
+<tr><td><code>CONTRACT-APPROVE</code></td><td>Honeypot</td><td>Simulated <code>approve()</code> call</td><td>OK / WARN</td></tr>
+<tr><td><code>CONC-SELF</code></td><td>Concentration</td><td>Token contract self-holds supply share</td><td>OK / WARN / DANGER</td></tr>
+<tr><td><code>CONC-BURNED</code></td><td>Concentration</td><td>Burned supply ratio — thin float risk</td><td>OK / WARN</td></tr>
+<tr><td><code>POOL-EXISTS</code></td><td>Pool</td><td>Pool address has deployed code</td><td>OK / INFO / DANGER</td></tr>
+<tr><td><code>POOL-PAIR</code></td><td>Pool</td><td>Pool pairs expected token0 / token1</td><td>OK / DANGER</td></tr>
+<tr><td><code>POOL-LIQUIDITY</code></td><td>Pool</td><td>Active in-range liquidity (Uniswap V3)</td><td>OK / DANGER</td></tr>
+<tr><td><code>EXEC-CHAINID</code></td><td>Execution</td><td>RPC chain-id matches configured value</td><td>OK / DANGER</td></tr>
+<tr><td><code>EXEC-SIZE</code></td><td>Execution</td><td>Trade size band vs. pool depth</td><td>OK / INFO / WARN</td></tr>
+<tr><td><code>EXEC-MEV</code></td><td>Execution</td><td>FCFS sequencing context + residual MEV</td><td>INFO</td></tr>
+<tr><td><code>STOCK-DISCLOSURE</code></td><td>Stock Token</td><td>Debt-instrument disclosure for tickers</td><td>WARN</td></tr>
+<tr><td><code>STOCK-DIVERGENCE</code></td><td>Stock Token</td><td>Off-hours / underlying price divergence</td><td>OK — DANGER</td></tr>
+</table>
 
-## Install
+---
+
+## Quick Start
 
 ```bash
 git clone https://github.com/YarikRuuuu/hoodtrade
 cd hoodtrade
 python -m venv .venv && source .venv/bin/activate
-pip install -e '.[ai,dev]'      # drop [ai] if you don't want the Claude summary
-cp .env.example .env            # set HOODTRADE_RPC_URL (and ANTHROPIC_API_KEY for AI)
+pip install -e '.[ai,dev]'       # drop [ai] to skip Claude summaries
+cp .env.example .env             # set HOODTRADE_RPC_URL
 ```
 
-**Requirements**: Python 3.10+. Core dependencies: httpx, pydantic, typer, rich. Optional: anthropic (for AI summaries).
+> **Dependencies**: `httpx` `pydantic` `typer` `rich` — no web3. Optional: `anthropic`.
+
+---
 
 ## Usage
 
 ```bash
-# Check the RPC is reachable and see its chain id
+# Verify RPC connectivity
 hoodtrade doctor
 
-# Scan a proposed buy
+# Scan a buy
 hoodtrade scan \
-  --token 0xTokenAddress \
-  --quote 0xUSDGAddress \
-  --amount 2500 \
-  --pool  0xPoolAddress \
+  --token 0xTokenAddr \
+  --quote 0xUSDGAddr  \
+  --amount 2500       \
+  --pool  0xPoolAddr  \
   --direction buy
 
-# Sell scan (checks the same battery, direction affects context)
-hoodtrade scan \
-  --token 0xTokenAddress \
-  --quote 0xUSDGAddress \
-  --amount 1000 \
-  --direction sell
-
-# JSON output for scripting / CI integration
+# JSON for scripting (exit: 0=GO, 1=CAUTION, 2=NO-GO)
 hoodtrade scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
-
-# Exit codes: 0 = GO, 1 = CAUTION, 2 = NO-GO/UNKNOWN
 ```
 
-### Example output
+<details>
+<summary><strong>Example output</strong></summary>
 
 ```
-╭─ Hood Trade verdict ─────────────────────────────╮
-│  CAUTION   risk score 43                         │
-╰──────────────────────────────────────────────────╯
+╭─ Hood Trade verdict ─────────────────────────────────╮
+│  CAUTION   risk score 43                             │
+╰──────────────────────────────────────────────────────╯
 Proceed carefully — the scanner found notable risks.
 
 Key risks
@@ -130,54 +143,113 @@ Verify yourself
   → Confirm the token and pool addresses against the official source.
   → Check the pool's real depth for your size on the DEX UI.
   → Set a tight slippage limit; split large orders.
+
+┌─ Findings ───────────────────────────────────────────┐
+│ check              │ sev    │ finding                 │
+│ EXEC-CHAINID       │ ok     │ Chain id verified       │
+│ CONTRACT-EXISTS    │ ok     │ Contract code present   │
+│ CONTRACT-OWNER     │ warn   │ Active owner detected   │
+│ CONTRACT-HONEYPOT  │ ok     │ Transfer sim passed     │
+│ CONC-SELF          │ ok     │ Self-holding negligible │
+│ POOL-LIQUIDITY     │ ok     │ Active liquidity OK     │
+│ EXEC-SIZE          │ warn   │ Trade size: large       │
+│ STOCK-DISCLOSURE   │ warn   │ Tokenized equity (debt) │
+│ EXEC-MEV           │ info   │ FCFS — reduced MEV      │
+└──────────────────────────────────────────────────────┘
 ```
 
-See [examples/sample_output.md](examples/sample_output.md) for more scenarios including honeypot detection and JSON output.
+</details>
+
+<details>
+<summary><strong>Honeypot detection (NO-GO)</strong></summary>
+
+```
+╭─ Hood Trade verdict ─────────────────────────────────╮
+│  NO-GO   risk score 190                              │
+╰──────────────────────────────────────────────────────╯
+High-risk trade — the scanner flagged blocking issues.
+
+Key risks
+  • Honeypot risk — transfer() reverts
+  • Token self-holds 65% of supply
+```
+
+</details>
+
+---
 
 ## Configuration
 
-All settings are environment variables (prefix `HOODTRADE_`) or `.env` entries — see
-[`.env.example`](.env.example).
+All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example`](.env.example).
 
 | Variable | Default | Description |
-|---|---|---|
-| `HOODTRADE_RPC_URL` | (placeholder) | JSON-RPC endpoint for Robinhood Chain |
-| `HOODTRADE_CHAIN_ID` | (unset) | Pin expected chain id for RPC verification |
-| `HOODTRADE_CAUTION_SCORE` | 25 | Risk score threshold for CAUTION verdict |
-| `HOODTRADE_NOGO_SCORE` | 60 | Risk score threshold for NO-GO verdict |
-| `HOODTRADE_AI_ENABLED` | true | Use Claude for risk summaries |
-| `HOODTRADE_AI_MODEL` | claude-opus-4-8 | Claude model for AI summaries |
-| `ANTHROPIC_API_KEY` | (unset) | Anthropic API key (needed only if AI enabled) |
+|:---------|:--------|:------------|
+| `HOODTRADE_RPC_URL` | *(required)* | JSON-RPC endpoint for Robinhood Chain |
+| `HOODTRADE_CHAIN_ID` | *(unset)* | Pin expected chain id for RPC verification |
+| `HOODTRADE_CAUTION_SCORE` | `25` | Score threshold for CAUTION |
+| `HOODTRADE_NOGO_SCORE` | `60` | Score threshold for NO-GO |
+| `HOODTRADE_AI_ENABLED` | `true` | Enable Claude risk summaries |
+| `HOODTRADE_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
+| `ANTHROPIC_API_KEY` | *(unset)* | Required only when AI is enabled |
+
+---
 
 ## Development
 
 ```bash
-ruff check src tests          # lint
-ruff format --check src tests # format check
-pytest -q                     # run tests (40+)
+ruff check src tests            # lint
+ruff format --check src tests   # format check
+pytest -q                       # 50 tests
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add new checks.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the check protocol, severity guide, and PR conventions.
+
+---
 
 ## Roadmap
 
-- [ ] Tick-by-tick depth simulation (Uniswap V3 tick math for precise price impact)
-- [ ] Live USD/equity price oracles for stock-token divergence measurement
-- [ ] Holder-concentration via indexer (Blockscout / Dune API)
-- [ ] Bytecode pattern analysis (proxy detection, known exploit signatures)
+- [ ] Tick-by-tick depth simulation (Uniswap V3 tick math)
+- [ ] Live USD/equity price oracles for divergence measurement
+- [ ] Holder-concentration via indexer (Blockscout / Dune)
+- [ ] Bytecode pattern analysis (proxy detection, exploit signatures)
 - [ ] Multi-venue routing comparison (Uniswap vs Pleiades vs 0x)
 - [ ] Telegram / Discord bot interface
-- [ ] Watch mode (continuous monitoring of a token)
+- [ ] Watch mode — continuous token monitoring
 
-## Scope & honesty
+---
 
-This is v0.2. What it does **not** do yet: a full tick-by-tick depth simulation, live
-USD/equity price oracles (divergence thresholds apply only when a reference is supplied),
-full holder-concentration via indexer, or bytecode pattern analysis. Those are on the
-roadmap and are called out as `INFO` findings when skipped, never silently. A green verdict
-means "no automated red flags," not "safe" — always verify addresses against official
-sources before signing.
+## Project Structure
 
-## License
+```
+hoodtrade/
+├── src/hoodtrade/
+│   ├── checks/
+│   │   ├── contract.py        # code, owner, supply
+│   │   ├── honeypot.py        # transfer/approve simulation
+│   │   ├── concentration.py   # self-holding, burned supply
+│   │   ├── pool.py            # exists, liquidity, pair integrity
+│   │   ├── execution.py       # chain-id, size, MEV context
+│   │   └── stock_token.py     # disclosure, divergence
+│   ├── engine.py              # verdict decision (deterministic)
+│   ├── ai.py                  # Claude summary layer
+│   ├── rpc.py                 # minimal JSON-RPC client
+│   ├── cli.py                 # typer CLI
+│   ├── config.py              # pydantic-settings
+│   └── models.py              # core types
+├── tests/                     # 50 tests
+├── docs/architecture.md
+├── examples/sample_output.md
+└── .github/workflows/ci.yml   # ruff + pytest on 3.10-3.12
+```
 
-MIT — see [LICENSE](LICENSE).
+---
+
+<div align="center">
+
+**Hood Trade** is not financial advice. A green verdict means "no automated red flags" — not "safe."
+
+Always verify addresses against official sources before signing.
+
+MIT License
+
+</div>
