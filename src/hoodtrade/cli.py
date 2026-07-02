@@ -112,13 +112,44 @@ def _demo_report(request: TradeRequest) -> ScanReport:
 WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 ETH_RPC = "https://ethereum-rpc.publicnode.com"
 
+# Default public RPC per GoPlus-supported EVM chain, so `--chain base` etc. just works.
+CHAIN_RPCS = {
+    1: "https://ethereum-rpc.publicnode.com",
+    10: "https://optimism-rpc.publicnode.com",
+    56: "https://bsc-rpc.publicnode.com",
+    137: "https://polygon-bor-rpc.publicnode.com",
+    8453: "https://base-rpc.publicnode.com",
+    42161: "https://arbitrum-one-rpc.publicnode.com",
+    43114: "https://avalanche-c-chain-rpc.publicnode.com",
+}
+CHAIN_ALIASES = {
+    "ethereum": 1,
+    "eth": 1,
+    "mainnet": 1,
+    "optimism": 10,
+    "op": 10,
+    "bsc": 56,
+    "bnb": 56,
+    "polygon": 137,
+    "matic": 137,
+    "base": 8453,
+    "arbitrum": 42161,
+    "arb": 42161,
+    "avalanche": 43114,
+    "avax": 43114,
+}
+
 
 @app.command()
 def scan(
     token: str = typer.Argument(None, help="Token contract address to scan."),
+    chain: str = typer.Option(
+        "ethereum", "--chain", help="ethereum, base, arbitrum, bsc, polygon, optimism, avalanche."
+    ),
     quote: str = typer.Option(WETH, help="Quote asset address (default: WETH)."),
     amount: float = typer.Option(1000.0, help="Trade size in USD."),
-    rpc: str = typer.Option(None, "--rpc", help="RPC endpoint (default: public Ethereum)."),
+    rpc: str = typer.Option(None, "--rpc", help="Override the RPC endpoint."),
+    no_goplus: bool = typer.Option(False, "--no-goplus", help="Skip the GoPlus reputation lookup."),
     as_json: bool = typer.Option(False, "--json", help="Output as JSON."),
     demo: bool = typer.Option(False, "--demo", help="Run with sample data (no RPC needed)."),
 ) -> None:
@@ -127,6 +158,7 @@ def scan(
     \b
     Examples:
       hoodtrade scan 0xdAC17F958D2ee523a2206206994597C13D831ec7
+      hoodtrade scan 0x4200000000000000000000000000000000000006 --chain base
       hoodtrade scan 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 --json
       hoodtrade scan --demo
     """
@@ -148,8 +180,17 @@ def scan(
             console.print(f"[bold red]Error:[/bold red] invalid address: {token}")
             raise typer.Exit(code=2)
 
+        chain_id = CHAIN_ALIASES.get(chain.lower())
+        if chain_id is None:
+            console.print(f"[bold red]Error:[/bold red] unknown chain: {chain}")
+            console.print(f"  supported: {', '.join(sorted(set(CHAIN_ALIASES)))}")
+            raise typer.Exit(code=2)
+
         settings = load_settings()
-        settings.rpc_url = rpc or ETH_RPC
+        settings.rpc_url = rpc or CHAIN_RPCS[chain_id]
+        settings.chain_id = chain_id
+        settings.goplus_enabled = not no_goplus
+        settings.goplus_chain_id = None if no_goplus else chain_id
         settings.ai_enabled = False
         request = TradeRequest(
             token=token,
@@ -157,7 +198,8 @@ def scan(
             amount_usd=amount,
             direction=Direction.BUY,
         )
-        console.print(f"[dim]Scanning [bold]{token[:8]}…{token[-4:]}[/bold] via {settings.rpc_url}…[/dim]\n")
+        src = "on-chain + GoPlus" if settings.goplus_enabled else "on-chain"
+        console.print(f"[dim]Scanning [bold]{token[:8]}…{token[-4:]}[/bold] on {chain.lower()} ({src})…[/dim]\n")
         report = asyncio.run(run_scan(request, settings))
         report.summary = summarize(report, settings)
 
