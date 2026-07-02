@@ -19,6 +19,51 @@ from .base import Context
 
 DEAD = "0x000000000000000000000000000000000000dEaD"
 
+# The simulation runs from a zero-balance sender, so a compliant ERC-20 *should*
+# revert with an insufficient-balance error. That is expected, healthy behavior —
+# NOT a honeypot. We only escalate when the revert reason names a transfer
+# restriction (blacklist, pause, trading-gate). This keeps normal tokens from
+# false-flagging while still catching the classic "buy but can't sell" pattern.
+_BALANCE_REVERTS = (
+    "insufficient",
+    "exceeds balance",
+    "exceeds allowance",
+    "transfer amount exceeds",
+    "underflow",
+    "subtraction",
+    "0x11",  # Solidity panic(0x11): arithmetic overflow/underflow
+    "erc20insufficientbalance",
+)
+_RESTRICTION_REVERTS = (
+    "blacklist",
+    "blocked",
+    "whitelist",
+    "not allowed",
+    "not enabled",
+    "paused",
+    "pause",
+    "trading",
+    "forbidden",
+    "bot",
+    "cooldown",
+    "restrict",
+    "max wallet",
+    "max tx",
+    "banned",
+    "frozen",
+    "excluded",
+)
+
+
+def _classify_revert(msg: str) -> str:
+    """Return 'restriction', 'balance', or 'unknown' for an eth_call revert."""
+    m = msg.lower()
+    if any(h in m for h in _RESTRICTION_REVERTS):
+        return "restriction"
+    if any(h in m for h in _BALANCE_REVERTS):
+        return "balance"
+    return "unknown"
+
 
 def _encode_transfer(to: str, amount: int) -> str:
     selector = "0xa9059cbb"  # transfer(address,uint256)
@@ -48,29 +93,44 @@ class HoneypotTransferCheck:
             data = _encode_transfer(DEAD, 1)
             await ctx.rpc.eth_call(ctx.request.token, data)
         except Exception as exc:
-            msg = str(exc).lower()
-            if "revert" in msg or "execution reverted" in msg:
+            kind = _classify_revert(str(exc))
+            if kind == "restriction":
                 return [
                     CheckResult(
                         check=self.id,
                         severity=Severity.DANGER,
                         score=90,
-                        title="Honeypot risk — transfer() reverts",
+                        title="Honeypot risk — transfer blocked",
                         detail=(
-                            "A simulated transfer(deadAddress, 1) reverted. This is a strong "
-                            "signal that the token blocks transfers for non-whitelisted addresses, "
-                            "meaning you can buy but cannot sell."
+                            "A simulated transfer reverted with a restriction error (blacklist / "
+                            "pause / trading-gate). This is a strong signal the token blocks "
+                            "transfers for ordinary holders — you could buy but not sell."
                         ),
                         evidence={"error": str(exc)[:200]},
+                    )
+                ]
+            if kind == "balance":
+                # Expected for a zero-balance sender: the token correctly refuses.
+                return [
+                    CheckResult(
+                        check=self.id,
+                        severity=Severity.OK,
+                        score=0,
+                        title="Transfer behaves normally",
+                        detail="transfer() reverted on insufficient balance, as a compliant ERC-20 should.",
                     )
                 ]
             return [
                 CheckResult(
                     check=self.id,
                     severity=Severity.INFO,
-                    score=5,
+                    score=0,
                     title="Transfer simulation inconclusive",
-                    detail=f"The simulated transfer did not complete cleanly: {str(exc)[:150]}",
+                    detail=(
+                        "A zero-balance transfer simulation reverted without a clear reason. This "
+                        "cannot confirm sellability either way — rely on the GoPlus honeypot signal "
+                        f"and real trade history. ({str(exc)[:120]})"
+                    ),
                 )
             ]
 
@@ -98,18 +158,18 @@ class HoneypotApproveCheck:
             data = _encode_approve(DEAD, 2**255)
             await ctx.rpc.eth_call(ctx.request.token, data)
         except Exception as exc:
-            msg = str(exc).lower()
-            if "revert" in msg or "execution reverted" in msg:
+            # approve() takes no balance, so it should not revert. A restriction
+            # revert is a real signal; anything else is inconclusive, not a flag.
+            if _classify_revert(str(exc)) == "restriction":
                 return [
                     CheckResult(
                         check=self.id,
                         severity=Severity.WARN,
                         score=25,
-                        title="Approve simulation reverts",
+                        title="Approve blocked by a restriction",
                         detail=(
-                            "approve(address, maxUint) reverted. Some honeypots block approval to "
-                            "prevent the victim from selling via a DEX router. Could also be a "
-                            "non-standard approval implementation."
+                            "approve(address, maxUint) reverted with a restriction error. Some "
+                            "honeypots block approval to stop the victim selling via a DEX router."
                         ),
                         evidence={"error": str(exc)[:200]},
                     )
