@@ -44,7 +44,7 @@ the summary falls back to a built-in template and the scanner works fully offlin
 ## Install
 
 ```bash
-git clone https://github.com/OWNER/hoodtrade
+git clone https://github.com/YarikRuuuu/hoodtrade
 cd hoodtrade
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'      # drop [ai] if you don't want the Claude summary
