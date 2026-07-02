@@ -46,7 +46,12 @@ class MarketData:
     pair_address: str | None = None
     quote_symbol: str | None = None
     price_usd: float | None = None
+    # Headline liquidity is the *quote-side* (counter-asset, e.g. WETH) value — the
+    # asset you actually receive on exit. This matches what trading terminals
+    # (basedbot/Noxa) show and is the exit-relevant depth. pooled_total_usd keeps
+    # DexScreener's both-sides total for reference.
     liquidity_usd: float | None = None
+    pooled_total_usd: float | None = None
     volume_24h: float | None = None
     fdv: float | None = None
     market_cap: float | None = None
@@ -64,6 +69,9 @@ class MarketData:
         base = best.get("baseToken") or {}
         quote = best.get("quoteToken") or {}
         txns = (best.get("txns") or {}).get("h24") or {}
+        liq = best.get("liquidity") or {}
+        price = _f(best.get("priceUsd"))
+        total = _f(liq.get("usd"))
         return cls(
             chain=chain,
             token_address=token_address,
@@ -72,8 +80,9 @@ class MarketData:
             dex=best.get("dexId"),
             pair_address=best.get("pairAddress"),
             quote_symbol=quote.get("symbol"),
-            price_usd=_f(best.get("priceUsd")),
-            liquidity_usd=_f((best.get("liquidity") or {}).get("usd")),
+            price_usd=price,
+            liquidity_usd=_quote_side_liquidity(total, _f(liq.get("base")), price),
+            pooled_total_usd=total,
             volume_24h=_f((best.get("volume") or {}).get("h24")),
             fdv=_f(best.get("fdv")),
             market_cap=_f(best.get("marketCap")) or _f(best.get("fdv")),
@@ -82,6 +91,26 @@ class MarketData:
             pair_count=len(pairs),
             raw=best,
         )
+
+
+def _quote_side_liquidity(total: float | None, base_reserve: float | None, base_price: float | None) -> float | None:
+    """Value of the counter-asset (quote) side of the pool, in USD.
+
+    DexScreener's ``liquidity.usd`` is both sides; trading UIs quote just the
+    withdrawable counter-asset. We derive it as total minus the base-token side
+    (base_reserve x base_price). Falls back to the full total if the reserves or
+    price are missing or the arithmetic lands outside a sane range.
+    """
+    if total is None:
+        return None
+    if base_reserve is None or base_price is None:
+        return total
+    base_side = base_reserve * base_price
+    quote_side = total - base_side
+    # Guard against dirty data: keep only a plausible one-sided value.
+    if 0 < quote_side <= total:
+        return quote_side
+    return total
 
 
 def _f(value: object) -> float | None:

@@ -10,6 +10,7 @@ from hoodtrade.sources.dexscreener import (
     MarketData,
     _f,
     _i,
+    _quote_side_liquidity,
 )
 
 PAIR_SHALLOW = {
@@ -35,6 +36,22 @@ PAIR_DEEP = {
     "marketCap": 55000.0,
     "txns": {"h24": {"buys": 200, "sells": 150}},
 }
+
+
+def test_quote_side_liquidity_matches_trading_ui():
+    # CASHCAT-like pool: total $256,849 = base side ($138,592) + quote/WETH side.
+    # base_reserve 26,672,759 tokens @ $0.005196 -> quote side ~= $118,257.
+    quote = _quote_side_liquidity(256849.0, 26672759.0, 0.005196)
+    assert quote is not None
+    assert 117000 < quote < 120000  # matches the WETH side shown by trading UIs
+
+
+def test_quote_side_liquidity_falls_back_to_total():
+    # Missing reserve -> can't split, return the full total.
+    assert _quote_side_liquidity(40000.0, None, 0.01) == 40000.0
+    # Dirty data (base side exceeds total) -> fall back to total, never negative.
+    assert _quote_side_liquidity(1000.0, 10_000_000.0, 1.0) == 1000.0
+    assert _quote_side_liquidity(None, 1.0, 1.0) is None
 
 
 def test_coercion_helpers():
