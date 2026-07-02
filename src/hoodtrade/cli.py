@@ -35,6 +35,33 @@ _VERDICT_STYLE = {
 }
 
 
+def _fmt_usd(value: float | None) -> str | None:
+    if value is None:
+        return None
+    if value == 0:
+        return "$0"
+    if abs(value) < 0.01:
+        return f"${value:.8f}".rstrip("0").rstrip(".")
+    if abs(value) < 1000:
+        return f"${value:,.2f}"
+    return f"${value:,.0f}"
+
+
+def _render_market(report: ScanReport) -> None:
+    """A clearly-labeled market snapshot so liquidity is never confused with mcap."""
+    parts: list[str] = []
+    if (p := _fmt_usd(report.price_usd)) is not None:
+        parts.append(f"[dim]price[/dim] {p}")
+    if (mc := _fmt_usd(report.market_cap)) is not None:
+        parts.append(f"[dim]mcap[/dim] {mc}")
+    if (liq := _fmt_usd(report.liquidity_usd)) is not None:
+        parts.append(f"[dim]liquidity[/dim] {liq}")
+    if (vol := _fmt_usd(report.volume_24h)) is not None:
+        parts.append(f"[dim]24h vol[/dim] {vol}")
+    if parts:
+        console.print("  " + "   ".join(parts) + "\n")
+
+
 def _render(report: ScanReport) -> None:
     style = _VERDICT_STYLE[report.verdict]
     head = Text(f" {report.verdict.value} ", style=f"reverse {style}")
@@ -47,6 +74,8 @@ def _render(report: ScanReport) -> None:
     else:
         title = "Hood Trade verdict"
     console.print(Panel(head, title=title, border_style=style, box=box.SIMPLE, expand=False, padding=(0, 1)))
+
+    _render_market(report)
 
     if report.summary:
         s = report.summary
