@@ -8,8 +8,10 @@ independent otherwise and safe to run past a failure.
 from __future__ import annotations
 
 from .base import Check, Context
+from .concentration import BurnedSupplyCheck, TokenSelfHoldingCheck
 from .contract import ContractExistsCheck, OwnershipCheck, SupplySanityCheck
 from .execution import ChainIdentityCheck, SequencingContextCheck, SizeVsDepthCheck
+from .honeypot import HoneypotApproveCheck, HoneypotTransferCheck
 from .pool import PoolExistsCheck, PoolLiquidityCheck, PoolPairIntegrityCheck
 from .stock_token import StockTokenDisclosureCheck, StockTokenDivergenceCheck
 
@@ -20,6 +22,10 @@ def default_checks() -> list[Check]:
         ContractExistsCheck(),
         OwnershipCheck(),
         SupplySanityCheck(),
+        HoneypotTransferCheck(),
+        HoneypotApproveCheck(),
+        TokenSelfHoldingCheck(),
+        BurnedSupplyCheck(),
         PoolExistsCheck(),
         PoolPairIntegrityCheck(),
         PoolLiquidityCheck(),
