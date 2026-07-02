@@ -15,12 +15,12 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="HOODTRADE_", env_file=".env", extra="ignore")
 
     # --- Chain / RPC ---------------------------------------------------------
-    # Robinhood Chain is an Arbitrum-Orbit L2. The public RPC + chain id must be
-    # supplied by the operator; these defaults are placeholders and are validated
-    # at startup (see `hoodtrade doctor`). Do not hardcode a guessed chain id into
-    # signing logic — this tool never signs anyway, but be explicit.
+    # Robinhood Chain is an Arbitrum-Orbit L2 (mainnet chain id 4663, ETH gas).
+    # The default public RPC is keyless and rate-limited — fine for a pre-trade
+    # scanner's light read calls; point at Alchemy/dRPC for heavy use. Validated
+    # at startup via `hoodtrade doctor`.
     rpc_url: str = Field(
-        default="https://rpc.robinhoodchain.example/placeholder",
+        default="https://rpc.mainnet.chain.robinhood.com",
         description="JSON-RPC HTTPS endpoint for Robinhood Chain.",
     )
     explorer_api: str = Field(
@@ -28,7 +28,7 @@ class Settings(BaseSettings):
         description="Blockscout-compatible explorer API base (used for verified-source checks).",
     )
     chain_id: int | None = Field(
-        default=None, description="Expected chain id; if set, RPC eth_chainId is asserted against it."
+        default=4663, description="Expected chain id; if set, RPC eth_chainId is asserted against it."
     )
 
     # --- Scoring thresholds --------------------------------------------------
@@ -57,6 +57,12 @@ class Settings(BaseSettings):
     # enrichment. Left as None, the scanner runs on-chain checks only.
     goplus_enabled: bool = Field(default=True, description="Enrich findings with GoPlus token-security data.")
     goplus_chain_id: int | None = Field(default=None, description="EVM chain id to query GoPlus against.")
+
+    # DexScreener provides live market data (price, liquidity, volume) and covers
+    # Robinhood Chain (slug "robinhood") where GoPlus does not. Set the slug to
+    # enable market enrichment.
+    dexscreener_enabled: bool = Field(default=True, description="Enrich findings with DexScreener market data.")
+    dexscreener_chain: str | None = Field(default=None, description="DexScreener chain slug to query.")
 
     # --- AI layer ------------------------------------------------------------
     ai_enabled: bool = Field(default=True, description="Use Claude to summarize risk; falls back to a template.")
