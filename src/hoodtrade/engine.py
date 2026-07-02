@@ -31,8 +31,9 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
         results: list[CheckResult] = []
         notes: list[str] = []
 
-        # Enrich with GoPlus before the battery runs so reputation checks can read
-        # it from the shared cache. A source failure is a note, never a scan abort.
+        # Enrich from external sources before the battery runs so reputation and
+        # market checks can read them from the shared cache. A source failure is a
+        # note, never a scan abort.
         if settings.goplus_enabled and settings.goplus_chain_id is not None:
             from .sources import fetch_goplus
 
@@ -42,6 +43,16 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
                 )
             except Exception as exc:  # noqa: BLE001 — external source down: degrade gracefully
                 notes.append(f"GoPlus lookup failed: {exc}")
+
+        if settings.dexscreener_enabled and settings.dexscreener_chain is not None:
+            from .sources import fetch_market
+
+            try:
+                ctx.cache["market"] = await fetch_market(
+                    settings.dexscreener_chain, request.token, settings.request_timeout
+                )
+            except Exception as exc:  # noqa: BLE001 — external source down: degrade gracefully
+                notes.append(f"DexScreener lookup failed: {exc}")
 
         for check in checks:
             try:
