@@ -32,6 +32,22 @@ Point it at a swap you're about to sign — get a **GO** / **CAUTION** / **NO-GO
 
 ---
 
+<div align="center">
+
+**Python · Solidity · Robinhood Chain · Claude AI · async agents · read-only tooling**
+
+<br>
+
+<!-- Achievements & stats — generated live from real GitHub activity -->
+![Achievements](https://github-profile-trophy.vercel.app/?username=hoodtrade&theme=matrix&no-frame=true&no-bg=true&column=8&row=1&margin-w=6&margin-h=6)
+
+![Stats](https://github-readme-stats.vercel.app/api?username=hoodtrade&show_icons=true&hide_border=true&bg_color=0b0d07&title_color=c6f82e&icon_color=c6f82e&text_color=e9f0dd)
+![Streak](https://streak-stats.demolab.com?user=hoodtrade&hide_border=true&background=0b0d07&stroke=232a17&ring=c6f82e&fire=c6f82e&currStreakLabel=c6f82e&sideLabels=e9f0dd&dates=94a07f&currStreakNum=e9f0dd&sideNums=e9f0dd)
+
+</div>
+
+---
+
 ## The Problem
 
 Robinhood Chain launched July 2026 as a permissionless Arbitrum-Orbit L2. Permissionless + brand new = risk:
