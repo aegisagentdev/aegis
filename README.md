@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="hoodtradebanner1.png" alt="Hood Trade — Trade Smarter. Let AI Do the Rest." width="100%" />
+
+<br><br>
+
 # Hood Trade
 
 ### Pre-trade safety scanner for Robinhood Chain
