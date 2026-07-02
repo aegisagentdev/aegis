@@ -44,7 +44,7 @@ Robinhood Chain launched July 2026 as a permissionless Arbitrum-Orbit L2. Permis
 | **Stock token debt** | Tokenized equities are debt instruments, not shares — counterparty risk |
 | **Residual MEV** | FCFS sequencing blunts sandwiching, but latency races and oracle timing remain |
 
-Hood Trade turns these into a **15-check battery** that runs in seconds before you sign.
+Hood Trade turns these into a **21-check battery** that runs in seconds before you sign.
 
 ---
 
@@ -52,7 +52,7 @@ Hood Trade turns these into a **15-check battery** that runs in seconds before y
 
 ```
                           ┌─────────────────────────────────────────────┐
-                          │            Check Battery (15 checks)        │
+                          │            Check Battery (21 checks)        │
                           │                                             │
   ┌──────────┐            │  Contract ── code? owner? supply? honeypot? │
   │   CLI    │  Trade     │  Pool ────── exists? paired? liquid?        │          ┌──────────┐
@@ -93,6 +93,12 @@ Hood Trade turns these into a **15-check battery** that runs in seconds before y
 <tr><td><code>EXEC-MEV</code></td><td>Execution</td><td>FCFS sequencing context + residual MEV</td><td>INFO</td></tr>
 <tr><td><code>STOCK-DISCLOSURE</code></td><td>Stock Token</td><td>Debt-instrument disclosure for tickers</td><td>WARN</td></tr>
 <tr><td><code>STOCK-DIVERGENCE</code></td><td>Stock Token</td><td>Off-hours / underlying price divergence</td><td>OK — DANGER</td></tr>
+<tr><td><code>REP-HONEYPOT</code></td><td>Reputation</td><td>GoPlus honeypot flag + buy/sell tax</td><td>OK / WARN / DANGER</td></tr>
+<tr><td><code>REP-PERMISSIONS</code></td><td>Reputation</td><td>Mintable, pausable, blacklist, hidden owner</td><td>OK / WARN / DANGER</td></tr>
+<tr><td><code>REP-SOURCE</code></td><td>Reputation</td><td>Verified source code + holder count</td><td>OK / INFO / WARN</td></tr>
+<tr><td><code>MKT-LIQUIDITY</code></td><td>Market</td><td>Absolute quote-side liquidity (DexScreener)</td><td>OK / WARN / DANGER</td></tr>
+<tr><td><code>MKT-DEPTH</code></td><td>Market</td><td>Trade size vs available liquidity</td><td>OK / INFO / WARN</td></tr>
+<tr><td><code>MKT-ACTIVITY</code></td><td>Market</td><td>24h volume + buy/sell transaction balance</td><td>OK / INFO / WARN</td></tr>
 </table>
 
 ---
@@ -203,7 +209,7 @@ All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example
 ```bash
 ruff check src tests            # lint
 ruff format --check src tests   # format check
-pytest -q                       # 50 tests
+pytest -q                       # 152 tests
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the check protocol, severity guide, and PR conventions.
@@ -233,14 +239,19 @@ hoodtrade/
 │   │   ├── concentration.py   # self-holding, burned supply
 │   │   ├── pool.py            # exists, liquidity, pair integrity
 │   │   ├── execution.py       # chain-id, size, MEV context
-│   │   └── stock_token.py     # disclosure, divergence
+│   │   ├── stock_token.py     # disclosure, divergence
+│   │   ├── reputation.py      # GoPlus-backed checks
+│   │   └── market.py          # DexScreener-backed checks
 │   ├── engine.py              # verdict decision (deterministic)
 │   ├── ai.py                  # Claude summary layer
 │   ├── rpc.py                 # minimal JSON-RPC client
+│   ├── sources/
+│   │   ├── goplus.py          # GoPlus Security API client
+│   │   └── dexscreener.py     # DexScreener market data client
 │   ├── cli.py                 # typer CLI
 │   ├── config.py              # pydantic-settings
 │   └── models.py              # core types
-├── tests/                     # 50 tests
+├── tests/                     # 152 tests
 ├── docs/architecture.md
 ├── examples/sample_output.md
 └── .github/workflows/ci.yml   # ruff + pytest on 3.10-3.12
