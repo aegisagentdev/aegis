@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use Hood Trade in your research, please cite it as below."
+type: software
+title: "Hood Trade"
+abstract: "Pre-trade safety scanner for Robinhood Chain — a 15-check battery that evaluates swap safety before signing."
+authors:
+  - alias: YarikRuuuu
+url: "https://github.com/YarikRuuuu/hoodtrade"
+repository-code: "https://github.com/YarikRuuuu/hoodtrade"
+license: MIT
+version: "0.2.0"
+date-released: "2026-07-02"
+keywords:
+  - defi
+  - pre-trade-scanner
+  - robinhood-chain
+  - honeypot-detection
+  - mev
+  - arbitrum
+  - safety
