@@ -30,6 +30,19 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
         ctx = Context(request=request, settings=settings, rpc=rpc)
         results: list[CheckResult] = []
         notes: list[str] = []
+
+        # Enrich with GoPlus before the battery runs so reputation checks can read
+        # it from the shared cache. A source failure is a note, never a scan abort.
+        if settings.goplus_enabled and settings.goplus_chain_id is not None:
+            from .sources import fetch_goplus
+
+            try:
+                ctx.cache["goplus"] = await fetch_goplus(
+                    settings.goplus_chain_id, request.token, settings.request_timeout
+                )
+            except Exception as exc:  # noqa: BLE001 — external source down: degrade gracefully
+                notes.append(f"GoPlus lookup failed: {exc}")
+
         for check in checks:
             try:
                 results.extend(await check.run(ctx))
