@@ -34,7 +34,7 @@ pip install 'hoodtrade[ai]'  # with Claude summaries
 ## From source
 
 ```bash
-git clone https://github.com/YarikRuuuu/hoodtrade
+git clone https://github.com/hooddev/hoodtrade
 cd hoodtrade
 pip install -e '.[ai,dev]'
 ```
