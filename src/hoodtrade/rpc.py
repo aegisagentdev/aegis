@@ -16,9 +16,9 @@ SELECTORS = {
     "symbol": "0x95d89b41",
     "decimals": "0x313ce567",
     "totalSupply": "0x18160ddd",
-    "balanceOf": "0x70a08231",       # balanceOf(address)
-    "owner": "0x8da5cb5b",           # owner()
-    "getOwner": "0x893d20e8",        # getOwner()
+    "balanceOf": "0x70a08231",  # balanceOf(address)
+    "owner": "0x8da5cb5b",  # owner()
+    "getOwner": "0x893d20e8",  # getOwner()
     # Uniswap V3 pool
     "slot0": "0x3850c7bd",
     "liquidity": "0x1a686502",
@@ -88,6 +88,7 @@ class RpcClient:
 
 # --- decode helpers ---------------------------------------------------------
 
+
 def decode_uint(raw: bytes) -> int:
     return int.from_bytes(raw[:32], "big") if raw else 0
 
@@ -105,5 +106,5 @@ def decode_string(raw: bytes) -> str:
     if len(raw) >= 64:
         length = int.from_bytes(raw[32:64], "big")
         if 0 < length <= len(raw) - 64:
-            return raw[64:64 + length].decode("utf-8", "replace")
+            return raw[64 : 64 + length].decode("utf-8", "replace")
     return raw.rstrip(b"\x00").decode("utf-8", "replace")

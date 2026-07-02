@@ -24,9 +24,7 @@ class TransferFeeCheck:
             return []
 
         try:
-            supply = decode_uint(
-                await ctx.rpc.eth_call(ctx.request.token, encode_call("totalSupply"))
-            )
+            supply = decode_uint(await ctx.rpc.eth_call(ctx.request.token, encode_call("totalSupply")))
             if supply == 0:
                 return []
 

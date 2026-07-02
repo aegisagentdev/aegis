@@ -3,7 +3,6 @@
 import pytest
 
 from hoodtrade.checks import default_checks
-from hoodtrade.checks.base import Context
 from hoodtrade.engine import decide
 from hoodtrade.models import CheckResult, Direction, Severity, TradeRequest, Verdict
 

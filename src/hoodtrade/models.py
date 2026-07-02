@@ -20,7 +20,7 @@ class Severity(str, Enum):
 
 
 class Direction(str, Enum):
-    BUY = "buy"    # spending the quote asset to acquire `token`
+    BUY = "buy"  # spending the quote asset to acquire `token`
     SELL = "sell"  # disposing of `token` for the quote asset
 
 

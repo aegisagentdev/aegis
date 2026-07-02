@@ -24,7 +24,7 @@ def normalize_address(address: str) -> str:
 def shorten_address(address: str, chars: int = 4) -> str:
     if len(address) < 10:
         return address
-    return f"{address[:chars + 2]}...{address[-chars:]}"
+    return f"{address[: chars + 2]}...{address[-chars:]}"
 
 
 def format_usd(amount: float) -> str:

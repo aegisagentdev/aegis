@@ -80,9 +80,7 @@ def scan(
     settings = load_settings()
     if no_ai:
         settings.ai_enabled = False
-    request = TradeRequest(
-        token=token, quote=quote, amount_usd=amount, direction=direction, pool=pool, venue=venue
-    )
+    request = TradeRequest(token=token, quote=quote, amount_usd=amount, direction=direction, pool=pool, venue=venue)
     report = asyncio.run(run_scan(request, settings))
     if report.verdict is not Verdict.UNKNOWN:
         report.summary = summarize(report, settings)

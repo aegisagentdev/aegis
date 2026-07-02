@@ -18,9 +18,7 @@ def validate_address(address: str, label: str = "address") -> str:
     if not address:
         raise ValidationError(f"{label} is required")
     if not is_valid_address(address):
-        raise ValidationError(
-            f"Invalid {label}: {address!r} — expected 0x-prefixed 40-hex-char string"
-        )
+        raise ValidationError(f"Invalid {label}: {address!r} — expected 0x-prefixed 40-hex-char string")
     return address.lower()
 
 

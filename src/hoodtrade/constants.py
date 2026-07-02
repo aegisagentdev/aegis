@@ -17,7 +17,7 @@ USDG = "0x" + "0" * 40  # USDG stablecoin
 
 # Uniswap V3 factory and router (deployed on Robinhood Chain)
 UNISWAP_V3_FACTORY = "0x" + "0" * 40  # to be updated
-UNISWAP_V3_ROUTER = "0x" + "0" * 40   # to be updated
+UNISWAP_V3_ROUTER = "0x" + "0" * 40  # to be updated
 
 # Known AMM venues on Robinhood Chain
 VENUES = {

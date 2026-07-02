@@ -38,7 +38,10 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
 
     if not results:
         return ScanReport(
-            request=request, verdict=Verdict.UNKNOWN, score=0, results=[],
+            request=request,
+            verdict=Verdict.UNKNOWN,
+            score=0,
+            results=[],
             notes=notes or ["No checks produced output — RPC may be unreachable."],
         )
 

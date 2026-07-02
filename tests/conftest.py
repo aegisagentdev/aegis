@@ -67,4 +67,5 @@ def make_context(default_request, default_settings):
         if cache:
             ctx.cache.update(cache)
         return ctx
+
     return _make

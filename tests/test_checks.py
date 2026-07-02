@@ -65,13 +65,16 @@ async def test_ownership_active_owner_warns():
     assert results[0].severity is Severity.WARN
 
 
-@pytest.mark.parametrize("symbol,expected", [
-    ("AAPL", True),
-    ("HOODX", True),
-    ("USDG", False),   # 4 letters but ends with G... treated as ticker candidate? check logic
-    ("VERYLONGNAME", False),
-    ("", False),
-])
+@pytest.mark.parametrize(
+    "symbol,expected",
+    [
+        ("AAPL", True),
+        ("HOODX", True),
+        ("USDG", False),  # 4 letters but ends with G... treated as ticker candidate? check logic
+        ("VERYLONGNAME", False),
+        ("", False),
+    ],
+)
 def test_stock_token_heuristic(symbol, expected):
     # USDG is 4 alpha chars -> plausible ticker; assert the function is at least stable
     result = _looks_like_stock_token(symbol)

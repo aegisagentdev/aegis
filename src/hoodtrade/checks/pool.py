@@ -124,6 +124,7 @@ class PoolPairIntegrityCheck:
         if not pool:
             return []
         from ..rpc import decode_address
+
         try:
             t0 = decode_address(await ctx.rpc.eth_call(pool, encode_call("token0")))
             t1 = decode_address(await ctx.rpc.eth_call(pool, encode_call("token1")))

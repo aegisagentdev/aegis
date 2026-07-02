@@ -43,12 +43,14 @@ def to_markdown(report: ScanReport) -> str:
     ]
 
     if report.summary:
-        lines.extend([
-            "## Summary",
-            "",
-            report.summary.headline,
-            "",
-        ])
+        lines.extend(
+            [
+                "## Summary",
+                "",
+                report.summary.headline,
+                "",
+            ]
+        )
         if report.summary.key_risks:
             lines.append("### Key Risks")
             lines.append("")
@@ -62,12 +64,14 @@ def to_markdown(report: ScanReport) -> str:
                 lines.append(f"- {item}")
             lines.append("")
 
-    lines.extend([
-        "## Findings",
-        "",
-        "| Check | Severity | Score | Finding |",
-        "|-------|----------|-------|---------|",
-    ])
+    lines.extend(
+        [
+            "## Findings",
+            "",
+            "| Check | Severity | Score | Finding |",
+            "|-------|----------|-------|---------|",
+        ]
+    )
     for r in report.results:
         sev_icon = {"ok": "✅", "info": "ℹ️", "warn": "⚠️", "danger": "🚫"}.get(r.severity.value, "")
         lines.append(f"| `{r.check}` | {sev_icon} {r.severity.value} | {r.score} | {r.title} |")

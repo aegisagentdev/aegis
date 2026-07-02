@@ -81,8 +81,12 @@ class SizeVsDepthCheck:
             ev["active_liquidity"] = str(active)
         return [
             CheckResult(
-                check=self.id, severity=sev, score=score,
-                title=f"Trade size: {band}", detail=detail, evidence=ev,
+                check=self.id,
+                severity=sev,
+                score=score,
+                title=f"Trade size: {band}",
+                detail=detail,
+                evidence=ev,
             )
         ]
 

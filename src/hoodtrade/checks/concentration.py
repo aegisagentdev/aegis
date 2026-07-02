@@ -103,12 +103,8 @@ class BurnedSupplyCheck:
                 return []
 
             dead = "0x000000000000000000000000000000000000dEaD"
-            zero_bal = decode_uint(
-                await ctx.rpc.eth_call(ctx.request.token, encode_call("balanceOf", ZERO))
-            )
-            dead_bal = decode_uint(
-                await ctx.rpc.eth_call(ctx.request.token, encode_call("balanceOf", dead))
-            )
+            zero_bal = decode_uint(await ctx.rpc.eth_call(ctx.request.token, encode_call("balanceOf", ZERO)))
+            dead_bal = decode_uint(await ctx.rpc.eth_call(ctx.request.token, encode_call("balanceOf", dead)))
             burned = zero_bal + dead_bal
         except Exception:
             return []

@@ -81,8 +81,7 @@ def summarize(report: ScanReport, settings: Settings) -> RiskSummary:
                     "role": "user",
                     "content": (
                         "Summarize the risk of this Robinhood Chain trade for the user. "
-                        "Return the verdict-consistent brief.\n\n"
-                        + json.dumps(payload, indent=2)
+                        "Return the verdict-consistent brief.\n\n" + json.dumps(payload, indent=2)
                     ),
                 }
             ],

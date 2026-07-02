@@ -59,6 +59,7 @@ class OwnershipCheck:
         for fn in ("owner", "getOwner"):
             try:
                 from ..rpc import encode_call
+
                 raw = await ctx.rpc.eth_call(ctx.request.token, encode_call(fn))
                 addr = decode_address(raw)
                 if addr != ZERO:
@@ -99,6 +100,7 @@ class SupplySanityCheck:
         if ctx.cache.get("token_code_size") == 0:
             return []
         from ..rpc import encode_call
+
         try:
             name = decode_string(await ctx.rpc.eth_call(ctx.request.token, encode_call("name")))
             symbol = decode_string(await ctx.rpc.eth_call(ctx.request.token, encode_call("symbol")))
