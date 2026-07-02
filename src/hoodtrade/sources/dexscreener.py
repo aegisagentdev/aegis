@@ -49,6 +49,7 @@ class MarketData:
     liquidity_usd: float | None = None
     volume_24h: float | None = None
     fdv: float | None = None
+    market_cap: float | None = None
     buys_24h: int | None = None
     sells_24h: int | None = None
     pair_count: int = 0
@@ -75,6 +76,7 @@ class MarketData:
             liquidity_usd=_f((best.get("liquidity") or {}).get("usd")),
             volume_24h=_f((best.get("volume") or {}).get("h24")),
             fdv=_f(best.get("fdv")),
+            market_cap=_f(best.get("marketCap")) or _f(best.get("fdv")),
             buys_24h=_i(txns.get("buys")),
             sells_24h=_i(txns.get("sells")),
             pair_count=len(pairs),

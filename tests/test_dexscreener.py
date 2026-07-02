@@ -32,6 +32,7 @@ PAIR_DEEP = {
     "liquidity": {"usd": 40000.0},
     "volume": {"h24": 9000.0},
     "fdv": 60000.0,
+    "marketCap": 55000.0,
     "txns": {"h24": {"buys": 200, "sells": 150}},
 }
 
@@ -50,10 +51,19 @@ def test_from_pairs_picks_deepest():
     assert m is not None
     assert m.pair_address == "0xpair2"  # deeper liquidity wins
     assert m.liquidity_usd == 40000.0
+    assert m.market_cap == 55000.0  # distinct from liquidity
+    assert m.market_cap != m.liquidity_usd
     assert m.quote_symbol == "USDC"
     assert m.buys_24h == 200
     assert m.sells_24h == 150
     assert m.pair_count == 2
+
+
+def test_market_cap_falls_back_to_fdv():
+    pair = {"liquidity": {"usd": 100.0}, "fdv": 12345.0, "baseToken": {}, "quoteToken": {}}
+    m = MarketData.from_pairs("robinhood", "0xabc", [pair])
+    assert m is not None
+    assert m.market_cap == 12345.0
 
 
 def test_from_pairs_empty_is_none():
