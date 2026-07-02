@@ -109,45 +109,71 @@ def _demo_report(request: TradeRequest) -> ScanReport:
     return ScanReport(request=request, verdict=verdict, score=score, results=results, summary=summary, notes=[])
 
 
+WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+ETH_RPC = "https://ethereum-rpc.publicnode.com"
+
+
 @app.command()
 def scan(
-    token: str = typer.Option(None, help="Address of the token being traded."),
-    quote: str = typer.Option(None, help="Address of the counter asset (e.g. USDG)."),
-    amount: float = typer.Option(None, min=0.0, help="Trade notional in USD."),
-    pool: str = typer.Option(None, help="Pool/pair address (enables depth + pairing checks)."),
-    direction: Direction = typer.Option(Direction.BUY, help="buy | sell"),
-    venue: str = typer.Option("uniswap", help="uniswap | pleiades | arcus | 0x | other"),
-    no_ai: bool = typer.Option(False, "--no-ai", help="Skip the Claude summary; use the built-in template."),
-    as_json: bool = typer.Option(False, "--json", help="Emit the full report as JSON."),
+    token: str = typer.Argument(None, help="Token contract address to scan."),
+    quote: str = typer.Option(WETH, help="Quote asset address (default: WETH)."),
+    amount: float = typer.Option(1000.0, help="Trade size in USD."),
+    rpc: str = typer.Option(None, "--rpc", help="RPC endpoint (default: public Ethereum)."),
+    as_json: bool = typer.Option(False, "--json", help="Output as JSON."),
     demo: bool = typer.Option(False, "--demo", help="Run with sample data (no RPC needed)."),
 ) -> None:
-    """Scan a proposed swap and print a GO / CAUTION / NO-GO verdict."""
+    """Scan a token contract and print a GO / CAUTION / NO-GO verdict.
+
+    \b
+    Examples:
+      hoodtrade scan 0xdAC17F958D2ee523a2206206994597C13D831ec7
+      hoodtrade scan 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 --json
+      hoodtrade scan --demo
+    """
     if demo:
         request = TradeRequest(
             token="0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-            quote="0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-            amount_usd=amount or 1000.0,
-            direction=direction,
+            quote=WETH,
+            amount_usd=amount,
+            direction=Direction.BUY,
         )
         report = _demo_report(request)
     else:
-        if not token or not quote or amount is None:
-            console.print("[bold red]Error:[/bold red] --token, --quote, and --amount are required (or use --demo)")
+        if not token:
+            console.print("[bold red]Error:[/bold red] provide a token address or use --demo\n")
+            console.print("  hoodtrade scan 0xdAC17F...ec7")
+            console.print("  hoodtrade scan --demo")
             raise typer.Exit(code=2)
+        if not token.startswith("0x") or len(token) != 42:
+            console.print(f"[bold red]Error:[/bold red] invalid address: {token}")
+            raise typer.Exit(code=2)
+
         settings = load_settings()
-        if no_ai:
-            settings.ai_enabled = False
-        request = TradeRequest(token=token, quote=quote, amount_usd=amount, direction=direction, pool=pool, venue=venue)
+        settings.rpc_url = rpc or ETH_RPC
+        settings.ai_enabled = False
+        request = TradeRequest(
+            token=token,
+            quote=quote,
+            amount_usd=amount,
+            direction=Direction.BUY,
+        )
+        console.print(f"[dim]Scanning [bold]{token[:8]}…{token[-4:]}[/bold] via {settings.rpc_url}…[/dim]\n")
         report = asyncio.run(run_scan(request, settings))
-        if report.verdict is not Verdict.UNKNOWN:
-            report.summary = summarize(report, settings)
+        report.summary = summarize(report, settings)
 
     if as_json:
         console.print_json(report.model_dump_json(indent=2))
     else:
         _render(report)
 
-    raise typer.Exit(code={Verdict.GO: 0, Verdict.CAUTION: 1, Verdict.NO_GO: 2, Verdict.UNKNOWN: 2}[report.verdict])
+    raise typer.Exit(
+        code={
+            Verdict.GO: 0,
+            Verdict.CAUTION: 1,
+            Verdict.NO_GO: 2,
+            Verdict.UNKNOWN: 2,
+        }[report.verdict]
+    )
 
 
 @app.command()

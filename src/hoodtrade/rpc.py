@@ -82,7 +82,12 @@ class RpcClient:
         return bytes.fromhex(str(result).removeprefix("0x"))
 
     async def eth_call(self, to: str, data: str) -> bytes:
-        result = await self._call("eth_call", [{"to": to, "data": data}, "latest"])
+        call_obj = {
+            "to": to,
+            "data": data,
+            "from": "0x0000000000000000000000000000000000000000",
+        }
+        result = await self._call("eth_call", [call_obj, "latest"])
         return bytes.fromhex(str(result).removeprefix("0x"))
 
 
