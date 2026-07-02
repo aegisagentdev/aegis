@@ -50,6 +50,14 @@ class Settings(BaseSettings):
     stock_divergence_warn_bps: int = Field(default=150, ge=0)
     stock_divergence_danger_bps: int = Field(default=500, ge=0)
 
+    # --- External data sources -----------------------------------------------
+    # GoPlus Security provides a free, keyless second opinion (honeypot, tax,
+    # admin permissions). It is chain-scoped: set goplus_chain_id to a supported
+    # EVM chain id (1 = Ethereum, 8453 = Base, 42161 = Arbitrum, ...) to enable
+    # enrichment. Left as None, the scanner runs on-chain checks only.
+    goplus_enabled: bool = Field(default=True, description="Enrich findings with GoPlus token-security data.")
+    goplus_chain_id: int | None = Field(default=None, description="EVM chain id to query GoPlus against.")
+
     # --- AI layer ------------------------------------------------------------
     ai_enabled: bool = Field(default=True, description="Use Claude to summarize risk; falls back to a template.")
     ai_model: str = Field(default="claude-opus-4-8")
