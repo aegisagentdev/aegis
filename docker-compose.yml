@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  hoodtrade:
+    build:
+      context: .
+      target: production
+    env_file: .env
+    environment:
+      - HOODTRADE_RPC_URL=${HOODTRADE_RPC_URL}
+      - HOODTRADE_CHAIN_ID=${HOODTRADE_CHAIN_ID:-}
+      - HOODTRADE_AI_ENABLED=${HOODTRADE_AI_ENABLED:-false}
+    command: ["doctor"]
+
+  scan:
+    build:
+      context: .
+      target: with-ai
+    env_file: .env
+    entrypoint: ["hoodtrade", "scan"]
