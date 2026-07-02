@@ -1,4 +1,4 @@
-"""kabuto — a pre-trade safety scanner for Robinhood Chain.
+"""Hood Trade — a pre-trade safety scanner for Robinhood Chain.
 
 Read-only. It never signs, never holds funds, never trades. It inspects a proposed
 swap and returns a GO / CAUTION / NO-GO verdict with the evidence behind it.

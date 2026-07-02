@@ -1,6 +1,6 @@
-from kabuto.config import Settings
-from kabuto.engine import decide
-from kabuto.models import CheckResult, Severity, Verdict
+from hoodtrade.config import Settings
+from hoodtrade.engine import decide
+from hoodtrade.models import CheckResult, Severity, Verdict
 
 
 def _r(sev: Severity, score: int) -> CheckResult:

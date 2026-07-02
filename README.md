@@ -1,10 +1,10 @@
-# kabuto
+# Hood Trade
 
 **A pre-trade safety scanner for [Robinhood Chain](https://docs.robinhood.com/chain/).**
 Point it at a swap you're about to sign; it returns a **GO / CAUTION / NO-GO** verdict
 with the on-chain evidence behind it.
 
-kabuto is **read-only**. It never signs, never holds funds, never trades. It inspects —
+Hood Trade is **read-only**. It never signs, never holds funds, never trades. It inspects —
 you decide.
 
 ---
@@ -24,7 +24,7 @@ days old is exactly where pre-trade checks matter most:
 - FCFS sequencing blunts gas-auction sandwiching, but MEV shifts to a latency race and
   oracle-timing games; it isn't gone.
 
-kabuto turns those into a checklist that runs in seconds before you sign.
+Hood Trade turns those into a checklist that runs in seconds before you sign.
 
 ## What it checks
 
@@ -44,21 +44,21 @@ the summary falls back to a built-in template and the scanner works fully offlin
 ## Install
 
 ```bash
-git clone https://github.com/OWNER/kabuto
-cd kabuto
+git clone https://github.com/OWNER/hoodtrade
+cd hoodtrade
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'      # drop [ai] if you don't want the Claude summary
-cp .env.example .env            # set KABUTO_RPC_URL (and ANTHROPIC_API_KEY for AI)
+cp .env.example .env            # set HOODTRADE_RPC_URL (and ANTHROPIC_API_KEY for AI)
 ```
 
 ## Use
 
 ```bash
 # Check the RPC is reachable and see its chain id
-kabuto doctor
+hoodtrade doctor
 
 # Scan a proposed buy
-kabuto scan \
+hoodtrade scan \
   --token 0xTokenAddress \
   --quote 0xUSDGAddress \
   --amount 2500 \
@@ -66,13 +66,13 @@ kabuto scan \
   --direction buy
 
 # Scripting: exit code encodes the verdict (0 GO, 1 CAUTION, 2 NO-GO/UNKNOWN)
-kabuto scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
+hoodtrade scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
 ```
 
 Example output:
 
 ```
-╭─ kabuto verdict ─────────────────────────────╮
+╭─ Hood Trade verdict ─────────────────────────────╮
 │  CAUTION   risk score 35                      │
 ╰──────────────────────────────────────────────╯
 Proceed carefully — the scanner found notable risks.
@@ -88,9 +88,9 @@ Verify yourself
 
 ## Configuration
 
-All settings are environment variables (prefix `KABUTO_`) or `.env` entries — see
-[`.env.example`](.env.example). Key ones: `KABUTO_RPC_URL`, `KABUTO_CHAIN_ID` (pin it),
-`KABUTO_CAUTION_SCORE` / `KABUTO_NOGO_SCORE`, `ANTHROPIC_API_KEY`.
+All settings are environment variables (prefix `HOODTRADE_`) or `.env` entries — see
+[`.env.example`](.env.example). Key ones: `HOODTRADE_RPC_URL`, `HOODTRADE_CHAIN_ID` (pin it),
+`HOODTRADE_CAUTION_SCORE` / `HOODTRADE_NOGO_SCORE`, `ANTHROPIC_API_KEY`.
 
 ## Development
 

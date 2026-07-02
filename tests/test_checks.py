@@ -1,11 +1,11 @@
 import pytest
 
-from kabuto.checks import default_checks
-from kabuto.checks.base import Context
-from kabuto.checks.contract import ContractExistsCheck, OwnershipCheck
-from kabuto.checks.stock_token import StockTokenDisclosureCheck, _looks_like_stock_token
-from kabuto.config import Settings
-from kabuto.models import Direction, Severity, TradeRequest
+from hoodtrade.checks import default_checks
+from hoodtrade.checks.base import Context
+from hoodtrade.checks.contract import ContractExistsCheck, OwnershipCheck
+from hoodtrade.checks.stock_token import StockTokenDisclosureCheck, _looks_like_stock_token
+from hoodtrade.config import Settings
+from hoodtrade.models import Direction, Severity, TradeRequest
 
 TOKEN = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

@@ -18,7 +18,7 @@ from .config import Settings
 from .models import RiskSummary, ScanReport, Severity
 
 _SYSTEM = (
-    "You are the risk-explanation layer of kabuto, a pre-trade safety scanner for the "
+    "You are the risk-explanation layer of Hood Trade, a pre-trade safety scanner for the "
     "Robinhood Chain (an Arbitrum-Orbit L2). You are given a trade, a verdict that has "
     "ALREADY been decided by deterministic on-chain checks, and the list of findings. "
     "Your job is only to explain the risk to a trader in plain language. Do not contradict "

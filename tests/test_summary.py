@@ -1,6 +1,6 @@
-from kabuto.ai import _template_summary, summarize
-from kabuto.config import Settings
-from kabuto.models import CheckResult, ScanReport, Severity, TradeRequest, Verdict
+from hoodtrade.ai import _template_summary, summarize
+from hoodtrade.config import Settings
+from hoodtrade.models import CheckResult, ScanReport, Severity, TradeRequest, Verdict
 
 
 def _report(verdict: Verdict, results) -> ScanReport:

@@ -1,4 +1,4 @@
-"""kabuto command-line interface."""
+"""hoodtrade command-line interface."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def _render(report: ScanReport) -> None:
     style = _VERDICT_STYLE[report.verdict]
     head = Text(f" {report.verdict.value} ", style=f"reverse {style}")
     head.append(f"  risk score {report.score}", style=style)
-    console.print(Panel(head, title="kabuto verdict", border_style=style))
+    console.print(Panel(head, title="Hood Trade verdict", border_style=style))
 
     if report.summary:
         s = report.summary
@@ -114,13 +114,13 @@ def doctor() -> None:
         console.print("[green]RPC reachable.[/green]")
     except Exception as exc:  # noqa: BLE001
         console.print(f"[bold red]RPC unreachable:[/bold red] {exc}")
-        console.print("Set KABUTO_RPC_URL to a working Robinhood Chain endpoint.")
+        console.print("Set HOODTRADE_RPC_URL to a working Robinhood Chain endpoint.")
         raise typer.Exit(code=1) from exc
 
 
 @app.command()
 def version() -> None:
-    """Print the kabuto version."""
+    """Print the hoodtrade version."""
     console.print(__version__)
 
 
