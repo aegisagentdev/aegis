@@ -33,8 +33,9 @@ dev = [
 hoodtrade = "hoodtrade.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/hoodtrade/hoodtrade"
-Issues = "https://github.com/hoodtrade/hoodtrade/issues"
+Homepage = "https://hoodtrade.pro"
+Repository = "https://github.com/hoodtradeprofile/hoodtrade"
+Issues = "https://github.com/hoodtradeprofile/hoodtrade/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hoodtrade"]

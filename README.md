@@ -8,7 +8,8 @@
 
 ### Pre-trade safety scanner for Robinhood Chain
 
-[![CI](https://github.com/hoodtrade/hoodtrade/actions/workflows/ci.yml/badge.svg)](https://github.com/hoodtrade/hoodtrade/actions)
+[![CI](https://github.com/hoodtradeprofile/hoodtrade/actions/workflows/ci.yml/badge.svg)](https://github.com/hoodtradeprofile/hoodtrade/actions)
+[![Website](https://img.shields.io/badge/site-hoodtrade.pro-c6f82e?labelColor=0b0d07)](https://hoodtrade.pro)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Robinhood Chain](https://img.shields.io/badge/chain-Robinhood%20L2-6C3BF5)](https://docs.robinhood.com/chain/)
@@ -106,7 +107,7 @@ Hood Trade turns these into a **21-check battery** that runs in seconds before y
 ## Quick Start
 
 ```bash
-git clone https://github.com/hoodtrade/hoodtrade
+git clone https://github.com/hoodtradeprofile/hoodtrade
 cd hoodtrade
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'       # drop [ai] to skip Claude summaries
