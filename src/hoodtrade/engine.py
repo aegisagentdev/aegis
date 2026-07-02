@@ -71,4 +71,28 @@ async def run_scan(request: TradeRequest, settings: Settings, checks=None) -> Sc
 
     score = sum(r.score for r in results)
     verdict = decide(score, results, settings)
-    return ScanReport(request=request, verdict=verdict, score=score, results=results, notes=notes)
+    name, symbol = _resolve_identity(ctx)
+    return ScanReport(
+        request=request,
+        verdict=verdict,
+        score=score,
+        token_name=name,
+        token_symbol=symbol,
+        results=results,
+        notes=notes,
+    )
+
+
+def _resolve_identity(ctx: Context) -> tuple[str | None, str | None]:
+    """Best-effort token name/symbol from whichever source has it, cheapest first."""
+    name = ctx.cache.get("token_name")
+    symbol = ctx.cache.get("token_symbol")
+    goplus = ctx.cache.get("goplus")
+    if goplus is not None:
+        name = name or getattr(goplus, "token_name", None)
+        symbol = symbol or getattr(goplus, "token_symbol", None)
+    market = ctx.cache.get("market")
+    if market is not None:
+        name = name or getattr(market, "name", None)
+        symbol = symbol or getattr(market, "symbol", None)
+    return (name if isinstance(name, str) else None, symbol if isinstance(symbol, str) else None)

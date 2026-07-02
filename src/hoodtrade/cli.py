@@ -38,7 +38,14 @@ def _render(report: ScanReport) -> None:
     style = _VERDICT_STYLE[report.verdict]
     head = Text(f" {report.verdict.value} ", style=f"reverse {style}")
     head.append(f"  risk score {report.score}", style=style)
-    console.print(Panel(head, title="Hood Trade verdict", border_style=style))
+    if report.token_name or report.token_symbol:
+        label = report.token_name or ""
+        if report.token_symbol and report.token_symbol != report.token_name:
+            label = f"{label} ({report.token_symbol})" if label else report.token_symbol
+        title = f"Hood Trade — {label.strip()}"
+    else:
+        title = "Hood Trade verdict"
+    console.print(Panel(head, title=title, border_style=style))
 
     if report.summary:
         s = report.summary
@@ -106,7 +113,16 @@ def _demo_report(request: TradeRequest) -> ScanReport:
             "Use a tight slippage limit (1-2%) and consider splitting the order.",
         ],
     )
-    return ScanReport(request=request, verdict=verdict, score=score, results=results, summary=summary, notes=[])
+    return ScanReport(
+        request=request,
+        verdict=verdict,
+        score=score,
+        token_name="Demo Token",
+        token_symbol="DEMO",
+        results=results,
+        summary=summary,
+        notes=[],
+    )
 
 
 WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"

@@ -66,6 +66,8 @@ class ScanReport(BaseModel):
     request: TradeRequest
     verdict: Verdict
     score: int
+    token_name: str | None = None
+    token_symbol: str | None = None
     results: list[CheckResult] = Field(default_factory=list)
     summary: RiskSummary | None = None
     notes: list[str] = Field(default_factory=list, description="Operational notes (skipped checks, RPC errors).")

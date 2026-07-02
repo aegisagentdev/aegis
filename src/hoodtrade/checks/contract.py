@@ -119,6 +119,7 @@ class SupplySanityCheck:
                 )
             ]
         ctx.cache["token_symbol"] = symbol
+        ctx.cache["token_name"] = name
         if supply == 0:
             return [
                 CheckResult(
