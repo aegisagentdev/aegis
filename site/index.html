@@ -386,12 +386,9 @@
       <div class="istep reveal" data-d="1">
         <div class="badge">1</div>
         <div class="body">
-          <h4>Clone & install</h4>
-          <p>Grab the agent from GitHub and install it as an editable package.</p>
-          <div class="code"><span class="c"># clone the repo</span>
-<span class="g">git</span> clone https://github.com/qumiann/hoodtrade
-<span class="g">cd</span> hoodtrade && <span class="g">pip</span> install -e .<button class="copy" data-copy="git clone https://github.com/qumiann/hoodtrade
-cd hoodtrade && pip install -e .">Copy</button></div>
+          <h4>Install from PyPI</h4>
+          <p>One command. Python 3.10+ is the only requirement.</p>
+          <div class="code"><span class="g">pip</span> install hoodtrade<button class="copy" data-copy="pip install hoodtrade">Copy</button></div>
         </div>
       </div>
       <div class="istep reveal" data-d="2">
@@ -415,7 +412,7 @@ cd hoodtrade && pip install -e .">Copy</button></div>
         <div class="body">
           <h4>Optional: AI summaries</h4>
           <p>Add a Claude key to get a plain-language brief alongside the findings.</p>
-          <div class="code"><span class="g">pip</span> install -e '.[ai]' && <span class="g">export</span> ANTHROPIC_API_KEY=sk-ant-…<button class="copy" data-copy="pip install -e '.[ai]' && export ANTHROPIC_API_KEY=sk-ant-...">Copy</button></div>
+          <div class="code"><span class="g">pip</span> install "hoodtrade[ai]" && <span class="g">export</span> ANTHROPIC_API_KEY=sk-ant-…<button class="copy" data-copy='pip install "hoodtrade[ai]" && export ANTHROPIC_API_KEY=sk-ant-...'>Copy</button></div>
         </div>
       </div>
     </div>
