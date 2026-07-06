@@ -42,6 +42,18 @@ class Settings(BaseSettings):
     # fraction of the pool's nominal reserves.
     thin_depth_ratio: float = Field(default=0.35, ge=0.0, le=1.0)
 
+    # --- Young-chain leniency ------------------------------------------------
+    # A freshly-launched chain legitimately has thin books, low volume and no
+    # trading history, so *market-maturity* signals should caution rather than
+    # hard-block. These knobs relax only those signals; security signals
+    # (honeypot, hidden fee, mint, owner permissions) still block on any chain.
+    # Defaults are strict (mature-chain); the CLI relaxes them for Robinhood
+    # Chain, and --strict / --lenient override per run.
+    liq_danger_below: int = Field(default=5_000, ge=0)  # very-thin liquidity cutoff (USD)
+    liq_warn_below: int = Field(default=25_000, ge=0)  # low-liquidity cutoff (USD)
+    block_on_thin_liquidity: bool = Field(default=True)  # thin book -> NO-GO (else CAUTION)
+    block_on_high_impact: bool = Field(default=True)  # oversized trade -> NO-GO (else CAUTION)
+
     # LP concentration: flag if the top N holders control more than this fraction.
     concentration_top_n: int = Field(default=3, ge=1)
     concentration_flag_ratio: float = Field(default=0.80, ge=0.0, le=1.0)

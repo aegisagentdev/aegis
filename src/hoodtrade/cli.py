@@ -108,7 +108,7 @@ def _cr(check: str, sev: Severity, score: int, title: str, detail: str) -> Check
 
 def _demo_report(request: TradeRequest) -> ScanReport:
     """Generate a realistic demo report without any RPC calls."""
-    OK, WARN, INFO, DANGER = Severity.OK, Severity.WARN, Severity.INFO, Severity.DANGER
+    OK, WARN, INFO = Severity.OK, Severity.WARN, Severity.INFO
     results = [
         _cr("contract_exists", OK, 0, "Contract verified", "Bytecode found at token address (1.2 kB)."),
         _cr("ownership", WARN, 15, "Active owner detected", "owner() returns a non-zero EOA."),
@@ -124,11 +124,12 @@ def _demo_report(request: TradeRequest) -> ScanReport:
         _cr("size_vs_depth", INFO, 5, "Moderate price impact", "Estimated slippage 0.8%."),
         _cr("proxy_detection", OK, 0, "Not a proxy", "EIP-1967 slot is empty."),
         _cr("code_size", OK, 0, "Code size normal", "Bytecode is 1,247 bytes."),
-        _cr("transfer_fee", DANGER, 30, "Transfer fee detected", "5% fee on transfers."),
+        _cr("transfer_fee", WARN, 30, "Transfer fee detected", "5% fee on transfers."),
     ]
     score = sum(r.score for r in results)
     settings = load_settings()
     settings.ai_enabled = False
+    _apply_young_chain(settings)  # demo token is on the new chain — show lenient thresholds
     verdict = decide(score, results, settings)
     summary = RiskSummary(
         headline="Caution — transfer fee and thin liquidity increase risk on this trade.",
@@ -186,6 +187,23 @@ CHAIN_ALIASES = {
     "avax": "avalanche",
 }
 
+# Chains young enough that thin books and low volume are the norm, not a red
+# flag. For these, market-maturity signals caution instead of blocking; the
+# security checks (honeypot, hidden fee, mint, permissions) are untouched.
+YOUNG_CHAINS = {"robinhood"}
+
+
+def _apply_young_chain(settings) -> None:
+    """Relax only the market-maturity gates so a brand-new chain's normal thin
+    liquidity and low activity produce CAUTION, not an automatic NO-GO. Security
+    signals still block on any chain."""
+    settings.block_on_thin_liquidity = False
+    settings.block_on_high_impact = False
+    settings.liq_danger_below = 1_000
+    settings.liq_warn_below = 8_000
+    settings.caution_score = 30  # a lone thin-liquidity / high-impact WARN (35) still cautions
+    settings.nogo_score = 90
+
 
 @app.command()
 def scan(
@@ -199,6 +217,12 @@ def scan(
     no_goplus: bool = typer.Option(False, "--no-goplus", help="Skip the GoPlus reputation lookup."),
     no_market: bool = typer.Option(False, "--no-market", help="Skip the DexScreener market lookup."),
     as_json: bool = typer.Option(False, "--json", help="Output as JSON."),
+    strict: bool = typer.Option(
+        False, "--strict", help="Full strictness — thin liquidity / oversized trades block even on new chains."
+    ),
+    lenient: bool = typer.Option(
+        False, "--lenient", help="Relax market-maturity gates on any chain (auto-on for Robinhood Chain)."
+    ),
     demo: bool = typer.Option(False, "--demo", help="Run with sample data (no RPC needed)."),
 ) -> None:
     """Scan a token contract and print a GO / CAUTION / NO-GO verdict.
@@ -243,6 +267,9 @@ def scan(
         settings.dexscreener_enabled = not no_market
         settings.dexscreener_chain = None if no_market else cfg["dex"]
         settings.ai_enabled = False
+        young = (key in YOUNG_CHAINS or lenient) and not strict
+        if young:
+            _apply_young_chain(settings)
         request = TradeRequest(
             token=token,
             quote=quote,
@@ -254,7 +281,10 @@ def scan(
             sources.append("GoPlus")
         if settings.dexscreener_enabled:
             sources.append("DexScreener")
-        console.print(f"[dim]Scanning [bold]{token[:8]}…{token[-4:]}[/bold] on {key} ({' + '.join(sources)})…[/dim]\n")
+        mode = "  [dim]·[/dim] [yellow]lenient (new-chain)[/yellow]" if young else ""
+        console.print(
+            f"[dim]Scanning [bold]{token[:8]}…{token[-4:]}[/bold] on {key} ({' + '.join(sources)})…[/dim]{mode}\n"
+        )
         report = asyncio.run(run_scan(request, settings))
         report.summary = summarize(report, settings)
 

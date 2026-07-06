@@ -38,22 +38,28 @@ class MarketLiquidityCheck:
         if m.pooled_total_usd:
             evidence["pooled_total_usd"] = f"{m.pooled_total_usd:.0f}"
 
-        if liq < 5_000:
+        s = ctx.settings
+        if liq < s.liq_danger_below:
+            blocking = s.block_on_thin_liquidity
+            tail = (
+                "A book this thin means even a small sell craters the price and you may not be able to exit."
+                if blocking
+                else "Thin books are expected on a young chain, but exiting a larger position will be hard."
+            )
             return [
                 CheckResult(
                     check=self.id,
-                    severity=Severity.DANGER,
-                    score=70,
+                    severity=Severity.DANGER if blocking else Severity.WARN,
+                    score=70 if blocking else 35,
                     title=f"Very thin liquidity (${liq:,.0f})",
                     detail=(
                         f"Only ${liq:,.0f} of withdrawable ({m.quote_symbol or 'quote'}) liquidity on "
-                        f"{where}{total_note}. A book this thin means even a small sell craters the "
-                        "price and you may not be able to exit."
+                        f"{where}{total_note}. {tail}"
                     ),
                     evidence=evidence,
                 )
             ]
-        if liq < 25_000:
+        if liq < s.liq_warn_below:
             return [
                 CheckResult(
                     check=self.id,
@@ -96,8 +102,11 @@ class MarketDepthCheck:
         ratio = size / m.liquidity_usd
         pct = ratio * 100
         if ratio >= 0.10:
-            sev, score = Severity.DANGER, 60
-            note = "This will move the price hard and incur severe slippage."
+            if ctx.settings.block_on_high_impact:
+                sev, score = Severity.DANGER, 60
+            else:
+                sev, score = Severity.WARN, 35
+            note = "This will move the price hard and incur severe slippage — size down or split the order."
         elif ratio >= 0.02:
             sev, score = Severity.WARN, 25
             note = "Split the order or route via an aggregator to limit impact."

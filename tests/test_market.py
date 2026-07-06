@@ -7,6 +7,8 @@ from hoodtrade.checks.market import (
     MarketDepthCheck,
     MarketLiquidityCheck,
 )
+from hoodtrade.cli import _apply_young_chain
+from hoodtrade.config import Settings
 from hoodtrade.models import Severity
 from hoodtrade.sources.dexscreener import MarketData
 
@@ -15,6 +17,12 @@ def _mkt(**kwargs) -> MarketData:
     base = dict(chain="robinhood", token_address="0xabc", symbol="TKN", dex="uniswap")
     base.update(kwargs)
     return MarketData(**base)
+
+
+def _lenient() -> Settings:
+    s = Settings()
+    _apply_young_chain(s)
+    return s
 
 
 @pytest.mark.asyncio
@@ -52,6 +60,22 @@ async def test_depth_large_trade_is_danger(make_context, default_request):
     ctx = make_context(rpc=None, cache={"market": _mkt(liquidity_usd=5000.0)})
     results = await MarketDepthCheck().run(ctx)
     assert results[0].severity is Severity.DANGER
+
+
+@pytest.mark.asyncio
+async def test_thin_liquidity_lenient_is_warn_not_danger(make_context):
+    # On a young chain a near-empty book should caution, not hard-block (NO-GO).
+    ctx = make_context(rpc=None, settings=_lenient(), cache={"market": _mkt(liquidity_usd=500.0)})
+    results = await MarketLiquidityCheck().run(ctx)
+    assert results[0].severity is Severity.WARN
+
+
+@pytest.mark.asyncio
+async def test_oversized_trade_lenient_is_warn_not_danger(make_context, default_request):
+    # $1000 into a $5000 pool is 20% impact; lenient mode warns instead of blocking.
+    ctx = make_context(rpc=None, settings=_lenient(), cache={"market": _mkt(liquidity_usd=5000.0)})
+    results = await MarketDepthCheck().run(ctx)
+    assert results[0].severity is Severity.WARN
 
 
 @pytest.mark.asyncio
