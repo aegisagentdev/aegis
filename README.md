@@ -222,6 +222,53 @@ any chain.
 
 ---
 
+## Use it from an AI agent (MCP)
+
+Hood Trade ships an [MCP](https://modelcontextprotocol.io) server, so any
+MCP-compatible agent — Claude Desktop, Claude Code, Cursor, Cline, Windsurf, or
+your own agent built on the OpenAI/Anthropic SDKs — can scan tokens directly. The
+agent gets the same verdict the CLI produces, new-chain leniency included.
+
+**Tools exposed:** `scan_token` (GO / CAUTION / NO-GO with evidence), `check_rpc`,
+`list_chains`. Read-only — it never signs, holds funds or trades.
+
+Install:
+
+```bash
+pip install "hoodtrade[mcp]"      # then the command `hoodtrade-mcp` is available
+# or run with no install:
+uvx --from "hoodtrade[mcp]" hoodtrade-mcp
+```
+
+Add it to your agent's MCP config (Claude Desktop `claude_desktop_config.json`,
+Cursor `~/.cursor/mcp.json`, etc.) — the shape is the same everywhere:
+
+```json
+{
+  "mcpServers": {
+    "hoodtrade": {
+      "command": "uvx",
+      "args": ["--from", "hoodtrade[mcp]", "hoodtrade-mcp"]
+    }
+  }
+}
+```
+
+If you installed with pip, you can point straight at the command instead:
+
+```json
+{
+  "mcpServers": {
+    "hoodtrade": { "command": "hoodtrade-mcp" }
+  }
+}
+```
+
+Then just ask your agent: *"scan 0x87E1…636B on Robinhood Chain before I buy"* —
+it calls `scan_token` and reports back the verdict.
+
+---
+
 ## Development
 
 ```bash

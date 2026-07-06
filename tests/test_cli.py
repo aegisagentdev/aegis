@@ -6,9 +6,11 @@ runner = CliRunner()
 
 
 def test_version_command():
+    from hoodtrade import __version__
+
     result = runner.invoke(app, ["version"])
     assert result.exit_code == 0
-    assert "0.2" in result.output
+    assert __version__ in result.output
 
 
 def test_scan_missing_args():
