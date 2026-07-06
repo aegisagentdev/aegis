@@ -9,3 +9,7 @@ build/
 .pytest_cache/
 .ruff_cache/
 .DS_Store
+
+# Skill build artifacts (attached to GitHub Releases, not committed)
+skill/*.zip
+skill/**/wheels/

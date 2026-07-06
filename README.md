@@ -267,6 +267,17 @@ If you installed with pip, you can point straight at the command instead:
 Then just ask your agent: *"scan 0x87E1…636B on Robinhood Chain before I buy"* —
 it calls `scan_token` and reports back the verdict.
 
+### Download it as a skill
+
+Prefer a drop-in file over pip? Two Agent Skill archives are attached to each
+[release](https://github.com/qumiann/hoodtrade/releases/latest) — unzip the
+`hoodtrade/` folder into your agent's skills directory (`~/.claude/skills/`):
+
+- **`hoodtrade-skill.zip`** (thin, ~2 KB) — installs the latest `hoodtrade` from PyPI on first use. Needs internet.
+- **`hoodtrade-skill-offline.zip`** (~42 MB) — bundles the package and all dependencies (Linux / macOS / Windows, Python 3.10–3.13) for an airgapped, version-pinned install.
+
+Rebuild both with `bash skill/build.sh`. The archive sources live in [`skill/`](skill/).
+
 ---
 
 ## Development

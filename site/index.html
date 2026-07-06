@@ -247,6 +247,7 @@
       <a class="link" href="#features">Features</a>
       <a class="link" href="#docs">Docs</a>
       <a class="link" href="#install">Install</a>
+      <a class="link" href="#skill">Skill</a>
       <a class="link" href="#faq">FAQ</a>
       <a class="nav-x" href="https://x.com/usehoodtrade" target="_blank" rel="noopener" aria-label="Hood Trade on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       <a class="btn btn-lime" href="https://github.com/qumiann/hoodtrade" target="_blank" rel="noopener">Install Agent</a>
@@ -421,6 +422,40 @@ cd hoodtrade && pip install -e .">Copy</button></div>
   </div>
 </section>
 
+<!-- SKILL -->
+<section class="sec" id="skill">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag"><b>Use it inside your AI agent</b></span>
+      <h2>Download it as a skill.</h2>
+      <p>Drop Hood Trade into a Claude-style agent and it scans tokens for you before you buy. Two builds — pick the one that fits.</p>
+    </div>
+    <div class="reveal" style="display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))">
+      <div class="card">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+          <h3 style="margin:0">Thin</h3>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">~2 KB</span>
+        </div>
+        <p>Smallest download. Installs the latest Hood Trade from PyPI on first use — always current. Works on any platform; needs internet.</p>
+        <p style="color:var(--muted);font-size:14px">Best for most people.</p>
+        <a class="btn btn-lime" href="https://github.com/qumiann/hoodtrade/releases/latest/download/hoodtrade-skill.zip">Download thin</a>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+          <h3 style="margin:0">Offline</h3>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">~42 MB</span>
+        </div>
+        <p>Bundles the package and every dependency (Linux / macOS / Windows, Python 3.10–3.13). Installs with no internet and pins the version.</p>
+        <p style="color:var(--muted);font-size:14px">Best for airgapped or reproducible setups.</p>
+        <a class="btn btn-outline" href="https://github.com/qumiann/hoodtrade/releases/latest/download/hoodtrade-skill-offline.zip">Download offline</a>
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:22px;color:var(--muted);font-size:14px">
+      Unzip the <code>hoodtrade/</code> folder into your agent's skills directory (<code>~/.claude/skills/</code>). Prefer the terminal? <code>pip install "hoodtrade[mcp]"</code> gives you the CLI plus an MCP server for any MCP-compatible agent. Read-only — it never signs, holds funds or trades.
+    </p>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section class="sec" id="faq" style="background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
@@ -478,6 +513,7 @@ cd hoodtrade && pip install -e .">Copy</button></div>
       <a href="#features">Features</a>
       <a href="#docs">Docs</a>
       <a href="#install">Install</a>
+      <a href="#skill">Skill</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/qumiann/hoodtrade" target="_blank" rel="noopener">GitHub</a>
       <a href="https://x.com/usehoodtrade" target="_blank" rel="noopener">X / Twitter</a>
