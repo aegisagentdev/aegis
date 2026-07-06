@@ -199,9 +199,26 @@ All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example
 | `HOODTRADE_CHAIN_ID` | *(unset)* | Pin expected chain id for RPC verification |
 | `HOODTRADE_CAUTION_SCORE` | `25` | Score threshold for CAUTION |
 | `HOODTRADE_NOGO_SCORE` | `60` | Score threshold for NO-GO |
+| `HOODTRADE_LIQ_DANGER_BELOW` | `5000` | Liquidity (USD) below which a book is "very thin" |
+| `HOODTRADE_LIQ_WARN_BELOW` | `25000` | Liquidity (USD) below which a book is "low" |
+| `HOODTRADE_BLOCK_ON_THIN_LIQUIDITY` | `true` | Thin liquidity is NO-GO (`false` → CAUTION) |
+| `HOODTRADE_BLOCK_ON_HIGH_IMPACT` | `true` | Oversized trade is NO-GO (`false` → CAUTION) |
 | `HOODTRADE_AI_ENABLED` | `true` | Enable Claude risk summaries |
 | `HOODTRADE_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
 | `ANTHROPIC_API_KEY` | *(unset)* | Required only when AI is enabled |
+
+### New-chain leniency
+
+A freshly-launched chain legitimately has thin books and little trading history,
+so flagging every low-liquidity token as NO-GO is noise. For young chains
+(Robinhood Chain by default) the scanner **relaxes only the market-maturity
+signals** — thin liquidity, low volume and trade-size impact become CAUTION
+instead of a hard block. **Security signals are never relaxed:** a honeypot,
+hidden transfer fee, mint capability or owner permission still forces NO-GO on
+any chain.
+
+- `hoodtrade scan 0x… --strict` — full strictness even on a new chain
+- `hoodtrade scan 0x… --lenient` — apply new-chain leniency on any chain
 
 ---
 
@@ -210,7 +227,7 @@ All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example
 ```bash
 ruff check src tests            # lint
 ruff format --check src tests   # format check
-pytest -q                       # 152 tests
+pytest -q                       # 156 tests
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the check protocol, severity guide, and PR conventions.
