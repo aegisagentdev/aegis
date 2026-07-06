@@ -16,6 +16,8 @@ from .ai import summarize
 from .config import load_settings
 from .engine import decide, run_scan
 from .models import CheckResult, Direction, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
+from .networks import CHAINS, WETH, UnknownChainError, build_settings
+from .networks import apply_young_chain as _apply_young_chain
 from .rpc import RpcClient
 
 app = typer.Typer(add_completion=False, help="Pre-trade safety scanner for Robinhood Chain.")
@@ -156,55 +158,6 @@ def _demo_report(request: TradeRequest) -> ScanReport:
     )
 
 
-WETH = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
-
-# One table per chain: numeric id, default public RPC, DexScreener slug, and the
-# GoPlus chain id (None where GoPlus has no coverage — e.g. Robinhood Chain).
-CHAINS = {
-    "robinhood": {"id": 4663, "rpc": "https://rpc.mainnet.chain.robinhood.com", "dex": "robinhood", "goplus": None},
-    "ethereum": {"id": 1, "rpc": "https://ethereum-rpc.publicnode.com", "dex": "ethereum", "goplus": 1},
-    "base": {"id": 8453, "rpc": "https://base-rpc.publicnode.com", "dex": "base", "goplus": 8453},
-    "arbitrum": {"id": 42161, "rpc": "https://arbitrum-one-rpc.publicnode.com", "dex": "arbitrum", "goplus": 42161},
-    "bsc": {"id": 56, "rpc": "https://bsc-rpc.publicnode.com", "dex": "bsc", "goplus": 56},
-    "polygon": {"id": 137, "rpc": "https://polygon-bor-rpc.publicnode.com", "dex": "polygon", "goplus": 137},
-    "optimism": {"id": 10, "rpc": "https://optimism-rpc.publicnode.com", "dex": "optimism", "goplus": 10},
-    "avalanche": {
-        "id": 43114,
-        "rpc": "https://avalanche-c-chain-rpc.publicnode.com",
-        "dex": "avalanche",
-        "goplus": 43114,
-    },
-}
-CHAIN_ALIASES = {
-    "rh": "robinhood",
-    "hood": "robinhood",
-    "eth": "ethereum",
-    "mainnet": "ethereum",
-    "arb": "arbitrum",
-    "bnb": "bsc",
-    "matic": "polygon",
-    "op": "optimism",
-    "avax": "avalanche",
-}
-
-# Chains young enough that thin books and low volume are the norm, not a red
-# flag. For these, market-maturity signals caution instead of blocking; the
-# security checks (honeypot, hidden fee, mint, permissions) are untouched.
-YOUNG_CHAINS = {"robinhood"}
-
-
-def _apply_young_chain(settings) -> None:
-    """Relax only the market-maturity gates so a brand-new chain's normal thin
-    liquidity and low activity produce CAUTION, not an automatic NO-GO. Security
-    signals still block on any chain."""
-    settings.block_on_thin_liquidity = False
-    settings.block_on_high_impact = False
-    settings.liq_danger_below = 1_000
-    settings.liq_warn_below = 8_000
-    settings.caution_score = 30  # a lone thin-liquidity / high-impact WARN (35) still cautions
-    settings.nogo_score = 90
-
-
 @app.command()
 def scan(
     token: str = typer.Argument(None, help="Token contract address to scan."),
@@ -252,24 +205,14 @@ def scan(
             console.print(f"[bold red]Error:[/bold red] invalid address: {token}")
             raise typer.Exit(code=2)
 
-        key = CHAIN_ALIASES.get(chain.lower(), chain.lower())
-        cfg = CHAINS.get(key)
-        if cfg is None:
+        try:
+            settings, key, young = build_settings(
+                chain, rpc=rpc, no_goplus=no_goplus, no_market=no_market, strict=strict, lenient=lenient
+            )
+        except UnknownChainError:
             console.print(f"[bold red]Error:[/bold red] unknown chain: {chain}")
             console.print(f"  supported: {', '.join(CHAINS)}")
-            raise typer.Exit(code=2)
-
-        settings = load_settings()
-        settings.rpc_url = rpc or cfg["rpc"]
-        settings.chain_id = cfg["id"]
-        settings.goplus_enabled = not no_goplus and cfg["goplus"] is not None
-        settings.goplus_chain_id = cfg["goplus"] if settings.goplus_enabled else None
-        settings.dexscreener_enabled = not no_market
-        settings.dexscreener_chain = None if no_market else cfg["dex"]
-        settings.ai_enabled = False
-        young = (key in YOUNG_CHAINS or lenient) and not strict
-        if young:
-            _apply_young_chain(settings)
+            raise typer.Exit(code=2) from None
         request = TradeRequest(
             token=token,
             quote=quote,
