@@ -1,7 +1,7 @@
 # Hood Trade skill — offline (bundled)
 
 A downloadable [Agent Skill](https://hoodtrade.pro) that lets a Claude-style agent scan a token
-for safety before you buy. This is the **offline** build: Hood Trade `0.4.0` and all of its
+for safety before you buy. This is the **offline** build: Hood Trade `0.4.1` and all of its
 dependencies are bundled in `wheels/`, so it installs **without reaching PyPI**.
 
 ## Install
@@ -23,11 +23,11 @@ You'll get a **GO / CAUTION / NO-GO** verdict with the on-chain evidence behind 
 
 ## What's bundled / compatibility
 
-- Hood Trade `0.4.0` + every dependency, as wheels.
+- Hood Trade `0.4.1` + every dependency, as wheels.
 - Compiled dependency `pydantic-core` is included for **Linux (x86_64, aarch64), macOS
   (Apple Silicon + Intel), and Windows (x86_64)** on **Python 3.10 – 3.13**. Other platforms
   aren't covered — use the thin build instead.
-- Version is **pinned** to `0.4.0`; it will not silently upgrade.
+- Version is **pinned** to `0.4.1`; it will not silently upgrade.
 
 ## Offline vs thin build
 
