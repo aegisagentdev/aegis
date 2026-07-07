@@ -17,7 +17,6 @@ from .config import load_settings
 from .engine import decide, run_scan
 from .models import CheckResult, Direction, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
 from .networks import CHAINS, WETH, UnknownChainError, build_settings
-from .networks import apply_young_chain as _apply_young_chain
 from .rpc import RpcClient
 
 app = typer.Typer(add_completion=False, help="Pre-trade safety scanner for Robinhood Chain.")
@@ -110,7 +109,7 @@ def _cr(check: str, sev: Severity, score: int, title: str, detail: str) -> Check
 
 def _demo_report(request: TradeRequest) -> ScanReport:
     """Generate a realistic demo report without any RPC calls."""
-    OK, WARN, INFO = Severity.OK, Severity.WARN, Severity.INFO
+    OK, WARN, INFO, DANGER = Severity.OK, Severity.WARN, Severity.INFO, Severity.DANGER
     results = [
         _cr("contract_exists", OK, 0, "Contract verified", "Bytecode found at token address (1.2 kB)."),
         _cr("ownership", WARN, 15, "Active owner detected", "owner() returns a non-zero EOA."),
@@ -126,15 +125,14 @@ def _demo_report(request: TradeRequest) -> ScanReport:
         _cr("size_vs_depth", INFO, 5, "Moderate price impact", "Estimated slippage 0.8%."),
         _cr("proxy_detection", OK, 0, "Not a proxy", "EIP-1967 slot is empty."),
         _cr("code_size", OK, 0, "Code size normal", "Bytecode is 1,247 bytes."),
-        _cr("transfer_fee", WARN, 30, "Transfer fee detected", "5% fee on transfers."),
+        _cr("transfer_fee", DANGER, 30, "Transfer fee detected", "5% fee on transfers."),
     ]
     score = sum(r.score for r in results)
     settings = load_settings()
     settings.ai_enabled = False
-    _apply_young_chain(settings)  # demo token is on the new chain — show lenient thresholds
     verdict = decide(score, results, settings)
     summary = RiskSummary(
-        headline="Caution — transfer fee and thin liquidity increase risk on this trade.",
+        headline="No-go — a transfer fee and thin liquidity make this trade too risky.",
         key_risks=[
             "Transfer fee detected: 5% fee on every transfer reduces the amount you receive.",
             "Active owner: contract owner can call privileged functions (pause, mint, change fee).",

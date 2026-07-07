@@ -47,10 +47,11 @@ CHAIN_ALIASES: dict[str, str] = {
     "avax": "avalanche",
 }
 
-# Chains young enough that thin books and low volume are the norm, not a red
-# flag. For these, market-maturity signals caution instead of blocking; the
-# security checks (honeypot, hidden fee, mint, permissions) are untouched.
-YOUNG_CHAINS: set[str] = {"robinhood"}
+# Chains that get new-chain leniency by default. Disabled: the relaxed GO
+# threshold let genuinely bad tokens on Robinhood Chain read as GO, so every
+# chain now runs strict by default. Leniency remains available per-scan via
+# the explicit --lenient flag.
+YOUNG_CHAINS: set[str] = set()
 
 
 class UnknownChainError(ValueError):

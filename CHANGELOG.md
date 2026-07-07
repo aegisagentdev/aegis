@@ -2,6 +2,12 @@
 
 All notable changes to Hood Trade are documented here.
 
+## [0.4.1] - 2026-07-07
+
+### Changed
+- **Strict by default on every chain.** New-chain leniency is no longer applied automatically to Robinhood Chain — the relaxed threshold let genuinely bad tokens read as GO. Thin liquidity, low volume and oversized-trade signals block (NO-GO) again everywhere. Leniency is still available per-scan via the explicit `--lenient` flag.
+- Demo report (`hoodtrade scan --demo`) now shows a strict NO-GO verdict.
+
 ## [0.4.0] - 2026-07-06
 
 ### Added

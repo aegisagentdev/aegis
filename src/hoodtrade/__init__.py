@@ -6,5 +6,5 @@ swap and returns a GO / CAUTION / NO-GO verdict with the evidence behind it.
 
 from .models import ScanReport, TradeRequest, Verdict
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 __all__ = ["ScanReport", "TradeRequest", "Verdict", "__version__"]

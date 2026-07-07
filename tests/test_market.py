@@ -7,9 +7,9 @@ from hoodtrade.checks.market import (
     MarketDepthCheck,
     MarketLiquidityCheck,
 )
-from hoodtrade.cli import _apply_young_chain
 from hoodtrade.config import Settings
 from hoodtrade.models import Severity
+from hoodtrade.networks import apply_young_chain
 from hoodtrade.sources.dexscreener import MarketData
 
 
@@ -21,7 +21,7 @@ def _mkt(**kwargs) -> MarketData:
 
 def _lenient() -> Settings:
     s = Settings()
-    _apply_young_chain(s)
+    apply_young_chain(s)
     return s
 
 

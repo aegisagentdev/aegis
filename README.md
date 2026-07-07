@@ -207,18 +207,19 @@ All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example
 | `HOODTRADE_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
 | `ANTHROPIC_API_KEY` | *(unset)* | Required only when AI is enabled |
 
-### New-chain leniency
+### Strictness
 
-A freshly-launched chain legitimately has thin books and little trading history,
-so flagging every low-liquidity token as NO-GO is noise. For young chains
-(Robinhood Chain by default) the scanner **relaxes only the market-maturity
-signals** — thin liquidity, low volume and trade-size impact become CAUTION
-instead of a hard block. **Security signals are never relaxed:** a honeypot,
-hidden transfer fee, mint capability or owner permission still forces NO-GO on
-any chain.
+By default the scanner is **strict on every chain** — thin liquidity, low volume
+and oversized-trade signals block (NO-GO), so a genuinely risky token can't slip
+through as GO.
 
-- `hoodtrade scan 0x… --strict` — full strictness even on a new chain
-- `hoodtrade scan 0x… --lenient` — apply new-chain leniency on any chain
+Optional **new-chain leniency** relaxes *only* those market-maturity signals to
+CAUTION (a freshly-launched chain legitimately has thin books). It is **opt-in**;
+security signals — honeypot, hidden transfer fee, mint capability, owner
+permission — always force NO-GO regardless.
+
+- `hoodtrade scan 0x… --lenient` — relax market-maturity gates for this scan
+- `hoodtrade scan 0x… --strict` — force strictness (this is already the default)
 
 ---
 
