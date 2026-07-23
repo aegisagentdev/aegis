@@ -22,14 +22,6 @@ export default function Home() {
               <span style={{ color: "var(--green)" }}>● NEW</span> Robinhood Chain shipped
               agent-executed trading. Aegis ships the shield for it.
             </span>
-            <div className="tick-social">
-              <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="Aegis on X">
-                <XIcon />
-              </a>
-              <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="Aegis on GitHub">
-                <GithubIcon />
-              </a>
-            </div>
           </div>
         </div>
       </div>
