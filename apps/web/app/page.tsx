@@ -3,7 +3,7 @@ import FirewallDemo from "@/components/FirewallDemo";
 import ScannerDemo from "@/components/ScannerDemo";
 
 const CA = "0x5df08b1a2b3c4d5e6f708192a3b4c5d6e7f80912";
-const GITHUB = "https://github.com/hoodtradeprofile/aegis";
+const GITHUB = "https://github.com/devvtr/aegis";
 const X = "https://x.com/aegismcp";
 
 export default function Home() {
