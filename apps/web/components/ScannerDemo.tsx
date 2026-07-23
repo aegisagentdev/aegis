@@ -10,7 +10,7 @@ interface Finding {
   detail: string;
 }
 interface Report {
-  verdict: "GO" | "CAUTION" | "NO-GO" | "UNKNOWN";
+  verdict: "GO" | "CAUTION" | "NO" | "UNKNOWN";
   score: number;
   tokenName?: string;
   tokenSymbol?: string;
@@ -23,7 +23,6 @@ interface Report {
   sources?: string[];
   error?: string;
 }
-interface TokenOpt { key: string; label: string; address: string; blurb: string }
 interface ChainOpt { key: string; label: string; live: boolean }
 
 function money(n?: number) {
@@ -33,43 +32,39 @@ function money(n?: number) {
   return `$${n.toLocaleString(undefined, { maximumFractionDigits: 6 })}`;
 }
 
+// GO / CAUTION / NO — display label for each internal verdict.
+function verdictLabel(v: Report["verdict"]) {
+  return v === "NO" ? "NO" : v;
+}
+
 const inputStyle: React.CSSProperties = {
   width: "100%", background: "var(--panel)", border: "1px solid var(--line-2)", borderRadius: 4,
   color: "var(--text)", fontFamily: "var(--mono)", fontSize: 13, padding: 12,
 };
 
-// A well-known safe token per chain, so "scan live" works on first click.
-const SAMPLE_ADDR: Record<string, string> = {
-  ethereum: "0x6b175474e89094c44da98b954eedeac495271d0f", // DAI
-  base: "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913", // USDC
-  bsc: "0xe9e7cea3dedca5984780bafc599bd69add087d56", // BUSD
-};
-
 export default function ScannerDemo() {
-  const [mode, setMode] = useState<"live" | "sample">("live");
-  const [tokens, setTokens] = useState<TokenOpt[]>([]);
   const [chains, setChains] = useState<ChainOpt[]>([]);
-  const [token, setToken] = useState("honeypot");
-  const [address, setAddress] = useState("0x6b175474e89094c44da98b954eedeac495271d0f");
+  const [address, setAddress] = useState("");
   const [chain, setChain] = useState("ethereum");
   const [amount, setAmount] = useState(1000);
   const [rep, setRep] = useState<Report | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/api/scan").then((r) => r.json()).then((d) => {
-      setTokens(d.tokens ?? []);
-      setChains(d.chains ?? []);
-    }).catch(() => {});
+    fetch("/api/scan").then((r) => r.json()).then((d) => setChains(d.chains ?? [])).catch(() => {});
   }, []);
 
   async function run() {
+    if (!address.trim()) {
+      setRep({ verdict: "UNKNOWN", score: 0, results: [], notes: ["Paste a contract address first."], error: "Paste a contract address first." });
+      return;
+    }
     setLoading(true);
     setRep(null);
     try {
-      const payload = mode === "live" ? { address, chain, amountUsd: amount } : { token, amountUsd: amount };
       const r = await fetch("/api/scan", {
-        method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload),
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ address: address.trim(), chain, amountUsd: amount }),
       });
       setRep(await r.json());
       window.dispatchEvent(new CustomEvent("aegis:scan"));
@@ -85,51 +80,35 @@ export default function ScannerDemo() {
 
   return (
     <div className="demo" id="scanner">
-      <div className="seg">
-        <button className={mode === "live" ? "on" : ""} onClick={() => setMode("live")}>▸ Live contract address</button>
-        <button className={mode === "sample" ? "on" : ""} onClick={() => setMode("sample")}>Sample token</button>
-      </div>
       <div className="demo-grid">
         <div className="demo-in">
-          {mode === "live" ? (
-            <>
-              <label>contract address</label>
-              <input style={inputStyle} spellCheck={false} value={address}
-                onChange={(e) => setAddress(e.target.value)} placeholder="0x…" />
-              <label>network</label>
-              <select value={chain} onChange={(e) => { setChain(e.target.value); if (SAMPLE_ADDR[e.target.value]) setAddress(SAMPLE_ADDR[e.target.value]!); }}>
-                {chains.map((c) => (
-                  <option key={c.key} value={c.key}>{c.label}{c.live ? "" : " (no reputation data)"}</option>
-                ))}
-              </select>
-              <p style={{ fontSize: 11.5, color: "var(--muted-2)" }}>
-                Real scan over live GoPlus + DexScreener data. Paste any ERC-20; unsupported chains return UNKNOWN.
-              </p>
-            </>
-          ) : (
-            <>
-              <label>sample token</label>
-              <select value={token} onChange={(e) => setToken(e.target.value)}>
-                {tokens.map((t) => (<option key={t.key} value={t.key}>{t.label}</option>))}
-              </select>
-              <p style={{ fontSize: 12, color: "var(--muted-2)" }}>{tokens.find((t) => t.key === token)?.blurb}</p>
-            </>
-          )}
+          <label>contract address</label>
+          <input style={inputStyle} spellCheck={false} value={address} autoComplete="off"
+            onChange={(e) => setAddress(e.target.value)} placeholder="0x… paste any ERC-20 contract" />
+          <label>network</label>
+          <select value={chain} onChange={(e) => setChain(e.target.value)}>
+            {chains.map((c) => (
+              <option key={c.key} value={c.key}>{c.label}{c.live ? "" : " (no reputation data)"}</option>
+            ))}
+          </select>
           <label>trade size (usd)</label>
           <input type="number" min={1} value={amount} onChange={(e) => setAmount(Number(e.target.value))} style={inputStyle} />
           <button className="btn btn-primary" onClick={run} disabled={loading}>
-            {loading ? "scanning…" : "▸ scan token"}
+            {loading ? "scanning…" : "▸ scan contract"}
           </button>
+          <p style={{ fontSize: 11.5, color: "var(--muted-2)" }}>
+            Real scan over live GoPlus + DexScreener data. Unsupported chains return UNKNOWN.
+          </p>
         </div>
         <div className="demo-out">
           <label>pre-trade verdict</label>
           {!rep ? (
-            <div className="out-empty">{loading ? "querying on-chain reputation + market…" : "Scan a contract to see the verdict."}</div>
+            <div className="out-empty">{loading ? "querying on-chain reputation + market…" : "Paste a contract and scan to see the verdict."}</div>
           ) : rep.error ? (
-            <div className="out-empty" style={{ color: "var(--red)" }}>{rep.error}</div>
+            <div className="out-empty" style={{ color: "var(--amber)" }}>{rep.error}</div>
           ) : (
             <div style={{ marginTop: 12 }}>
-              <span className={`verdict ${vClass}`}>{rep.verdict}</span>
+              <span className={`verdict ${vClass}`}>{verdictLabel(rep.verdict)}</span>
               <span className="score-pill">risk score {rep.score}</span>
               {rep.sources?.length ? <div style={{ fontSize: 11, color: "var(--muted-2)", marginTop: 8 }}>data: {rep.sources.join(" · ")}{rep.live ? " · live" : ""}</div> : null}
               <div className="token-meta">

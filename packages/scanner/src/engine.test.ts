@@ -12,9 +12,9 @@ test("clean stablecoin returns GO", () => {
   assert.equal(r.verdict, "GO");
 });
 
-test("honeypot returns NO-GO with a danger finding", () => {
+test("honeypot returns NO with a danger finding", () => {
   const r = runScan(fixtureByKey("honeypot")!.snapshot, req, DEFAULT_SETTINGS);
-  assert.equal(r.verdict, "NO-GO");
+  assert.equal(r.verdict, "NO");
   assert.ok(r.results.some((c) => c.severity === "danger"));
 });
 
@@ -23,15 +23,15 @@ test("thin memecoin returns CAUTION (lenient young-chain mode)", () => {
   assert.equal(r.verdict, "CAUTION");
 });
 
-test("divergent stock token returns NO-GO", () => {
+test("divergent stock token returns NO", () => {
   const r = runScan(fixtureByKey("rif")!.snapshot, req, DEFAULT_SETTINGS);
-  assert.equal(r.verdict, "NO-GO");
+  assert.equal(r.verdict, "NO");
   assert.ok(r.results.some((c) => c.check === "STOCK-DIVERGENCE" && c.severity === "danger"));
 });
 
-test("a DANGER finding forces NO-GO regardless of total score", () => {
+test("a DANGER finding forces NO regardless of total score", () => {
   const r = runScan(fixtureByKey("honeypot")!.snapshot, req, { ...DEFAULT_SETTINGS, nogoScore: 100000 });
-  assert.equal(r.verdict, "NO-GO");
+  assert.equal(r.verdict, "NO");
 });
 
 test("oversized trade escalates via price impact", () => {
@@ -43,6 +43,6 @@ test("oversized trade escalates via price impact", () => {
 test("every fixture scans without throwing", () => {
   for (const f of FIXTURES) {
     const r = runScan(f.snapshot, req, { ...DEFAULT_SETTINGS, lenient: true });
-    assert.ok(["GO", "CAUTION", "NO-GO", "UNKNOWN"].includes(r.verdict));
+    assert.ok(["GO", "CAUTION", "NO", "UNKNOWN"].includes(r.verdict));
   }
 });

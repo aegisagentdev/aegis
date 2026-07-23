@@ -44,8 +44,8 @@ const AGENTS = [
     idx: "AGENT 06",
     name: "Verdict",
     role: "Scanner · gate",
-    desc: "Sums weighted findings into a deterministic GO / CAUTION / NO-GO. Any DANGER finding forces NO-GO — the gate a model can never override.",
-    tags: ["deterministic", "GO/NO-GO", "auditable"],
+    desc: "Sums weighted findings into a deterministic GO / CAUTION / NO. Any DANGER finding forces NO — the gate a model can never override.",
+    tags: ["deterministic", "GO/NO", "auditable"],
   },
 ];
 

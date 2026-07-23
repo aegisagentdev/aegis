@@ -34,7 +34,7 @@ case $EXIT_CODE in
     # Optionally: exit 1 to block on CAUTION
     ;;
   2)
-    echo "🚫 VERDICT: NO-GO — blocking deployment"
+    echo "🚫 VERDICT: NO — blocking deployment"
     exit 1
     ;;
   *)

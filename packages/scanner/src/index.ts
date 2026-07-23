@@ -4,7 +4,7 @@
  * The Aegis token-scanning skill's deterministic check battery. Feed it a
  * `TokenSnapshot` (from live RPC + GoPlus + DexScreener in production, or a
  * fixture in the demo) and a `TradeRequest`; get back a reproducible
- * GO / CAUTION / NO-GO verdict with every finding and its evidence.
+ * GO / CAUTION / NO verdict with every finding and its evidence.
  */
 
 export { runScan, decide } from "./engine.js";

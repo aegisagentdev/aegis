@@ -5,7 +5,7 @@
 | **AMM** | Automated Market Maker — a DEX protocol that uses liquidity pools instead of order books |
 | **Arbitrum Orbit** | A framework for launching customized L2/L3 chains on top of Ethereum via Arbitrum |
 | **Bytecode** | The compiled contract code deployed on-chain; what `eth_getCode` returns |
-| **DANGER** | Highest severity level; indicates a blocking issue that forces a NO-GO verdict |
+| **DANGER** | Highest severity level; indicates a blocking issue that forces a NO verdict |
 | **DEX** | Decentralized Exchange — a trading venue that operates on-chain without a central operator |
 | **EIP-1967** | Standard for proxy storage slots; used to detect upgradeable contracts |
 | **EOA** | Externally Owned Account — a regular wallet address with no contract code |
@@ -22,4 +22,4 @@
 | **Stock token** | A tokenized debt instrument on Robinhood Chain that tracks an equity price |
 | **TVL** | Total Value Locked — the total amount of assets deposited in a DeFi protocol |
 | **Uniswap V3** | A concentrated-liquidity AMM where LPs provide liquidity within specific price ranges |
-| **Verdict** | Aegis's final assessment: GO, CAUTION, NO-GO, or UNKNOWN |
+| **Verdict** | Aegis's final assessment: GO, CAUTION, NO, or UNKNOWN |

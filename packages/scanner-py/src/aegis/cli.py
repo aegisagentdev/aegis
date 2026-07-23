@@ -176,7 +176,7 @@ def scan(
     ),
     demo: bool = typer.Option(False, "--demo", help="Run with sample data (no RPC needed)."),
 ) -> None:
-    """Scan a token contract and print a GO / CAUTION / NO-GO verdict.
+    """Scan a token contract and print a GO / CAUTION / NO verdict.
 
     \b
     Examples:

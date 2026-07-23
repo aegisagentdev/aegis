@@ -57,7 +57,7 @@ async def main():
     caution_count = sum(1 for _, v, _ in results if v == Verdict.CAUTION.value)
     nogo_count = sum(1 for _, v, _ in results if v in (Verdict.NO_GO.value, "ERROR"))
 
-    print(f"\nSummary: {go_count} GO, {caution_count} CAUTION, {nogo_count} NO-GO/ERROR")
+    print(f"\nSummary: {go_count} GO, {caution_count} CAUTION, {nogo_count} NO/ERROR")
 
 
 if __name__ == "__main__":

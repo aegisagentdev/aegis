@@ -5,7 +5,7 @@
  * The verdict is decided by summing signal weights against thresholds — never
  * by an LLM. A model may *explain* a block, but the allow/block gate must be
  * reproducible and auditable, the same way the pre-trade scanner decides GO /
- * NO-GO deterministically.
+ * NO deterministically.
  */
 
 export type Severity = "info" | "warn" | "danger";

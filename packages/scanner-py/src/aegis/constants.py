@@ -63,6 +63,6 @@ SEVERITY_COLORS = {
 VERDICT_COLORS = {
     "GO": "green",
     "CAUTION": "yellow",
-    "NO-GO": "red",
+    "NO": "red",
     "UNKNOWN": "white",
 }

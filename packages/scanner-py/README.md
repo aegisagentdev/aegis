@@ -1,12 +1,8 @@
 <div align="center">
 
-<img src="aegisbanner1.png" alt="Aegis — Trade Smarter. Let AI Do the Rest." width="100%" />
+# Aegis Scan
 
-<br><br>
-
-# Aegis
-
-### Pre-trade safety scanner for Robinhood Chain
+### Token-scanning skill for Robinhood Chain & major EVM networks
 
 [![CI](https://github.com/devvtr/aegis/actions/workflows/ci.yml/badge.svg)](https://github.com/devvtr/aegis/actions)
 [![Website](https://img.shields.io/badge/site-aegismcp.io-c6f82e?labelColor=0b0d07)](https://aegismcp.io)
@@ -17,14 +13,18 @@
 
 <br>
 
-Point it at a swap you're about to sign — get a **GO** / **CAUTION** / **NO-GO** verdict with on-chain evidence.
+Point it at a swap you're about to sign — get a **GO** / **CAUTION** / **NO** verdict with on-chain evidence.
 
 **Read-only.** Never signs. Never holds funds. Never trades. It inspects — you decide.
 
-<br>
+## Install (one line, from PyPI)
+
+```bash
+pip install aegis-scan
+```
 
 ```
-╭─ Aegis verdict ──────────────────────────────────╮
+╭─ Aegis Scan verdict ──────────────────────────────╮
 │  CAUTION   risk score 43                              │
 ╰───────────────────────────────────────────────────────╯
 ```
@@ -71,7 +71,7 @@ Aegis turns these into a **21-check battery** that runs in seconds before you si
                                                                                 └─────────────┘
 ```
 
-> **Key design**: the verdict is **deterministic** — any `DANGER` → NO-GO, score thresholds for CAUTION/NO-GO. Claude only *explains* findings; it **never overrides the gate**. No API key? Template fallback. Fully offline.
+> **Key design**: the verdict is **deterministic** — any `DANGER` → NO, score thresholds for CAUTION/NO. Claude only *explains* findings; it **never overrides the gate**. No API key? Template fallback. Fully offline.
 
 ---
 
@@ -132,7 +132,7 @@ aegis scan \
   --pool  0xPoolAddr  \
   --direction buy
 
-# JSON for scripting (exit: 0=GO, 1=CAUTION, 2=NO-GO)
+# JSON for scripting (exit: 0=GO, 1=CAUTION, 2=NO)
 aegis scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
 ```
 
@@ -172,11 +172,11 @@ Verify yourself
 </details>
 
 <details>
-<summary><strong>Honeypot detection (NO-GO)</strong></summary>
+<summary><strong>Honeypot detection (NO)</strong></summary>
 
 ```
 ╭─ Aegis verdict ─────────────────────────────────╮
-│  NO-GO   risk score 190                              │
+│  NO   risk score 190                              │
 ╰──────────────────────────────────────────────────────╯
 High-risk trade — the scanner flagged blocking issues.
 
@@ -198,11 +198,11 @@ All settings via env vars (prefix `AEGIS_`) or `.env` — see [`.env.example`](.
 | `AEGIS_RPC_URL` | *(required)* | JSON-RPC endpoint for Robinhood Chain |
 | `AEGIS_CHAIN_ID` | *(unset)* | Pin expected chain id for RPC verification |
 | `AEGIS_CAUTION_SCORE` | `25` | Score threshold for CAUTION |
-| `AEGIS_NOGO_SCORE` | `60` | Score threshold for NO-GO |
+| `AEGIS_NOGO_SCORE` | `60` | Score threshold for NO |
 | `AEGIS_LIQ_DANGER_BELOW` | `5000` | Liquidity (USD) below which a book is "very thin" |
 | `AEGIS_LIQ_WARN_BELOW` | `25000` | Liquidity (USD) below which a book is "low" |
-| `AEGIS_BLOCK_ON_THIN_LIQUIDITY` | `true` | Thin liquidity is NO-GO (`false` → CAUTION) |
-| `AEGIS_BLOCK_ON_HIGH_IMPACT` | `true` | Oversized trade is NO-GO (`false` → CAUTION) |
+| `AEGIS_BLOCK_ON_THIN_LIQUIDITY` | `true` | Thin liquidity is NO (`false` → CAUTION) |
+| `AEGIS_BLOCK_ON_HIGH_IMPACT` | `true` | Oversized trade is NO (`false` → CAUTION) |
 | `AEGIS_AI_ENABLED` | `true` | Enable Claude risk summaries |
 | `AEGIS_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
 | `ANTHROPIC_API_KEY` | *(unset)* | Required only when AI is enabled |
@@ -210,13 +210,13 @@ All settings via env vars (prefix `AEGIS_`) or `.env` — see [`.env.example`](.
 ### Strictness
 
 By default the scanner is **strict on every chain** — thin liquidity, low volume
-and oversized-trade signals block (NO-GO), so a genuinely risky token can't slip
+and oversized-trade signals block (NO), so a genuinely risky token can't slip
 through as GO.
 
 Optional **new-chain leniency** relaxes *only* those market-maturity signals to
 CAUTION (a freshly-launched chain legitimately has thin books). It is **opt-in**;
 security signals — honeypot, hidden transfer fee, mint capability, owner
-permission — always force NO-GO regardless.
+permission — always force NO regardless.
 
 - `aegis scan 0x… --lenient` — relax market-maturity gates for this scan
 - `aegis scan 0x… --strict` — force strictness (this is already the default)
@@ -230,13 +230,13 @@ MCP-compatible agent — Claude Desktop, Claude Code, Cursor, Cline, Windsurf, o
 your own agent built on the OpenAI/Anthropic SDKs — can scan tokens directly. The
 agent gets the same verdict the CLI produces, new-chain leniency included.
 
-**Tools exposed:** `scan_token` (GO / CAUTION / NO-GO with evidence), `check_rpc`,
+**Tools exposed:** `scan_token` (GO / CAUTION / NO with evidence), `check_rpc`,
 `list_chains`. Read-only — it never signs, holds funds or trades.
 
 Install:
 
 ```bash
-pip install "aegis[mcp]"      # then the command `aegis-mcp` is available
+pip install "aegis-scan[mcp]"      # then the command `aegis-mcp` is available
 # or run with no install:
 uvx --from "aegis[mcp]" aegis-mcp
 ```

@@ -117,6 +117,36 @@ a {
   border-color: var(--green-dim);
 }
 
+.ticker .tick-new {
+  margin-left: 12px;
+  color: var(--muted);
+}
+.tick-social {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.tick-social .ic,
+.nav-links .ic,
+.foot-links .ic {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  transition: color 0.18s var(--ease), filter 0.18s var(--ease);
+}
+.tick-social .ic:hover,
+.nav-links .ic:hover,
+.foot-links .ic:hover {
+  color: var(--green);
+  filter: drop-shadow(0 0 7px var(--green-glow));
+}
+.foot-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
 nav {
   position: sticky;
   top: 0;
@@ -481,7 +511,7 @@ select:focus {
   border-color: rgba(245, 196, 81, 0.5);
   background: rgba(245, 196, 81, 0.07);
 }
-.v-block, .v-nogo {
+.v-block, .v-no {
   color: var(--red);
   border-color: rgba(255, 95, 95, 0.5);
   background: rgba(255, 95, 95, 0.08);

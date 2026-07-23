@@ -3,7 +3,7 @@
 Exposes the pre-trade scanner as tools any MCP-compatible agent can call —
 Claude Desktop, Claude Code, Cursor, Cline, Windsurf, or a custom agent built on
 the OpenAI/Anthropic agent SDKs. The agent gets the same verdict the CLI would:
-GO / CAUTION / NO-GO with the on-chain evidence behind it.
+GO / CAUTION / NO with the on-chain evidence behind it.
 
 Run it:  ``aegis-mcp``  (stdio transport)
 
@@ -33,7 +33,7 @@ mcp = FastMCP(
     instructions=(
         "Aegis is a read-only pre-trade safety scanner for Robinhood Chain and other "
         "EVM chains. Call `scan_token` with a token contract address BEFORE the user buys or "
-        "signs a swap; relay the verdict (GO / CAUTION / NO-GO), the key risks, and the risk "
+        "signs a swap; relay the verdict (GO / CAUTION / NO), the key risks, and the risk "
         "score. It never signs, holds funds or trades — it only inspects. Use `list_chains` to "
         "see supported networks and `check_rpc` to confirm connectivity."
     ),
@@ -89,7 +89,7 @@ async def scan_token(
     strict: bool = False,
     lenient: bool = False,
 ) -> dict[str, Any]:
-    """Scan a token contract and return a GO / CAUTION / NO-GO safety verdict.
+    """Scan a token contract and return a GO / CAUTION / NO safety verdict.
 
     Args:
         token: Token contract address (42-char 0x…).

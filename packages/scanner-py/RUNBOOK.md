@@ -51,7 +51,7 @@ aegis scan \
 |------|---------|--------|
 | 0 | GO | No blocking issues found |
 | 1 | CAUTION | Notable risks — review findings before signing |
-| 2 | NO-GO / UNKNOWN | Blocking issues or insufficient data — do not proceed |
+| 2 | NO / UNKNOWN | Blocking issues or insufficient data — do not proceed |
 
 ### CI Integration
 

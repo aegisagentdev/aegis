@@ -5,8 +5,8 @@ All notable changes to Aegis are documented here.
 ## [0.4.1] - 2026-07-07
 
 ### Changed
-- **Strict by default on every chain.** New-chain leniency is no longer applied automatically to Robinhood Chain — the relaxed threshold let genuinely bad tokens read as GO. Thin liquidity, low volume and oversized-trade signals block (NO-GO) again everywhere. Leniency is still available per-scan via the explicit `--lenient` flag.
-- Demo report (`aegis scan --demo`) now shows a strict NO-GO verdict.
+- **Strict by default on every chain.** New-chain leniency is no longer applied automatically to Robinhood Chain — the relaxed threshold let genuinely bad tokens read as GO. Thin liquidity, low volume and oversized-trade signals block (NO) again everywhere. Leniency is still available per-scan via the explicit `--lenient` flag.
+- Demo report (`aegis scan --demo`) now shows a strict NO verdict.
 
 ## [0.4.0] - 2026-07-06
 
@@ -19,11 +19,11 @@ All notable changes to Aegis are documented here.
 ## [0.3.0] - 2026-07-06
 
 ### Added
-- **New-chain leniency**: on a freshly-launched chain (Robinhood Chain by default) the market-maturity signals — thin liquidity, low volume, trade-size impact — now produce CAUTION instead of an automatic NO-GO. Security signals (honeypot, hidden fee, mint, owner permissions) still block on any chain. New `--strict` / `--lenient` CLI flags and `AEGIS_LIQ_DANGER_BELOW`, `AEGIS_LIQ_WARN_BELOW`, `AEGIS_BLOCK_ON_THIN_LIQUIDITY`, `AEGIS_BLOCK_ON_HIGH_IMPACT` settings.
+- **New-chain leniency**: on a freshly-launched chain (Robinhood Chain by default) the market-maturity signals — thin liquidity, low volume, trade-size impact — now produce CAUTION instead of an automatic NO. Security signals (honeypot, hidden fee, mint, owner permissions) still block on any chain. New `--strict` / `--lenient` CLI flags and `AEGIS_LIQ_DANGER_BELOW`, `AEGIS_LIQ_WARN_BELOW`, `AEGIS_BLOCK_ON_THIN_LIQUIDITY`, `AEGIS_BLOCK_ON_HIGH_IMPACT` settings.
 - PyPI packaging metadata (trove classifiers); first release published to PyPI (`pip install aegis`).
 
 ### Fixed
-- Demo report (`aegis scan --demo`) showed a NO-GO badge under a CAUTION headline; the sample transfer-fee finding is now a warning, so the verdict and summary agree.
+- Demo report (`aegis scan --demo`) showed a NO badge under a CAUTION headline; the sample transfer-fee finding is now a warning, so the verdict and summary agree.
 
 ## [0.2.0] - 2026-07-02
 
@@ -43,7 +43,7 @@ All notable changes to Aegis are documented here.
 
 ### Added
 - Initial release: 11-check battery covering contract, pool, execution, and stock-token safety.
-- Deterministic verdict engine (GO / CAUTION / NO-GO).
+- Deterministic verdict engine (GO / CAUTION / NO).
 - Claude-powered risk summary with offline template fallback.
 - CLI with `scan`, `doctor`, and `version` commands.
 - Rich terminal output with colored verdict panel.

@@ -1,10 +1,9 @@
-import CopyCA from "@/components/CopyCA";
 import FirewallDemo from "@/components/FirewallDemo";
 import ScannerDemo from "@/components/ScannerDemo";
 import AgentsSection from "@/components/AgentsSection";
 import StatsBoard from "@/components/StatsBoard";
+import { GithubIcon, XIcon } from "@/components/Icons";
 
-const CA = "0x5df08b1a2b3c4d5e6f708192a3b4c5d6e7f80912";
 const GITHUB = "https://github.com/devvtr/aegis";
 const X = "https://x.com/aegismcp";
 const DOCS = "https://github.com/devvtr/aegis#readme";
@@ -16,13 +15,19 @@ export default function Home() {
       <div className="ticker">
         <div className="wrap">
           <div className="ca">
-            <b>CA:</b>
-            <span className="addr">{CA}</span>
-            <CopyCA address={CA} />
+            <b>CA:</b> <span className="addr">soon</span>
+            <span className="tick-new">
+              <span style={{ color: "var(--green)" }}>● NEW</span> Robinhood Chain shipped
+              agent-executed trading. Aegis ships the shield for it.
+            </span>
           </div>
-          <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            <span style={{ color: "var(--green)" }}>● NEW</span> Robinhood Chain shipped agent-executed
-            trading. Aegis ships the shield for it.
+          <div className="tick-social">
+            <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="Aegis on X">
+              <XIcon />
+            </a>
+            <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="Aegis on GitHub">
+              <GithubIcon />
+            </a>
           </div>
         </div>
       </div>
@@ -38,9 +43,13 @@ export default function Home() {
             <a href="#scanner">Scan a contract</a>
             <a href="#stats">Stats</a>
             <a href="#install">Install</a>
-            <a className="ic" href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a className="ic" href={X} target="_blank" rel="noreferrer">Twitter</a>
-            <a className="ic" href={DOCS} target="_blank" rel="noreferrer">Docs</a>
+            <a href={DOCS} target="_blank" rel="noreferrer">Docs</a>
+            <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub">
+              <GithubIcon />
+            </a>
+            <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="X / Twitter">
+              <XIcon />
+            </a>
           </div>
         </div>
       </nav>
@@ -58,10 +67,9 @@ export default function Home() {
           </h1>
           <p className="sub">
             Aegis is a drop-in security layer for MCP agents. A <b>prompt-injection firewall</b>{" "}
-            scans every tool response before your agent reads it. A deterministic{" "}
-            <b>token-scanning skill</b> checks the contract before your agent signs. Nothing malicious
-            reaches the agent, nothing malicious leaves it — <b>GO / CAUTION / NO-GO</b> in
-            milliseconds, with on-chain receipts.
+            scans every tool response before your agent reads it. <b>Aegis Scan</b> checks the
+            contract before your agent signs. Nothing malicious reaches the agent, nothing malicious
+            leaves it — <b>GO / CAUTION / NO</b> in milliseconds, with on-chain receipts.
           </p>
           <div className="cta-row">
             <a className="btn btn-primary" href="#scanner">▸ Scan a contract</a>
@@ -71,7 +79,7 @@ export default function Home() {
           <div className="stats">
             <div className="stat">
               <div className="n">2 gates</div>
-              <div className="l">Injection firewall in, token scanner out</div>
+              <div className="l">Injection firewall in, Aegis Scan out</div>
             </div>
             <div className="stat">
               <div className="n">21</div>
@@ -79,7 +87,7 @@ export default function Home() {
             </div>
             <div className="stat">
               <div className="n">0 LLM</div>
-              <div className="l">Verdicts decided by rules, not a model</div>
+              <div className="l">No model decides the verdict — pure code, so it can&apos;t be jailbroken or hallucinate, and it&apos;s identical every run</div>
             </div>
             <div className="stat">
               <div className="n">&lt;5ms</div>
@@ -112,9 +120,9 @@ export default function Home() {
             <div className="sec-tag">Live · way out</div>
             <h2>Paste a contract. Get a verdict.</h2>
             <p>
-              Drop any ERC-20 address and pick a network. Aegis pulls live GoPlus reputation and
+              Drop any ERC-20 address and pick a network. Aegis Scan pulls live GoPlus reputation and
               DexScreener market depth, runs the full deterministic battery, and returns a
-              reproducible GO / CAUTION / NO-GO with every finding — no mock, no LLM.
+              reproducible GO / CAUTION / NO with every finding — no mock, no LLM.
             </p>
           </div>
           <ScannerDemo />
@@ -157,11 +165,11 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head">
             <div className="sec-tag">Download the agent</div>
-            <h2>Clone it. Run it in your terminal.</h2>
+            <h2>One line. Then scan from your terminal.</h2>
             <p>
-              Aegis ships as a self-contained agent skill: a CLI and an MCP server. Pull it from
-              GitHub and scan contracts from your own machine, or wire it into any MCP-compatible
-              agent.
+              Aegis Scan ships on PyPI as a self-contained agent skill — a CLI and an MCP server.
+              Install it in one command and scan contracts from your own machine, or wire it into any
+              MCP-compatible agent.
             </p>
           </div>
           <div className="term">
@@ -169,20 +177,17 @@ export default function Home() {
               <i className="r" />
               <i className="y" />
               <i className="g" />
-              <span>bash — aegis</span>
+              <span>bash — aegis-scan</span>
             </div>
             <div className="term-body">
-              <div><span className="c"># 1 · get it from GitHub</span></div>
-              <div><span className="p">$</span> <span className="v">git clone https://github.com/devvtr/aegis && cd aegis</span></div>
+              <div><span className="c"># install from PyPI — one line</span></div>
+              <div><span className="p">$</span> <span className="v">pip install aegis-scan</span></div>
               <div>&nbsp;</div>
-              <div><span className="c"># 2 · install the token-scanning skill</span></div>
-              <div><span className="p">$</span> <span className="v">pip install ./packages/scanner-py</span></div>
-              <div>&nbsp;</div>
-              <div><span className="c"># 3 · scan a contract straight from the terminal</span></div>
+              <div><span className="c"># scan a contract straight from the terminal</span></div>
               <div><span className="p">$</span> <span className="v">aegis scan 0x6b175474e89094c44da98b954eedeac495271d0f --chain ethereum</span></div>
               <div><span className="c">  → verdict: GO   risk score: 3</span></div>
               <div>&nbsp;</div>
-              <div><span className="c"># 4 · or run the MCP server so any agent can call it</span></div>
+              <div><span className="c"># or run the MCP server so any agent can call it</span></div>
               <div><span className="p">$</span> <span className="v">aegis-mcp</span></div>
               <div>&nbsp;</div>
               <div><span className="c"># firewall (Node) — guard every tool response</span></div>
@@ -226,7 +231,7 @@ export default function Home() {
           </div>
           <div className="badge-row">
             <span className="sbadge"><span className="l">aegis: firewall</span><span className="r">ON</span></span>
-            <span className="sbadge"><span className="l">aegis: pre-trade</span><span className="r">GO/NO-GO</span></span>
+            <span className="sbadge"><span className="l">aegis: pre-trade</span><span className="r">GO/NO</span></span>
             <span className="sbadge"><span className="l">receipts</span><span className="r">on-chain</span></span>
             <span className="sbadge"><span className="l">license</span><span className="r">MIT</span></span>
           </div>
@@ -242,12 +247,12 @@ export default function Home() {
             </div>
             <div style={{ marginTop: 8, maxWidth: 440, lineHeight: 1.6 }}>
               Two-way security shield for agentic trading on Robinhood Chain — a prompt-injection
-              firewall and a deterministic token-scanning skill. MIT-licensed.
+              firewall and Aegis Scan, a deterministic token-scanning skill. MIT-licensed.
             </div>
           </div>
-          <div style={{ display: "flex", gap: 22 }}>
-            <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
-            <a href={X} target="_blank" rel="noreferrer">Twitter</a>
+          <div className="foot-links">
+            <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon /></a>
+            <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="X / Twitter"><XIcon /></a>
             <a href={DOCS} target="_blank" rel="noreferrer">Docs</a>
             <a href="#scanner">Scan</a>
           </div>

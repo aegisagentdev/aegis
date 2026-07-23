@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "aegis"
+name = "aegis-scan"
 version = "0.4.1"
 description = "Pre-trade safety scanner for Robinhood Chain — checks a swap before you sign it."
 readme = "README.md"

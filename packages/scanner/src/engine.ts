@@ -13,8 +13,8 @@ import { DEFAULT_SETTINGS } from "./types.js";
 import type { CheckResult, ScanReport, Settings, TokenSnapshot, TradeRequest, Verdict } from "./types.js";
 
 export function decide(score: number, results: CheckResult[], settings: Settings): Verdict {
-  if (results.some((r) => r.severity === "danger")) return "NO-GO";
-  if (score >= settings.nogoScore) return "NO-GO";
+  if (results.some((r) => r.severity === "danger")) return "NO";
+  if (score >= settings.nogoScore) return "NO";
   if (score >= settings.cautionScore) return "CAUTION";
   return "GO";
 }

@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     )
 
     # --- Scoring thresholds --------------------------------------------------
-    # A verdict is NO-GO if the aggregate risk score reaches `nogo_score`, CAUTION
+    # A verdict is NO if the aggregate risk score reaches `nogo_score`, CAUTION
     # at `caution_score`, otherwise GO. Individual checks contribute points; see
     # aegis.engine for how they combine.
     caution_score: int = Field(default=25, ge=0)
@@ -51,8 +51,8 @@ class Settings(BaseSettings):
     # Chain, and --strict / --lenient override per run.
     liq_danger_below: int = Field(default=5_000, ge=0)  # very-thin liquidity cutoff (USD)
     liq_warn_below: int = Field(default=25_000, ge=0)  # low-liquidity cutoff (USD)
-    block_on_thin_liquidity: bool = Field(default=True)  # thin book -> NO-GO (else CAUTION)
-    block_on_high_impact: bool = Field(default=True)  # oversized trade -> NO-GO (else CAUTION)
+    block_on_thin_liquidity: bool = Field(default=True)  # thin book -> NO (else CAUTION)
+    block_on_high_impact: bool = Field(default=True)  # oversized trade -> NO (else CAUTION)
 
     # LP concentration: flag if the top N holders control more than this fraction.
     concentration_top_n: int = Field(default=3, ge=1)

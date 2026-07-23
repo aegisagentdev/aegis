@@ -9,7 +9,7 @@
 
 export type Severity = "ok" | "info" | "warn" | "danger";
 export type Direction = "buy" | "sell";
-export type Verdict = "GO" | "CAUTION" | "NO-GO" | "UNKNOWN";
+export type Verdict = "GO" | "CAUTION" | "NO" | "UNKNOWN";
 
 export interface TradeRequest {
   /** Token being acquired or disposed of. */

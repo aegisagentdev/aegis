@@ -6,7 +6,7 @@ Robinhood Chain.
 Aegis decides two things off-chain, deterministically:
 
 - **Firewall** — allow / flag / block on an MCP tool response.
-- **Scanner** — GO / CAUTION / NO-GO on a token before a swap.
+- **Scanner** — GO / CAUTION / NO on a token before a swap.
 
 The registry stores a compact commitment of a decision (`verdict`, `score`, and
 `keccak256` of the full report) so anyone can later prove an agent acted on a

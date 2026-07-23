@@ -21,7 +21,7 @@ GO/block philosophy on each side, decided by rules and never by an LLM.
             │                                                │
             ▼                                                ▼
   ┌───────────────────┐                          ┌────────────────────┐
-  │  @aegis/firewall  │   allow / flag / block    │   @aegis/scanner   │  GO / CAUTION / NO-GO
+  │  @aegis/firewall  │   allow / flag / block    │   @aegis/scanner   │  GO / CAUTION / NO
   │  (way IN)         │ ────────────────────────▶ │   (way OUT)        │ ────────────────────▶ sign
   └───────────────────┘                          └────────────────────┘
      decode → detect → decide                       snapshot → battery → verdict
@@ -50,7 +50,7 @@ Checks the token before the agent signs.
   supply, pool integrity.
 - Corroborates with GoPlus: tax, mint, pausable, blacklist, owner-can-rewrite.
 - Sizes the trade against pool depth; flags tokenized-stock (RIF) price divergence.
-- **Any DANGER finding forces NO-GO** — the gate a model can never override.
+- **Any DANGER finding forces NO** — the gate a model can never override.
 
 The TypeScript `@aegis/scanner` powers the web demo; `packages/scanner-py` is the
 production Python engine with live RPC + an MCP server (`aegis-mcp`).

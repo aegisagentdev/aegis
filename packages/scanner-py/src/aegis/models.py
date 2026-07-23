@@ -49,7 +49,7 @@ class CheckResult(BaseModel):
 class Verdict(str, Enum):
     GO = "GO"
     CAUTION = "CAUTION"
-    NO_GO = "NO-GO"
+    NO_GO = "NO"
     UNKNOWN = "UNKNOWN"  # not enough data (e.g. RPC unreachable)
 
 

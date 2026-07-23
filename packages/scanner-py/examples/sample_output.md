@@ -49,7 +49,7 @@ Verify yourself
 └──────────────────────────────────────────────────┘
 ```
 
-## NO-GO verdict — honeypot detected
+## NO verdict — honeypot detected
 
 ```
 $ aegis scan \
@@ -59,7 +59,7 @@ $ aegis scan \
     --direction buy
 
 ╭─ Aegis verdict ─────────────────────────────╮
-│  NO-GO   risk score 190                          │
+│  NO   risk score 190                          │
 ╰──────────────────────────────────────────────────╯
 High-risk trade — the scanner flagged blocking issues.
 
@@ -86,4 +86,4 @@ Key risks
 $ aegis scan --token 0x... --quote 0x... --amount 100 --json --no-ai
 ```
 
-Returns a `ScanReport` JSON object with `verdict`, `score`, `results[]`, and `notes[]`. Exit code encodes the verdict: 0 = GO, 1 = CAUTION, 2 = NO-GO/UNKNOWN.
+Returns a `ScanReport` JSON object with `verdict`, `score`, `results[]`, and `notes[]`. Exit code encodes the verdict: 0 = GO, 1 = CAUTION, 2 = NO/UNKNOWN.

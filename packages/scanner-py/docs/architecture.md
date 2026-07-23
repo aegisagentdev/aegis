@@ -33,9 +33,9 @@ User (CLI / JSON)
                      │ list[CheckResult]
                      ▼
   ┌──────────┐
-  │  Engine  │  decide() → Verdict (GO/CAUTION/NO-GO)
-  │  decide  │  deterministic: any DANGER → NO-GO,
-  └────┬────┘  score thresholds for CAUTION/NO-GO
+  │  Engine  │  decide() → Verdict (GO/CAUTION/NO)
+  │  decide  │  deterministic: any DANGER → NO,
+  └────┬────┘  score thresholds for CAUTION/NO
        │ ScanReport
        ▼
   ┌──────────┐
@@ -46,7 +46,7 @@ User (CLI / JSON)
        ▼
   ┌─────────┐
   │  CLI    │  renders verdict panel + findings table
-  │ _render │  exit code: 0=GO, 1=CAUTION, 2=NO-GO
+  │ _render │  exit code: 0=GO, 1=CAUTION, 2=NO
   └─────────┘
 ```
 
@@ -54,7 +54,7 @@ User (CLI / JSON)
 
 ### Deterministic verdict, AI explanation
 
-The verdict (GO / CAUTION / NO-GO) is decided by `engine.decide()` using simple rules: any DANGER finding forces NO-GO; otherwise the summed risk score is compared against configurable thresholds. The AI layer (Claude) only explains the findings in plain language — it never overrides the gate.
+The verdict (GO / CAUTION / NO) is decided by `engine.decide()` using simple rules: any DANGER finding forces NO; otherwise the summed risk score is compared against configurable thresholds. The AI layer (Claude) only explains the findings in plain language — it never overrides the gate.
 
 **Why**: A trader relying on a safety scanner needs reproducible, auditable signals. If the same on-chain state always produces the same verdict, the tool is trustworthy. AI adds value by making findings readable, not by making judgment calls.
 

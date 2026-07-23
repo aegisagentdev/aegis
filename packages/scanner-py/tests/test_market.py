@@ -64,7 +64,7 @@ async def test_depth_large_trade_is_danger(make_context, default_request):
 
 @pytest.mark.asyncio
 async def test_thin_liquidity_lenient_is_warn_not_danger(make_context):
-    # On a young chain a near-empty book should caution, not hard-block (NO-GO).
+    # On a young chain a near-empty book should caution, not hard-block (NO).
     ctx = make_context(rpc=None, settings=_lenient(), cache={"market": _mkt(liquidity_usd=500.0)})
     results = await MarketLiquidityCheck().run(ctx)
     assert results[0].severity is Severity.WARN

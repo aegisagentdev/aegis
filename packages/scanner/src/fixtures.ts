@@ -42,7 +42,7 @@ export const FIXTURES: Fixture[] = [
     key: "honeypot",
     label: "MOON — honeypot",
     address: "0xdead111122223333444455556666777788889999",
-    blurb: "Buys fine, sells blocked, owner can rewrite balances. Should return NO-GO.",
+    blurb: "Buys fine, sells blocked, owner can rewrite balances. Should return NO.",
     snapshot: {
       chainId: 5678,
       expectedChainId: 5678,
@@ -86,7 +86,7 @@ export const FIXTURES: Fixture[] = [
     key: "rif",
     label: "TSLA.rif — divergent stock token",
     address: "0x7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f",
-    blurb: "Tokenized stock whose pool price drifts from the reference. Should return NO-GO.",
+    blurb: "Tokenized stock whose pool price drifts from the reference. Should return NO.",
     snapshot: {
       chainId: 5678,
       expectedChainId: 5678,

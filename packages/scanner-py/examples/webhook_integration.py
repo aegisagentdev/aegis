@@ -13,8 +13,8 @@ WEBHOOK_URL = "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
 
 
 def format_slack_message(report) -> dict:
-    emoji = {"GO": ":white_check_mark:", "CAUTION": ":warning:", "NO-GO": ":no_entry:", "UNKNOWN": ":question:"}
-    color = {"GO": "#2ecc71", "CAUTION": "#f39c12", "NO-GO": "#e74c3c", "UNKNOWN": "#95a5a6"}
+    emoji = {"GO": ":white_check_mark:", "CAUTION": ":warning:", "NO": ":no_entry:", "UNKNOWN": ":question:"}
+    color = {"GO": "#2ecc71", "CAUTION": "#f39c12", "NO": "#e74c3c", "UNKNOWN": "#95a5a6"}
 
     findings = "\n".join(
         f"• [{r.severity.value}] {r.title}" for r in report.results if r.severity.value in ("warn", "danger")

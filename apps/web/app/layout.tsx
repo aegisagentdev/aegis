@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Aegis — the security shield for agentic trading on Robinhood Chain",
   description:
-    "Aegis is a two-way shield for MCP agents: a prompt-injection firewall on the way in, a deterministic pre-trade safety scanner on the way out. GO / CAUTION / NO-GO in milliseconds, with on-chain receipts.",
+    "Aegis is a two-way shield for MCP agents: a prompt-injection firewall on the way in, a deterministic pre-trade safety scanner on the way out. GO / CAUTION / NO in milliseconds, with on-chain receipts.",
   metadataBase: new URL("https://aegismcp.io"),
   openGraph: {
     title: "Aegis — security shield for agentic trading",

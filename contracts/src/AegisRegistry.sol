@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 /// @notice On-chain, tamper-evident receipts for Aegis decisions.
 /// @dev Aegis makes two kinds of deterministic decision off-chain: the firewall
 ///      verdict on an MCP tool response (allow/flag/block) and the pre-trade
-///      scanner verdict on a token (GO/CAUTION/NO-GO). Anyone can anchor a
+///      scanner verdict on a token (GO/CAUTION/NO). Anyone can anchor a
 ///      compact commitment of such a decision here so a third party can later
 ///      verify the agent acted on a real, unmodified verdict — the "on-chain
 ///      receipt" leg of the shield. The registry stores only hashes; the full
@@ -20,7 +20,7 @@ contract AegisRegistry {
         address reporter; // who anchored it
         Kind kind;
         bytes32 subject; // token address (padded) or tool-response hash
-        uint8 verdict; // 0=allow/GO 1=flag/CAUTION 2=block/NO-GO 3=unknown
+        uint8 verdict; // 0=allow/GO 1=flag/CAUTION 2=block/NO 3=unknown
         uint16 score; // risk score at decision time
         bytes32 reportHash; // keccak256 of the full off-chain report JSON
         uint64 timestamp;

@@ -35,7 +35,7 @@ def _template_summary(report: ScanReport) -> RiskSummary:
     )
     risks = [f"{r.title}: {r.detail}" for r in ordered if r.severity in (Severity.DANGER, Severity.WARN)]
     headline = {
-        "NO-GO": "High-risk trade — the scanner flagged blocking issues.",
+        "NO": "High-risk trade — the scanner flagged blocking issues.",
         "CAUTION": "Proceed carefully — the scanner found notable risks.",
         "GO": "No blocking issues found by the automated checks.",
         "UNKNOWN": "Inconclusive — the scanner could not gather enough data.",

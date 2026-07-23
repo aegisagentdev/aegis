@@ -19,7 +19,7 @@ dependencies are bundled in `wheels/`, so it installs **without reaching PyPI**.
 
 > Scan `0x87E1Ed2aDe9Db5DEA0E805f296B796219A05636B` on Robinhood Chain before I buy.
 
-You'll get a **GO / CAUTION / NO-GO** verdict with the on-chain evidence behind it.
+You'll get a **GO / CAUTION / NO** verdict with the on-chain evidence behind it.
 
 ## What's bundled / compatibility
 

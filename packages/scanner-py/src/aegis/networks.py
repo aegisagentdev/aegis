@@ -60,7 +60,7 @@ class UnknownChainError(ValueError):
 
 def apply_young_chain(settings: Settings) -> None:
     """Relax only the market-maturity gates so a brand-new chain's normal thin
-    liquidity and low activity produce CAUTION, not an automatic NO-GO. Security
+    liquidity and low activity produce CAUTION, not an automatic NO. Security
     signals still block on any chain."""
     settings.block_on_thin_liquidity = False
     settings.block_on_high_impact = False

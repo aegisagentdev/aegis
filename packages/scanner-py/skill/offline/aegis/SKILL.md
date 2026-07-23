@@ -1,11 +1,11 @@
 ---
 name: aegis
-description: Pre-trade safety scanner for Robinhood Chain and other EVM chains. Use whenever the user wants to know if a token is safe to buy or swap before signing — they paste a token contract address, ask "is this a rug / honeypot?", "scan 0x…", "should I buy this token", or want to check liquidity, ownership, transfer fees, or holder concentration before a trade. Returns a GO / CAUTION / NO-GO verdict backed by on-chain evidence.
+description: Pre-trade safety scanner for Robinhood Chain and other EVM chains. Use whenever the user wants to know if a token is safe to buy or swap before signing — they paste a token contract address, ask "is this a rug / honeypot?", "scan 0x…", "should I buy this token", or want to check liquidity, ownership, transfer fees, or holder concentration before a trade. Returns a GO / CAUTION / NO verdict backed by on-chain evidence.
 ---
 
 # Aegis — pre-trade safety scanner (offline build)
 
-Aegis inspects a token contract and its market, then returns a **GO / CAUTION / NO-GO**
+Aegis inspects a token contract and its market, then returns a **GO / CAUTION / NO**
 verdict before the user signs a swap. It is **read-only**: it never signs, holds funds, or trades.
 It inspects — the user decides.
 
@@ -43,13 +43,13 @@ Example:
 
     aegis scan 0x87E1Ed2aDe9Db5DEA0E805f296B796219A05636B --chain robinhood --json
 
-The process **exit code is the verdict**: `0` = GO, `1` = CAUTION, `2` = NO-GO.
+The process **exit code is the verdict**: `0` = GO, `1` = CAUTION, `2` = NO.
 
 ## How to report back
 
 From the JSON, read `verdict`, `risk_score`, `summary.headline` and `summary.key_risks`.
 Then:
-1. State the verdict plainly (GO / CAUTION / NO-GO) and the risk score.
+1. State the verdict plainly (GO / CAUTION / NO) and the risk score.
 2. List the top 1–3 key risks in plain language.
 3. Remind the user it is read-only and the decision is theirs.
 
@@ -59,8 +59,8 @@ and let the user decide.
 ## Good to know
 
 - On Robinhood Chain (a freshly-launched chain) thin liquidity and low volume are treated as
-  **CAUTION**, not an automatic NO-GO. Real security issues — honeypot, hidden transfer fee,
-  mint capability, owner permissions — still force **NO-GO** on any chain.
+  **CAUTION**, not an automatic NO. Real security issues — honeypot, hidden transfer fee,
+  mint capability, owner permissions — still force **NO** on any chain.
 - Add `--strict` to block on thin liquidity even on new chains, or `--lenient` to relax those
   gates on any chain.
 - Full docs: https://aegismcp.io · source: https://github.com/devvtr/aegis

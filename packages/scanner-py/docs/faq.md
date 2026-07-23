@@ -19,8 +19,8 @@ Aegis uses a minimal `httpx`-based JSON-RPC client with precomputed function sel
 **Q: How does the honeypot check work?**
 It simulates a `transfer(deadAddress, 1)` via `eth_call` — a read-only simulation that does not actually execute a transaction. If the call reverts (typically with "transfer blocked" or similar), it's a strong signal that the token blocks transfers for non-whitelisted addresses.
 
-**Q: What's the difference between CAUTION and NO-GO?**
-CAUTION means the aggregate risk score crossed the caution threshold (default 25) but no single finding is blocking. NO-GO means either a DANGER-severity finding was found (e.g., honeypot, no contract code) or the aggregate score crossed the no-go threshold (default 60).
+**Q: What's the difference between CAUTION and NO?**
+CAUTION means the aggregate risk score crossed the caution threshold (default 25) but no single finding is blocking. NO means either a DANGER-severity finding was found (e.g., honeypot, no contract code) or the aggregate score crossed the no-go threshold (default 60).
 
 **Q: Can I add my own checks?**
 Yes. See [CONTRIBUTING.md](../CONTRIBUTING.md). Create a class with an `id` attribute and an `async def run(self, ctx) -> list[CheckResult]` method, register it in `default_checks()`, and add tests.
