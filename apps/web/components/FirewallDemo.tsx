@@ -54,6 +54,7 @@ export default function FirewallDemo() {
         body: JSON.stringify({ text, server: "dexscreener", tool: "get_token_info" }),
       });
       setRes(await r.json());
+      window.dispatchEvent(new CustomEvent("aegis:scan"));
     } finally {
       setLoading(false);
     }
