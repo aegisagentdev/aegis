@@ -59,4 +59,4 @@ and let the user decide.
   mint capability, owner permissions — still force **NO** on any chain.
 - Add `--strict` to block on thin liquidity even on new chains, or `--lenient` to relax those
   gates on any chain.
-- Full docs: https://aegismcp.io · source: https://github.com/devvtr/aegis
+- Full docs: https://aegismcp.io · source: https://github.com/aegisagentdev/aegis

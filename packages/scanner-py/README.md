@@ -4,7 +4,7 @@
 
 ### Token-scanning skill for Robinhood Chain & major EVM networks
 
-[![CI](https://github.com/devvtr/aegis/actions/workflows/ci.yml/badge.svg)](https://github.com/devvtr/aegis/actions)
+[![CI](https://github.com/aegisagentdev/aegis/actions/workflows/ci.yml/badge.svg)](https://github.com/aegisagentdev/aegis/actions)
 [![Website](https://img.shields.io/badge/site-aegismcp.io-c6f82e?labelColor=0b0d07)](https://aegismcp.io)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -107,7 +107,7 @@ Aegis turns these into a **21-check battery** that runs in seconds before you si
 ## Quick Start
 
 ```bash
-git clone https://github.com/devvtr/aegis
+git clone https://github.com/aegisagentdev/aegis
 cd aegis
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'       # drop [ai] to skip Claude summaries
@@ -271,7 +271,7 @@ it calls `scan_token` and reports back the verdict.
 ### Download it as a skill
 
 Prefer a drop-in file over pip? Two Agent Skill archives are attached to each
-[release](https://github.com/devvtr/aegis/releases/latest) — unzip the
+[release](https://github.com/aegisagentdev/aegis/releases/latest) — unzip the
 `aegis/` folder into your agent's skills directory (`~/.claude/skills/`):
 
 - **`aegis-skill.zip`** (thin, ~2 KB) — installs the latest `aegis` from PyPI on first use. Needs internet.

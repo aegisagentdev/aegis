@@ -4,9 +4,9 @@ import AgentsSection from "@/components/AgentsSection";
 import StatsBoard from "@/components/StatsBoard";
 import { GithubIcon, XIcon } from "@/components/Icons";
 
-const GITHUB = "https://github.com/devvtr/aegis";
+const GITHUB = "https://github.com/aegisagentdev/aegis";
 const X = "https://x.com/aegismcp";
-const DOCS = "https://github.com/devvtr/aegis#readme";
+const DOCS = "https://github.com/aegisagentdev/aegis#readme";
 
 export default function Home() {
   return (

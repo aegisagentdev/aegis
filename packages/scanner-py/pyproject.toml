@@ -48,8 +48,8 @@ aegis-mcp = "aegis.mcp_server:main"
 
 [project.urls]
 Homepage = "https://aegismcp.io"
-Repository = "https://github.com/devvtr/aegis"
-Issues = "https://github.com/devvtr/aegis/issues"
+Repository = "https://github.com/aegisagentdev/aegis"
+Issues = "https://github.com/aegisagentdev/aegis/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/aegis"]
