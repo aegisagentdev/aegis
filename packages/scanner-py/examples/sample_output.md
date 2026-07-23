@@ -3,14 +3,14 @@
 ## CAUTION verdict — active owner + large trade
 
 ```
-$ hoodtrade scan \
+$ aegis scan \
     --token 0xTokenAddr \
     --quote 0xUSDGAddr \
     --amount 150000 \
     --pool 0xPoolAddr \
     --direction buy
 
-╭─ Hood Trade verdict ─────────────────────────────╮
+╭─ Aegis verdict ─────────────────────────────╮
 │  CAUTION   risk score 43                         │
 ╰──────────────────────────────────────────────────╯
 Proceed carefully — the scanner found notable risks.
@@ -52,13 +52,13 @@ Verify yourself
 ## NO-GO verdict — honeypot detected
 
 ```
-$ hoodtrade scan \
+$ aegis scan \
     --token 0xSuspiciousToken \
     --quote 0xUSDGAddr \
     --amount 500 \
     --direction buy
 
-╭─ Hood Trade verdict ─────────────────────────────╮
+╭─ Aegis verdict ─────────────────────────────╮
 │  NO-GO   risk score 190                          │
 ╰──────────────────────────────────────────────────╯
 High-risk trade — the scanner flagged blocking issues.
@@ -83,7 +83,7 @@ Key risks
 ## JSON output for scripting
 
 ```
-$ hoodtrade scan --token 0x... --quote 0x... --amount 100 --json --no-ai
+$ aegis scan --token 0x... --quote 0x... --amount 100 --json --no-ai
 ```
 
 Returns a `ScanReport` JSON object with `verdict`, `score`, `results[]`, and `notes[]`. Exit code encodes the verdict: 0 = GO, 1 = CAUTION, 2 = NO-GO/UNKNOWN.

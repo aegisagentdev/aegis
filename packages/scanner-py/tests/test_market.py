@@ -2,15 +2,15 @@
 
 import pytest
 
-from hoodtrade.checks.market import (
+from aegis.checks.market import (
     MarketActivityCheck,
     MarketDepthCheck,
     MarketLiquidityCheck,
 )
-from hoodtrade.config import Settings
-from hoodtrade.models import Severity
-from hoodtrade.networks import apply_young_chain
-from hoodtrade.sources.dexscreener import MarketData
+from aegis.config import Settings
+from aegis.models import Severity
+from aegis.networks import apply_young_chain
+from aegis.sources.dexscreener import MarketData
 
 
 def _mkt(**kwargs) -> MarketData:

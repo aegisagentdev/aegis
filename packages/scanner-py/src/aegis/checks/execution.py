@@ -24,7 +24,7 @@ class ChainIdentityCheck:
                     severity=Severity.INFO,
                     score=0,
                     title="Chain id not pinned",
-                    detail="HOODTRADE_CHAIN_ID is unset, so the RPC's chain id was not verified.",
+                    detail="AEGIS_CHAIN_ID is unset, so the RPC's chain id was not verified.",
                 )
             ]
         actual = await ctx.rpc.chain_id()

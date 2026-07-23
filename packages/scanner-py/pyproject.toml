@@ -3,14 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "hoodtrade"
+name = "aegis"
 version = "0.4.1"
 description = "Pre-trade safety scanner for Robinhood Chain — checks a swap before you sign it."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 keywords = ["robinhood-chain", "defi", "pre-trade", "safety", "mev", "honeypot", "uniswap"]
-authors = [{ name = "hoodtrade contributors" }]
+authors = [{ name = "aegis contributors" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -43,21 +43,21 @@ dev = [
 ]
 
 [project.scripts]
-hoodtrade = "hoodtrade.cli:app"
-hoodtrade-mcp = "hoodtrade.mcp_server:main"
+aegis = "aegis.cli:app"
+aegis-mcp = "aegis.mcp_server:main"
 
 [project.urls]
-Homepage = "https://hoodtrade.pro"
-Repository = "https://github.com/qumiann/hoodtrade"
-Issues = "https://github.com/qumiann/hoodtrade/issues"
+Homepage = "https://aegismcp.io"
+Repository = "https://github.com/devvtr/aegis"
+Issues = "https://github.com/devvtr/aegis/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/hoodtrade"]
+packages = ["src/aegis"]
 
 [tool.hatch.build.targets.sdist]
 # Ship only the code and its docs — not the site assets, brand PDFs or banners.
 include = [
-    "src/hoodtrade",
+    "src/aegis",
     "tests",
     "README.md",
     "CHANGELOG.md",
@@ -74,7 +74,7 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.ruff.lint.per-file-ignores]
 # Typer's idiom is to call Option()/Argument() in parameter defaults.
-"src/hoodtrade/cli.py" = ["B008"]
+"src/aegis/cli.py" = ["B008"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

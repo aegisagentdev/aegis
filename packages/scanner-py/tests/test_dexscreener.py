@@ -3,7 +3,7 @@
 import httpx
 import pytest
 
-from hoodtrade.sources.dexscreener import (
+from aegis.sources.dexscreener import (
     CHAIN_SLUGS,
     DexScreenerClient,
     DexScreenerError,

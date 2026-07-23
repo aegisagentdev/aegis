@@ -1,13 +1,13 @@
-"""Model Context Protocol (MCP) server for Hood Trade.
+"""Model Context Protocol (MCP) server for Aegis.
 
 Exposes the pre-trade scanner as tools any MCP-compatible agent can call —
 Claude Desktop, Claude Code, Cursor, Cline, Windsurf, or a custom agent built on
 the OpenAI/Anthropic agent SDKs. The agent gets the same verdict the CLI would:
 GO / CAUTION / NO-GO with the on-chain evidence behind it.
 
-Run it:  ``hoodtrade-mcp``  (stdio transport)
+Run it:  ``aegis-mcp``  (stdio transport)
 
-Install:  ``pip install "hoodtrade[mcp]"``  or  ``uvx --from "hoodtrade[mcp]" hoodtrade-mcp``
+Install:  ``pip install "aegis[mcp]"``  or  ``uvx --from "aegis[mcp]" aegis-mcp``
 """
 
 from __future__ import annotations
@@ -23,15 +23,15 @@ try:
 except ModuleNotFoundError as exc:  # pragma: no cover - import guard
     raise SystemExit(
         "The MCP server needs the 'mcp' package. Install it with:\n"
-        '  pip install "hoodtrade[mcp]"\n'
+        '  pip install "aegis[mcp]"\n'
         "or run it without installing via:\n"
-        '  uvx --from "hoodtrade[mcp]" hoodtrade-mcp'
+        '  uvx --from "aegis[mcp]" aegis-mcp'
     ) from exc
 
 mcp = FastMCP(
-    "hoodtrade",
+    "aegis",
     instructions=(
-        "Hood Trade is a read-only pre-trade safety scanner for Robinhood Chain and other "
+        "Aegis is a read-only pre-trade safety scanner for Robinhood Chain and other "
         "EVM chains. Call `scan_token` with a token contract address BEFORE the user buys or "
         "signs a swap; relay the verdict (GO / CAUTION / NO-GO), the key risks, and the risk "
         "score. It never signs, holds funds or trades — it only inspects. Use `list_chains` to "

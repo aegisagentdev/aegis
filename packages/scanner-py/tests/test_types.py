@@ -1,6 +1,6 @@
 """Verify type aliases resolve correctly."""
 
-from hoodtrade.types import Address, BasisPoints, ChainId, HexData, RiskScore, Wei
+from aegis.types import Address, BasisPoints, ChainId, HexData, RiskScore, Wei
 
 
 def test_type_aliases_exist():

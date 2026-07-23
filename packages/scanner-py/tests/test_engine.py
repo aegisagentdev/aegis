@@ -1,6 +1,6 @@
-from hoodtrade.config import Settings
-from hoodtrade.engine import decide
-from hoodtrade.models import CheckResult, Severity, Verdict
+from aegis.config import Settings
+from aegis.engine import decide
+from aegis.models import CheckResult, Severity, Verdict
 
 
 def _r(sev: Severity, score: int) -> CheckResult:

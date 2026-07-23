@@ -1,6 +1,6 @@
-from hoodtrade.ai import _template_summary, summarize
-from hoodtrade.config import Settings
-from hoodtrade.models import CheckResult, ScanReport, Severity, TradeRequest, Verdict
+from aegis.ai import _template_summary, summarize
+from aegis.config import Settings
+from aegis.models import CheckResult, ScanReport, Severity, TradeRequest, Verdict
 
 
 def _report(verdict: Verdict, results) -> ScanReport:

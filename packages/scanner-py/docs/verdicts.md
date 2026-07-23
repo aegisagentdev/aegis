@@ -55,8 +55,8 @@ or all checks failed. Same exit code as NO-GO — treat as "do not proceed."
 
 ```bash
 # Lower caution threshold — more sensitive
-HOODTRADE_CAUTION_SCORE=15
+AEGIS_CAUTION_SCORE=15
 
 # Higher no-go threshold — more tolerant
-HOODTRADE_NOGO_SCORE=80
+AEGIS_NOGO_SCORE=80
 ```

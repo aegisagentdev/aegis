@@ -5,9 +5,9 @@ import json
 
 import httpx
 
-from hoodtrade.config import Settings
-from hoodtrade.engine import run_scan
-from hoodtrade.models import Direction, TradeRequest, Verdict
+from aegis.config import Settings
+from aegis.engine import run_scan
+from aegis.models import Direction, TradeRequest, Verdict
 
 WEBHOOK_URL = "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
 
@@ -24,9 +24,9 @@ def format_slack_message(report) -> dict:
         "attachments": [
             {
                 "color": color.get(report.verdict.value, "#95a5a6"),
-                "title": f"{emoji.get(report.verdict.value, '')} Hood Trade: {report.verdict.value}",
+                "title": f"{emoji.get(report.verdict.value, '')} Aegis: {report.verdict.value}",
                 "text": f"Score: {report.score}\nToken: {report.request.token}\n\n{findings or 'No issues found.'}",
-                "footer": "Hood Trade Pre-Trade Scanner",
+                "footer": "Aegis Pre-Trade Scanner",
             }
         ]
     }

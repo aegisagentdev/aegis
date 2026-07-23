@@ -1,6 +1,6 @@
-"""Show how to configure Hood Trade programmatically."""
+"""Show how to configure Aegis programmatically."""
 
-from hoodtrade.config import Settings
+from aegis.config import Settings
 
 settings = Settings(
     rpc_url="https://rpc.robinhoodchain.com",

@@ -1,5 +1,5 @@
-from hoodtrade.models import CheckResult, Severity
-from hoodtrade.scoring import (
+from aegis.models import CheckResult, Severity
+from aegis.scoring import (
     danger_count,
     normalize_score,
     passing_count,

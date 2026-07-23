@@ -1,7 +1,7 @@
-from hoodtrade.checks.base import Context
-from hoodtrade.checks.pool import PoolExistsCheck, PoolLiquidityCheck, PoolPairIntegrityCheck
-from hoodtrade.config import Settings
-from hoodtrade.models import Direction, Severity, TradeRequest
+from aegis.checks.base import Context
+from aegis.checks.pool import PoolExistsCheck, PoolLiquidityCheck, PoolPairIntegrityCheck
+from aegis.config import Settings
+from aegis.models import Direction, Severity, TradeRequest
 
 TOKEN = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

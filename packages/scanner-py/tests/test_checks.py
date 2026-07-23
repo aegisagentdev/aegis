@@ -1,11 +1,11 @@
 import pytest
 
-from hoodtrade.checks import default_checks
-from hoodtrade.checks.base import Context
-from hoodtrade.checks.contract import ContractExistsCheck, OwnershipCheck
-from hoodtrade.checks.stock_token import StockTokenDisclosureCheck, _looks_like_stock_token
-from hoodtrade.config import Settings
-from hoodtrade.models import Direction, Severity, TradeRequest
+from aegis.checks import default_checks
+from aegis.checks.base import Context
+from aegis.checks.contract import ContractExistsCheck, OwnershipCheck
+from aegis.checks.stock_token import StockTokenDisclosureCheck, _looks_like_stock_token
+from aegis.config import Settings
+from aegis.models import Direction, Severity, TradeRequest
 
 TOKEN = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

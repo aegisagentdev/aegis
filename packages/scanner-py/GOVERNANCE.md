@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hood Trade is maintained by a small core team. This document describes how decisions are
+Aegis is maintained by a small core team. This document describes how decisions are
 made and how contributions are accepted.
 
 ## Decision Making

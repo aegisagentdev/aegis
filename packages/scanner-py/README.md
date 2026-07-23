@@ -1,15 +1,15 @@
 <div align="center">
 
-<img src="hoodtradebanner1.png" alt="Hood Trade — Trade Smarter. Let AI Do the Rest." width="100%" />
+<img src="aegisbanner1.png" alt="Aegis — Trade Smarter. Let AI Do the Rest." width="100%" />
 
 <br><br>
 
-# Hood Trade
+# Aegis
 
 ### Pre-trade safety scanner for Robinhood Chain
 
-[![CI](https://github.com/qumiann/hoodtrade/actions/workflows/ci.yml/badge.svg)](https://github.com/qumiann/hoodtrade/actions)
-[![Website](https://img.shields.io/badge/site-hoodtrade.pro-c6f82e?labelColor=0b0d07)](https://hoodtrade.pro)
+[![CI](https://github.com/devvtr/aegis/actions/workflows/ci.yml/badge.svg)](https://github.com/devvtr/aegis/actions)
+[![Website](https://img.shields.io/badge/site-aegismcp.io-c6f82e?labelColor=0b0d07)](https://aegismcp.io)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Robinhood Chain](https://img.shields.io/badge/chain-Robinhood%20L2-6C3BF5)](https://docs.robinhood.com/chain/)
@@ -24,7 +24,7 @@ Point it at a swap you're about to sign — get a **GO** / **CAUTION** / **NO-GO
 <br>
 
 ```
-╭─ Hood Trade verdict ──────────────────────────────────╮
+╭─ Aegis verdict ──────────────────────────────────╮
 │  CAUTION   risk score 43                              │
 ╰───────────────────────────────────────────────────────╯
 ```
@@ -45,7 +45,7 @@ Robinhood Chain launched July 2026 as a permissionless Arbitrum-Orbit L2. Permis
 | **Stock token debt** | Tokenized equities are debt instruments, not shares — counterparty risk |
 | **Residual MEV** | FCFS sequencing blunts sandwiching, but latency races and oracle timing remain |
 
-Hood Trade turns these into a **21-check battery** that runs in seconds before you sign.
+Aegis turns these into a **21-check battery** that runs in seconds before you sign.
 
 ---
 
@@ -107,11 +107,11 @@ Hood Trade turns these into a **21-check battery** that runs in seconds before y
 ## Quick Start
 
 ```bash
-git clone https://github.com/qumiann/hoodtrade
-cd hoodtrade
+git clone https://github.com/devvtr/aegis
+cd aegis
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'       # drop [ai] to skip Claude summaries
-cp .env.example .env             # set HOODTRADE_RPC_URL
+cp .env.example .env             # set AEGIS_RPC_URL
 ```
 
 > **Dependencies**: `httpx` `pydantic` `typer` `rich` — no web3. Optional: `anthropic`.
@@ -122,10 +122,10 @@ cp .env.example .env             # set HOODTRADE_RPC_URL
 
 ```bash
 # Verify RPC connectivity
-hoodtrade doctor
+aegis doctor
 
 # Scan a buy
-hoodtrade scan \
+aegis scan \
   --token 0xTokenAddr \
   --quote 0xUSDGAddr  \
   --amount 2500       \
@@ -133,14 +133,14 @@ hoodtrade scan \
   --direction buy
 
 # JSON for scripting (exit: 0=GO, 1=CAUTION, 2=NO-GO)
-hoodtrade scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
+aegis scan --token 0x.. --quote 0x.. --amount 500 --json --no-ai
 ```
 
 <details>
 <summary><strong>Example output</strong></summary>
 
 ```
-╭─ Hood Trade verdict ─────────────────────────────────╮
+╭─ Aegis verdict ─────────────────────────────────╮
 │  CAUTION   risk score 43                             │
 ╰──────────────────────────────────────────────────────╯
 Proceed carefully — the scanner found notable risks.
@@ -175,7 +175,7 @@ Verify yourself
 <summary><strong>Honeypot detection (NO-GO)</strong></summary>
 
 ```
-╭─ Hood Trade verdict ─────────────────────────────────╮
+╭─ Aegis verdict ─────────────────────────────────╮
 │  NO-GO   risk score 190                              │
 ╰──────────────────────────────────────────────────────╯
 High-risk trade — the scanner flagged blocking issues.
@@ -191,20 +191,20 @@ Key risks
 
 ## Configuration
 
-All settings via env vars (prefix `HOODTRADE_`) or `.env` — see [`.env.example`](.env.example).
+All settings via env vars (prefix `AEGIS_`) or `.env` — see [`.env.example`](.env.example).
 
 | Variable | Default | Description |
 |:---------|:--------|:------------|
-| `HOODTRADE_RPC_URL` | *(required)* | JSON-RPC endpoint for Robinhood Chain |
-| `HOODTRADE_CHAIN_ID` | *(unset)* | Pin expected chain id for RPC verification |
-| `HOODTRADE_CAUTION_SCORE` | `25` | Score threshold for CAUTION |
-| `HOODTRADE_NOGO_SCORE` | `60` | Score threshold for NO-GO |
-| `HOODTRADE_LIQ_DANGER_BELOW` | `5000` | Liquidity (USD) below which a book is "very thin" |
-| `HOODTRADE_LIQ_WARN_BELOW` | `25000` | Liquidity (USD) below which a book is "low" |
-| `HOODTRADE_BLOCK_ON_THIN_LIQUIDITY` | `true` | Thin liquidity is NO-GO (`false` → CAUTION) |
-| `HOODTRADE_BLOCK_ON_HIGH_IMPACT` | `true` | Oversized trade is NO-GO (`false` → CAUTION) |
-| `HOODTRADE_AI_ENABLED` | `true` | Enable Claude risk summaries |
-| `HOODTRADE_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
+| `AEGIS_RPC_URL` | *(required)* | JSON-RPC endpoint for Robinhood Chain |
+| `AEGIS_CHAIN_ID` | *(unset)* | Pin expected chain id for RPC verification |
+| `AEGIS_CAUTION_SCORE` | `25` | Score threshold for CAUTION |
+| `AEGIS_NOGO_SCORE` | `60` | Score threshold for NO-GO |
+| `AEGIS_LIQ_DANGER_BELOW` | `5000` | Liquidity (USD) below which a book is "very thin" |
+| `AEGIS_LIQ_WARN_BELOW` | `25000` | Liquidity (USD) below which a book is "low" |
+| `AEGIS_BLOCK_ON_THIN_LIQUIDITY` | `true` | Thin liquidity is NO-GO (`false` → CAUTION) |
+| `AEGIS_BLOCK_ON_HIGH_IMPACT` | `true` | Oversized trade is NO-GO (`false` → CAUTION) |
+| `AEGIS_AI_ENABLED` | `true` | Enable Claude risk summaries |
+| `AEGIS_AI_MODEL` | `claude-opus-4-8` | Model for AI summaries |
 | `ANTHROPIC_API_KEY` | *(unset)* | Required only when AI is enabled |
 
 ### Strictness
@@ -218,14 +218,14 @@ CAUTION (a freshly-launched chain legitimately has thin books). It is **opt-in**
 security signals — honeypot, hidden transfer fee, mint capability, owner
 permission — always force NO-GO regardless.
 
-- `hoodtrade scan 0x… --lenient` — relax market-maturity gates for this scan
-- `hoodtrade scan 0x… --strict` — force strictness (this is already the default)
+- `aegis scan 0x… --lenient` — relax market-maturity gates for this scan
+- `aegis scan 0x… --strict` — force strictness (this is already the default)
 
 ---
 
 ## Use it from an AI agent (MCP)
 
-Hood Trade ships an [MCP](https://modelcontextprotocol.io) server, so any
+Aegis ships an [MCP](https://modelcontextprotocol.io) server, so any
 MCP-compatible agent — Claude Desktop, Claude Code, Cursor, Cline, Windsurf, or
 your own agent built on the OpenAI/Anthropic SDKs — can scan tokens directly. The
 agent gets the same verdict the CLI produces, new-chain leniency included.
@@ -236,9 +236,9 @@ agent gets the same verdict the CLI produces, new-chain leniency included.
 Install:
 
 ```bash
-pip install "hoodtrade[mcp]"      # then the command `hoodtrade-mcp` is available
+pip install "aegis[mcp]"      # then the command `aegis-mcp` is available
 # or run with no install:
-uvx --from "hoodtrade[mcp]" hoodtrade-mcp
+uvx --from "aegis[mcp]" aegis-mcp
 ```
 
 Add it to your agent's MCP config (Claude Desktop `claude_desktop_config.json`,
@@ -247,9 +247,9 @@ Cursor `~/.cursor/mcp.json`, etc.) — the shape is the same everywhere:
 ```json
 {
   "mcpServers": {
-    "hoodtrade": {
+    "aegis": {
       "command": "uvx",
-      "args": ["--from", "hoodtrade[mcp]", "hoodtrade-mcp"]
+      "args": ["--from", "aegis[mcp]", "aegis-mcp"]
     }
   }
 }
@@ -260,7 +260,7 @@ If you installed with pip, you can point straight at the command instead:
 ```json
 {
   "mcpServers": {
-    "hoodtrade": { "command": "hoodtrade-mcp" }
+    "aegis": { "command": "aegis-mcp" }
   }
 }
 ```
@@ -271,11 +271,11 @@ it calls `scan_token` and reports back the verdict.
 ### Download it as a skill
 
 Prefer a drop-in file over pip? Two Agent Skill archives are attached to each
-[release](https://github.com/qumiann/hoodtrade/releases/latest) — unzip the
-`hoodtrade/` folder into your agent's skills directory (`~/.claude/skills/`):
+[release](https://github.com/devvtr/aegis/releases/latest) — unzip the
+`aegis/` folder into your agent's skills directory (`~/.claude/skills/`):
 
-- **`hoodtrade-skill.zip`** (thin, ~2 KB) — installs the latest `hoodtrade` from PyPI on first use. Needs internet.
-- **`hoodtrade-skill-offline.zip`** (~42 MB) — bundles the package and all dependencies (Linux / macOS / Windows, Python 3.10–3.13) for an airgapped, version-pinned install.
+- **`aegis-skill.zip`** (thin, ~2 KB) — installs the latest `aegis` from PyPI on first use. Needs internet.
+- **`aegis-skill-offline.zip`** (~42 MB) — bundles the package and all dependencies (Linux / macOS / Windows, Python 3.10–3.13) for an airgapped, version-pinned install.
 
 Rebuild both with `bash skill/build.sh`. The archive sources live in [`skill/`](skill/).
 
@@ -308,8 +308,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the check protocol, severity guide, a
 ## Project Structure
 
 ```
-hoodtrade/
-├── src/hoodtrade/
+aegis/
+├── src/aegis/
 │   ├── checks/
 │   │   ├── contract.py        # code, owner, supply
 │   │   ├── honeypot.py        # transfer/approve simulation
@@ -338,7 +338,7 @@ hoodtrade/
 
 <div align="center">
 
-**Hood Trade** is not financial advice. A green verdict means "no automated red flags" — not "safe."
+**Aegis** is not financial advice. A green verdict means "no automated red flags" — not "safe."
 
 Always verify addresses against official sources before signing.
 

@@ -2,9 +2,9 @@
 
 import pytest
 
-from hoodtrade.checks import default_checks
-from hoodtrade.engine import decide
-from hoodtrade.models import CheckResult, Direction, Severity, TradeRequest, Verdict
+from aegis.checks import default_checks
+from aegis.engine import decide
+from aegis.models import CheckResult, Direction, Severity, TradeRequest, Verdict
 
 
 @pytest.fixture

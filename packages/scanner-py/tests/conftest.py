@@ -1,12 +1,12 @@
-"""Shared test fixtures for Hood Trade test suite."""
+"""Shared test fixtures for Aegis test suite."""
 
 from __future__ import annotations
 
 import pytest
 
-from hoodtrade.checks.base import Context
-from hoodtrade.config import Settings
-from hoodtrade.models import Direction, TradeRequest
+from aegis.checks.base import Context
+from aegis.config import Settings
+from aegis.models import Direction, TradeRequest
 
 TOKEN = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

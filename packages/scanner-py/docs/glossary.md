@@ -22,4 +22,4 @@
 | **Stock token** | A tokenized debt instrument on Robinhood Chain that tracks an equity price |
 | **TVL** | Total Value Locked — the total amount of assets deposited in a DeFi protocol |
 | **Uniswap V3** | A concentrated-liquidity AMM where LPs provide liquidity within specific price ranges |
-| **Verdict** | Hood Trade's final assessment: GO, CAUTION, NO-GO, or UNKNOWN |
+| **Verdict** | Aegis's final assessment: GO, CAUTION, NO-GO, or UNKNOWN |

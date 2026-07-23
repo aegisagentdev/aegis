@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in Hood Trade
+about: Report a bug in Aegis
 title: "[BUG] "
 labels: bug
 ---
@@ -11,7 +11,7 @@ A clear description of what the bug is.
 
 ## To reproduce
 
-1. Run `hoodtrade ...`
+1. Run `aegis ...`
 2. See error
 
 ## Expected behavior
@@ -20,7 +20,7 @@ What you expected to happen.
 
 ## Environment
 
-- Hood Trade version: (`hoodtrade version`)
+- Aegis version: (`aegis version`)
 - Python version: (`python --version`)
 - OS:
 

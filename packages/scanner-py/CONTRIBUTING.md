@@ -1,10 +1,10 @@
-# Contributing to Hood Trade
+# Contributing to Aegis
 
 ## Setup
 
 ```bash
-git clone https://github.com/hoodtrade/hoodtrade
-cd hoodtrade
+git clone https://github.com/aegis/aegis
+cd aegis
 python -m venv .venv && source .venv/bin/activate
 pip install -e '.[ai,dev]'
 ```
@@ -19,9 +19,9 @@ pytest -q                   # tests
 
 ## Adding a new check
 
-1. Create a file in `src/hoodtrade/checks/` (e.g. `mycheck.py`).
+1. Create a file in `src/aegis/checks/` (e.g. `mycheck.py`).
 2. Define a class with an `id` attribute and an `async def run(self, ctx: Context) -> list[CheckResult]` method.
-3. Register it in `src/hoodtrade/checks/__init__.py` inside `default_checks()`.
+3. Register it in `src/aegis/checks/__init__.py` inside `default_checks()`.
 4. Add tests in `tests/test_mycheck.py`.
 
 ### Check conventions

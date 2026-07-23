@@ -17,7 +17,7 @@
   self-destruct patterns, and delegatecall misuse
 - [ ] **Multi-pool routing** — scan all pools for a token pair, not just the one specified,
   and compare depth across venues
-- [ ] **Watch mode** — `hoodtrade watch --token 0x..` continuously monitors a token and
+- [ ] **Watch mode** — `aegis watch --token 0x..` continuously monitors a token and
   alerts on state changes (owner change, liquidity removal, new pool)
 
 ## v0.4.0 (planned)
@@ -33,7 +33,7 @@
 
 - [ ] **Telegram bot** — `/scan 0xToken 0xQuote 500` in a chat, get a verdict card back
 - [ ] **Discord bot** — same interface for Discord servers
-- [ ] **REST API** — hosted endpoint for integrating Hood Trade into other tools
+- [ ] **REST API** — hosted endpoint for integrating Aegis into other tools
 - [ ] **Dashboard** — web UI for scanning with a richer visual presentation
 
 ## Future / Research

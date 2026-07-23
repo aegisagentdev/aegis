@@ -19,7 +19,7 @@ import httpx
 
 BASE_URL = "https://api.dexscreener.com"
 
-# DexScreener chain slugs for the chains hoodtrade targets. Robinhood Chain is
+# DexScreener chain slugs for the chains aegis targets. Robinhood Chain is
 # the headline one; the EVM majors are here so the same source works with the
 # GoPlus-backed multichain scan.
 CHAIN_SLUGS = {

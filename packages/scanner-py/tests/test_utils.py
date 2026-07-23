@@ -1,6 +1,6 @@
 import pytest
 
-from hoodtrade.utils import (
+from aegis.utils import (
     ether_to_wei,
     format_bps,
     format_usd,

@@ -1,7 +1,7 @@
 import json
 
-from hoodtrade.export import severity_counts, to_csv, to_dict, to_json, to_markdown
-from hoodtrade.models import CheckResult, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
+from aegis.export import severity_counts, to_csv, to_dict, to_json, to_markdown
+from aegis.models import CheckResult, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
 
 TOKEN = "0x" + "2" * 40
 QUOTE = "0x" + "3" * 40
@@ -48,7 +48,7 @@ def test_to_csv():
 
 def test_to_markdown():
     md = to_markdown(_report())
-    assert "# Hood Trade Scan Report" in md
+    assert "# Aegis Scan Report" in md
     assert "CAUTION" in md
     assert "| `A` |" in md
     assert "risk one" in md

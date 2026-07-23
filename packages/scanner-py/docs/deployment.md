@@ -4,13 +4,13 @@
 
 ```bash
 # Build
-docker build -t hoodtrade .
+docker build -t aegis .
 
 # Run doctor
-docker run --env-file .env hoodtrade doctor
+docker run --env-file .env aegis doctor
 
 # Run a scan
-docker run --env-file .env hoodtrade scan \
+docker run --env-file .env aegis scan \
   --token 0xToken --quote 0xQuote --amount 1000
 ```
 
@@ -18,7 +18,7 @@ docker run --env-file .env hoodtrade scan \
 
 ```bash
 # Health check
-docker compose run hoodtrade
+docker compose run aegis
 
 # Scan
 docker compose run scan --token 0x.. --quote 0x.. --amount 500
@@ -27,19 +27,19 @@ docker compose run scan --token 0x.. --quote 0x.. --amount 500
 ## PyPI (when published)
 
 ```bash
-pip install hoodtrade
-pip install 'hoodtrade[ai]'  # with Claude summaries
+pip install aegis
+pip install 'aegis[ai]'  # with Claude summaries
 ```
 
 ## From source
 
 ```bash
-git clone https://github.com/hoodtrade/hoodtrade
-cd hoodtrade
+git clone https://github.com/aegis/aegis
+cd aegis
 pip install -e '.[ai,dev]'
 ```
 
 ## Environment Variables
 
 See [.env.example](../.env.example) for all configuration options.
-The only required variable is `HOODTRADE_RPC_URL`.
+The only required variable is `AEGIS_RPC_URL`.

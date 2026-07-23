@@ -3,14 +3,14 @@
 ## Before Opening an Issue
 
 1. **Check the [README](README.md)** — most configuration and usage questions are answered there.
-2. **Run `hoodtrade doctor`** — this validates your RPC connection and reports the chain id.
+2. **Run `aegis doctor`** — this validates your RPC connection and reports the chain id.
 3. **Check [CHANGELOG](CHANGELOG.md)** — your issue might be fixed in a newer version.
 
 ## Reporting Bugs
 
 Open an issue with:
 
-- Hood Trade version (`hoodtrade version`)
+- Aegis version (`aegis version`)
 - Python version (`python --version`)
 - The full command you ran
 - The full error output

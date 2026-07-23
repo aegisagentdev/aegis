@@ -1,6 +1,6 @@
 # Runbook
 
-Operational guide for running Hood Trade in production or CI environments.
+Operational guide for running Aegis in production or CI environments.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ cp .env.example .env
 ## Health Check
 
 ```bash
-hoodtrade doctor
+aegis doctor
 ```
 
 Expected output:
@@ -30,14 +30,14 @@ RPC reachable.
 ```
 
 If this fails:
-1. Verify `HOODTRADE_RPC_URL` is set correctly in `.env`
+1. Verify `AEGIS_RPC_URL` is set correctly in `.env`
 2. Check network connectivity to the RPC endpoint
 3. Verify the endpoint supports `eth_chainId`, `eth_getCode`, `eth_call`
 
 ## Running a Scan
 
 ```bash
-hoodtrade scan \
+aegis scan \
   --token 0x<token_address> \
   --quote 0x<quote_address> \
   --amount <usd_amount> \
@@ -56,7 +56,7 @@ hoodtrade scan \
 ### CI Integration
 
 ```bash
-hoodtrade scan --token $TOKEN --quote $QUOTE --amount $AMOUNT --json --no-ai
+aegis scan --token $TOKEN --quote $QUOTE --amount $AMOUNT --json --no-ai
 exit_code=$?
 if [ $exit_code -eq 2 ]; then
   echo "BLOCKED: pre-trade check failed"
@@ -75,7 +75,7 @@ fi
 ### "Chain id mismatch"
 
 - You're connected to the wrong network
-- Update `HOODTRADE_CHAIN_ID` or check your RPC configuration
+- Update `AEGIS_CHAIN_ID` or check your RPC configuration
 
 ### "No checks produced output"
 
@@ -85,8 +85,8 @@ fi
 ### AI summary shows template instead of Claude
 
 - Verify `ANTHROPIC_API_KEY` is set
-- Verify `HOODTRADE_AI_ENABLED=true`
-- Check that the `anthropic` package is installed (`pip install hoodtrade[ai]`)
+- Verify `AEGIS_AI_ENABLED=true`
+- Check that the `anthropic` package is installed (`pip install aegis[ai]`)
 - Check API key validity at https://console.anthropic.com
 
 ## Performance
@@ -101,7 +101,7 @@ For continuous monitoring, run scans on a cron schedule:
 
 ```bash
 # Check a critical token every 5 minutes
-*/5 * * * * cd /path/to/hoodtrade && .venv/bin/hoodtrade scan \
+*/5 * * * * cd /path/to/aegis && .venv/bin/aegis scan \
   --token 0x... --quote 0x... --amount 1000 --json --no-ai \
-  >> /var/log/hoodtrade/scans.jsonl 2>&1
+  >> /var/log/aegis/scans.jsonl 2>&1
 ```

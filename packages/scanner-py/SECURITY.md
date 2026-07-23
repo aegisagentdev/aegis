@@ -2,7 +2,7 @@
 
 ## Scope
 
-Hood Trade is a **read-only** pre-trade scanner. It never signs transactions, never holds private keys, and never moves funds. Its security surface is limited to:
+Aegis is a **read-only** pre-trade scanner. It never signs transactions, never holds private keys, and never moves funds. Its security surface is limited to:
 
 - **RPC communication**: the scanner sends JSON-RPC read calls (`eth_call`, `eth_getCode`, `eth_chainId`) to the configured endpoint.
 - **AI summary**: when enabled, findings are sent to the Anthropic API for summarization. The AI layer is strictly explanatory and cannot override the deterministic verdict.

@@ -2,8 +2,8 @@
 
 ## General
 
-**Q: Does Hood Trade execute trades?**
-No. Hood Trade is strictly read-only. It inspects on-chain state via `eth_call` and `eth_getCode` — both are read operations. It never signs transactions, holds private keys, or moves funds.
+**Q: Does Aegis execute trades?**
+No. Aegis is strictly read-only. It inspects on-chain state via `eth_call` and `eth_getCode` — both are read operations. It never signs transactions, holds private keys, or moves funds.
 
 **Q: Is a GO verdict a guarantee the token is safe?**
 No. GO means "no automated red flags were found by the checks that ran." The scanner cannot predict future actions (an owner minting supply, a liquidity provider removing funds), and it does not yet cover every possible attack vector. Always verify addresses against official sources before signing.
@@ -14,7 +14,7 @@ Yes. Without a key, the AI summary falls back to a built-in template. The verdic
 ## Technical
 
 **Q: Why not use web3.py?**
-Hood Trade uses a minimal `httpx`-based JSON-RPC client with precomputed function selectors. This keeps the install to ~5 dependencies, makes the surface auditable, and avoids the complexity of a full web3 stack for what amounts to a handful of `eth_call` and `eth_getCode` calls.
+Aegis uses a minimal `httpx`-based JSON-RPC client with precomputed function selectors. This keeps the install to ~5 dependencies, makes the surface auditable, and avoids the complexity of a full web3 stack for what amounts to a handful of `eth_call` and `eth_getCode` calls.
 
 **Q: How does the honeypot check work?**
 It simulates a `transfer(deadAddress, 1)` via `eth_call` — a read-only simulation that does not actually execute a transaction. If the call reverts (typically with "transfer blocked" or similar), it's a strong signal that the token blocks transfers for non-whitelisted addresses.
@@ -34,4 +34,4 @@ Robinhood Chain is an Arbitrum Orbit L2 launched by Robinhood. It's a separate b
 First-come-first-served. Transactions are ordered by arrival time at the sequencer, not by gas price. This prevents the classic gas-priority sandwich attack but shifts MEV to latency-based competition.
 
 **Q: Can liquidity be removed on Robinhood Chain?**
-Yes. Uniswap V3 on Robinhood Chain uses standard remove-liquidity calls. LP providers can withdraw their liquidity at any time. This is why Hood Trade checks pool depth and flags thin liquidity.
+Yes. Uniswap V3 on Robinhood Chain uses standard remove-liquidity calls. LP providers can withdraw their liquidity at any time. This is why Aegis checks pool depth and flags thin liquidity.

@@ -2,9 +2,9 @@
 
 import asyncio
 
-from hoodtrade.config import Settings
-from hoodtrade.engine import run_scan
-from hoodtrade.models import Direction, TradeRequest, Verdict
+from aegis.config import Settings
+from aegis.engine import run_scan
+from aegis.models import Direction, TradeRequest, Verdict
 
 
 TOKENS_TO_SCAN = [

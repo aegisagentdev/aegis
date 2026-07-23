@@ -1,14 +1,14 @@
 # Python API Reference
 
-Hood Trade can be used as a library in addition to the CLI.
+Aegis can be used as a library in addition to the CLI.
 
 ## Quick Start
 
 ```python
 import asyncio
-from hoodtrade.config import Settings
-from hoodtrade.engine import run_scan
-from hoodtrade.models import TradeRequest, Direction
+from aegis.config import Settings
+from aegis.engine import run_scan
+from aegis.models import TradeRequest, Direction
 
 async def check_trade():
     settings = Settings()
@@ -105,7 +105,7 @@ Pure function: computes the verdict from score and results.
 ## Export
 
 ```python
-from hoodtrade.export import to_json, to_csv, to_markdown, to_dict, severity_counts
+from aegis.export import to_json, to_csv, to_markdown, to_dict, severity_counts
 
 json_str = to_json(report, indent=2)
 csv_str = to_csv(report)
@@ -117,7 +117,7 @@ counts = severity_counts(report)  # {"ok": 5, "info": 2, "warn": 1, "danger": 0}
 ## AI Summary
 
 ```python
-from hoodtrade.ai import summarize
+from aegis.ai import summarize
 
 summary = summarize(report, settings)
 # Returns RiskSummary with headline, key_risks, what_to_check
@@ -127,8 +127,8 @@ summary = summarize(report, settings)
 ## Custom Checks
 
 ```python
-from hoodtrade.checks.base import Check, Context
-from hoodtrade.models import CheckResult, Severity
+from aegis.checks.base import Check, Context
+from aegis.models import CheckResult, Severity
 
 class MyCheck:
     id = "CUSTOM-CHECK"

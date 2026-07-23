@@ -2,7 +2,7 @@
 
 ## Overview
 
-Hood Trade is a read-only pre-trade safety scanner for Robinhood Chain. It evaluates a proposed swap against a battery of on-chain checks and returns a structured verdict.
+Aegis is a read-only pre-trade safety scanner for Robinhood Chain. It evaluates a proposed swap against a battery of on-chain checks and returns a structured verdict.
 
 ```
 User (CLI / JSON)

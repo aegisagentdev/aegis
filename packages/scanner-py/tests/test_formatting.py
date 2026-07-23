@@ -1,5 +1,5 @@
-from hoodtrade.formatting import findings_table, summary_text, verdict_panel
-from hoodtrade.models import CheckResult, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
+from aegis.formatting import findings_table, summary_text, verdict_panel
+from aegis.models import CheckResult, RiskSummary, ScanReport, Severity, TradeRequest, Verdict
 
 
 def _report():
@@ -21,7 +21,7 @@ def _report():
 
 def test_verdict_panel():
     panel = verdict_panel(_report())
-    assert panel.title == "Hood Trade verdict"
+    assert panel.title == "Aegis verdict"
 
 
 def test_findings_table():

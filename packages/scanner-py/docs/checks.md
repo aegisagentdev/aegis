@@ -1,6 +1,6 @@
 # Check Reference
 
-Detailed documentation for every check in the Hood Trade battery.
+Detailed documentation for every check in the Aegis battery.
 
 ## Contract Checks
 

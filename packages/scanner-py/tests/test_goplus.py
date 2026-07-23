@@ -3,7 +3,7 @@
 import httpx
 import pytest
 
-from hoodtrade.sources.goplus import (
+from aegis.sources.goplus import (
     SUPPORTED_CHAINS,
     GoPlusClient,
     GoPlusError,

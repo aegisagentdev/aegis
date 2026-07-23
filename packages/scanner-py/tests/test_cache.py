@@ -1,4 +1,4 @@
-from hoodtrade.cache import CachedRpcClient
+from aegis.cache import CachedRpcClient
 
 
 class MockInnerRpc:

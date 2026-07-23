@@ -1,12 +1,12 @@
-"""Example: run a Hood Trade scan programmatically from Python."""
+"""Example: run a Aegis scan programmatically from Python."""
 
 import asyncio
 import json
 
-from hoodtrade.config import Settings
-from hoodtrade.engine import run_scan
-from hoodtrade.export import to_json, to_markdown, severity_counts
-from hoodtrade.models import Direction, TradeRequest
+from aegis.config import Settings
+from aegis.engine import run_scan
+from aegis.export import to_json, to_markdown, severity_counts
+from aegis.models import Direction, TradeRequest
 
 
 async def main():

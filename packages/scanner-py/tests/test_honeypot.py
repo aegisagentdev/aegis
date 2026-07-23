@@ -1,8 +1,8 @@
-from hoodtrade.checks.base import Context
-from hoodtrade.checks.honeypot import HoneypotApproveCheck, HoneypotTransferCheck
-from hoodtrade.config import Settings
-from hoodtrade.models import Direction, Severity, TradeRequest
-from hoodtrade.rpc import RpcError
+from aegis.checks.base import Context
+from aegis.checks.honeypot import HoneypotApproveCheck, HoneypotTransferCheck
+from aegis.config import Settings
+from aegis.models import Direction, Severity, TradeRequest
+from aegis.rpc import RpcError
 
 TOKEN = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

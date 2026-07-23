@@ -2,13 +2,13 @@
 
 import pytest
 
-from hoodtrade.checks.reputation import (
+from aegis.checks.reputation import (
     ReputationHoneypotCheck,
     ReputationPermissionsCheck,
     ReputationSourceCheck,
 )
-from hoodtrade.models import Severity
-from hoodtrade.sources.goplus import GoPlusReport
+from aegis.models import Severity
+from aegis.sources.goplus import GoPlusReport
 
 
 def _rep(**kwargs) -> GoPlusReport:

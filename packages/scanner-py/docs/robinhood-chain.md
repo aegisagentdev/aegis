@@ -1,6 +1,6 @@
 # Robinhood Chain Reference
 
-Technical reference for Robinhood Chain as it relates to Hood Trade's check battery.
+Technical reference for Robinhood Chain as it relates to Aegis's check battery.
 
 ## Overview
 
@@ -23,13 +23,13 @@ Technical reference for Robinhood Chain as it relates to Hood Trade's check batt
   support.
 
 - **Pleiades** — proprietary AMM with custom bonding curves. Non-standard pool
-  interface; Hood Trade's pool checks may return INFO rather than precise readings.
+  interface; Aegis's pool checks may return INFO rather than precise readings.
 
 - **dYdX Arcus** — perpetuals and spot DEX. Different trading model than AMM;
-  Hood Trade's pool checks are not applicable here.
+  Aegis's pool checks are not applicable here.
 
 - **0x Protocol** — RFQ (request-for-quote) liquidity and aggregation. Off-chain
-  order matching; Hood Trade cannot inspect 0x orders on-chain.
+  order matching; Aegis cannot inspect 0x orders on-chain.
 
 ### Lending
 
@@ -73,7 +73,7 @@ Robinhood Chain's headline product is tokenized equities. Critical distinctions:
 
 ## RPC Interface
 
-Hood Trade uses a standard Ethereum JSON-RPC interface. Required methods:
+Aegis uses a standard Ethereum JSON-RPC interface. Required methods:
 
 | Method | Purpose |
 |--------|---------|

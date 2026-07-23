@@ -1,18 +1,18 @@
-# Hood Trade skill — thin (latest)
+# Aegis skill — thin (latest)
 
-A downloadable [Agent Skill](https://hoodtrade.pro) that lets a Claude-style agent scan a token
+A downloadable [Agent Skill](https://aegismcp.io) that lets a Claude-style agent scan a token
 for safety before you buy. This is the **thin** build: tiny, and it always installs the newest
-Hood Trade from PyPI.
+Aegis from PyPI.
 
 ## Install
 
 1. Unzip this archive.
-2. Move the `hoodtrade/` folder into your agent's skills directory:
+2. Move the `aegis/` folder into your agent's skills directory:
    - Claude Code: `~/.claude/skills/`
-3. Restart / reload the agent. It will read `SKILL.md` and use Hood Trade when you ask about
+3. Restart / reload the agent. It will read `SKILL.md` and use Aegis when you ask about
    token safety.
 
-The first scan runs `pip install hoodtrade` if the CLI isn't present. Requires internet + Python.
+The first scan runs `pip install aegis` if the CLI isn't present. Requires internet + Python.
 
 ## Use
 
@@ -26,6 +26,6 @@ You'll get a **GO / CAUTION / NO-GO** verdict with the on-chain evidence behind 
 
 - **Thin (this one):** smallest download, always the latest version, needs internet on first run.
 - **Offline:** ships the package and its dependencies inside the archive, installs without PyPI —
-  bigger download, pinned to one version. Get it at https://hoodtrade.pro
+  bigger download, pinned to one version. Get it at https://aegismcp.io
 
-Read-only. Hood Trade never signs, holds funds, or trades.
+Read-only. Aegis never signs, holds funds, or trades.

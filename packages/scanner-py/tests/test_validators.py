@@ -1,6 +1,6 @@
 import pytest
 
-from hoodtrade.validators import ValidationError, validate_address, validate_amount, validate_trade_request
+from aegis.validators import ValidationError, validate_address, validate_amount, validate_trade_request
 
 VALID = "0x2222222222222222222222222222222222222222"
 QUOTE = "0x3333333333333333333333333333333333333333"

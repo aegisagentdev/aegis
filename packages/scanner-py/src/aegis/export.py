@@ -31,7 +31,7 @@ def to_csv(report: ScanReport) -> str:
 
 def to_markdown(report: ScanReport) -> str:
     lines = [
-        "# Hood Trade Scan Report",
+        "# Aegis Scan Report",
         "",
         f"**Verdict**: {report.verdict.value}  ",
         f"**Risk Score**: {report.score}  ",

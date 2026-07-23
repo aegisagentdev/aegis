@@ -38,7 +38,7 @@ def verdict_panel(report: ScanReport) -> Panel:
     style = VERDICT_STYLE[report.verdict]
     head = Text(f" {report.verdict.value} ", style=f"reverse {style}")
     head.append(f"  risk score {report.score}", style=style)
-    return Panel(head, title="Hood Trade verdict", border_style=style)
+    return Panel(head, title="Aegis verdict", border_style=style)
 
 
 def findings_table(report: ScanReport) -> Table:

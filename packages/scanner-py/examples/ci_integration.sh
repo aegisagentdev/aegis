@@ -14,7 +14,7 @@ echo "  Quote:  $QUOTE"
 echo "  Amount: \$$AMOUNT"
 
 # Run scan in JSON mode without AI (faster, deterministic)
-OUTPUT=$(hoodtrade scan \
+OUTPUT=$(aegis scan \
   --token "$TOKEN" \
   --quote "$QUOTE" \
   --amount "$AMOUNT" \

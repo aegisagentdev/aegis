@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-message: "If you use Hood Trade in your research, please cite it as below."
+message: "If you use Aegis in your research, please cite it as below."
 type: software
-title: "Hood Trade"
+title: "Aegis"
 abstract: "Pre-trade safety scanner for Robinhood Chain — a 15-check battery that evaluates swap safety before signing."
 authors:
-  - alias: hoodtrade
-url: "https://github.com/hoodtrade/hoodtrade"
-repository-code: "https://github.com/hoodtrade/hoodtrade"
+  - alias: aegis
+url: "https://github.com/aegis/aegis"
+repository-code: "https://github.com/aegis/aegis"
 license: MIT
 version: "0.2.0"
 date-released: "2026-07-02"

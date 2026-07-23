@@ -1,4 +1,4 @@
-from hoodtrade.rpc import decode_address, decode_string, decode_uint, encode_call
+from aegis.rpc import decode_address, decode_string, decode_uint, encode_call
 
 ADDR = "0x1111111111111111111111111111111111111111"
 

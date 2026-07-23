@@ -1,21 +1,21 @@
 import pytest
 
-from hoodtrade.exceptions import (
+from aegis.exceptions import (
     ChainMismatchError,
     ConfigError,
     ExportError,
-    HoodTradeError,
+    AegisError,
     RpcConnectionError,
     ScanError,
 )
 
 
 def test_hierarchy():
-    assert issubclass(ConfigError, HoodTradeError)
-    assert issubclass(RpcConnectionError, HoodTradeError)
-    assert issubclass(ChainMismatchError, HoodTradeError)
-    assert issubclass(ScanError, HoodTradeError)
-    assert issubclass(ExportError, HoodTradeError)
+    assert issubclass(ConfigError, AegisError)
+    assert issubclass(RpcConnectionError, AegisError)
+    assert issubclass(ChainMismatchError, AegisError)
+    assert issubclass(ScanError, AegisError)
+    assert issubclass(ExportError, AegisError)
 
 
 def test_raise_config_error():
@@ -24,5 +24,5 @@ def test_raise_config_error():
 
 
 def test_base_catches_all():
-    with pytest.raises(HoodTradeError):
+    with pytest.raises(AegisError):
         raise RpcConnectionError("no connection")

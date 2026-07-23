@@ -1,7 +1,7 @@
 """Scan engine: run the check battery, aggregate, decide a verdict.
 
 The verdict is decided here, deterministically, from the summed risk score and any
-DANGER-severity finding. The AI layer (hoodtrade.ai) only *explains* the result — it
+DANGER-severity finding. The AI layer (aegis.ai) only *explains* the result — it
 never overrides the gate. This separation is deliberate: the go/no-go signal a trader
 relies on must be reproducible and auditable, not a model's judgement call.
 """

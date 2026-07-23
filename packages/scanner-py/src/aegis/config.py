@@ -1,6 +1,6 @@
-"""Runtime configuration for hoodtrade.
+"""Runtime configuration for aegis.
 
-Values come from the environment (prefix ``HOODTRADE_``) or an ``.env`` file. Nothing
+Values come from the environment (prefix ``AEGIS_``) or an ``.env`` file. Nothing
 here is Robinhood-Chain-specific beyond sensible defaults; every network value can be
 overridden so the scanner can be pointed at a fork, a testnet, or a different RPC.
 """
@@ -12,13 +12,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="HOODTRADE_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_prefix="AEGIS_", env_file=".env", extra="ignore")
 
     # --- Chain / RPC ---------------------------------------------------------
     # Robinhood Chain is an Arbitrum-Orbit L2 (mainnet chain id 4663, ETH gas).
     # The default public RPC is keyless and rate-limited — fine for a pre-trade
     # scanner's light read calls; point at Alchemy/dRPC for heavy use. Validated
-    # at startup via `hoodtrade doctor`.
+    # at startup via `aegis doctor`.
     rpc_url: str = Field(
         default="https://rpc.mainnet.chain.robinhood.com",
         description="JSON-RPC HTTPS endpoint for Robinhood Chain.",
@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     # --- Scoring thresholds --------------------------------------------------
     # A verdict is NO-GO if the aggregate risk score reaches `nogo_score`, CAUTION
     # at `caution_score`, otherwise GO. Individual checks contribute points; see
-    # hoodtrade.engine for how they combine.
+    # aegis.engine for how they combine.
     caution_score: int = Field(default=25, ge=0)
     nogo_score: int = Field(default=60, ge=0)
 

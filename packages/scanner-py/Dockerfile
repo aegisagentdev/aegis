@@ -11,5 +11,5 @@ FROM base AS with-ai
 RUN pip install --no-cache-dir '.[ai]'
 
 FROM base AS production
-ENTRYPOINT ["hoodtrade"]
+ENTRYPOINT ["aegis"]
 CMD ["--help"]

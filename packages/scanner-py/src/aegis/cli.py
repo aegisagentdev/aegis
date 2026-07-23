@@ -1,4 +1,4 @@
-"""hoodtrade command-line interface."""
+"""aegis command-line interface."""
 
 from __future__ import annotations
 
@@ -71,9 +71,9 @@ def _render(report: ScanReport) -> None:
         label = report.token_name or ""
         if report.token_symbol and report.token_symbol != report.token_name:
             label = f"{label} ({report.token_symbol})" if label else report.token_symbol
-        title = f"Hood Trade — {label.strip()}"
+        title = f"Aegis — {label.strip()}"
     else:
-        title = "Hood Trade verdict"
+        title = "Aegis verdict"
     console.print(Panel(head, title=title, border_style=style, box=box.SIMPLE, expand=False, padding=(0, 1)))
 
     _render_market(report)
@@ -180,10 +180,10 @@ def scan(
 
     \b
     Examples:
-      hoodtrade scan 0x87E1Ed2aDe9Db5DEA0E805f296B796219A05636B
-      hoodtrade scan 0x4200000000000000000000000000000000000006 --chain base
-      hoodtrade scan 0xdAC17F958D2ee523a2206206994597C13D831ec7 --chain ethereum --json
-      hoodtrade scan --demo
+      aegis scan 0x87E1Ed2aDe9Db5DEA0E805f296B796219A05636B
+      aegis scan 0x4200000000000000000000000000000000000006 --chain base
+      aegis scan 0xdAC17F958D2ee523a2206206994597C13D831ec7 --chain ethereum --json
+      aegis scan --demo
     """
     if demo:
         request = TradeRequest(
@@ -196,8 +196,8 @@ def scan(
     else:
         if not token:
             console.print("[bold red]Error:[/bold red] provide a token address or use --demo\n")
-            console.print("  hoodtrade scan 0x87E1Ed...636B")
-            console.print("  hoodtrade scan --demo")
+            console.print("  aegis scan 0x87E1Ed...636B")
+            console.print("  aegis scan --demo")
             raise typer.Exit(code=2)
         if not token.startswith("0x") or len(token) != 42:
             console.print(f"[bold red]Error:[/bold red] invalid address: {token}")
@@ -262,13 +262,13 @@ def doctor() -> None:
         console.print("[green]RPC reachable.[/green]")
     except Exception as exc:  # noqa: BLE001
         console.print(f"[bold red]RPC unreachable:[/bold red] {exc}")
-        console.print("Set HOODTRADE_RPC_URL to a working Robinhood Chain endpoint.")
+        console.print("Set AEGIS_RPC_URL to a working Robinhood Chain endpoint.")
         raise typer.Exit(code=1) from exc
 
 
 @app.command()
 def version() -> None:
-    """Print the hoodtrade version."""
+    """Print the aegis version."""
     console.print(__version__)
 
 
