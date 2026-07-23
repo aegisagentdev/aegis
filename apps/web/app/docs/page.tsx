@@ -22,7 +22,7 @@ export default function Docs() {
     <div className="docs">
       <aside className="docs-side">
         <a className="docs-brand" href="/">
-          <span className="mark"><Logo size={30} /></span> AEGIS <span className="docs-brand-sub">docs</span>
+          <span className="mark"><Logo size={40} /></span> AEGIS <span className="docs-brand-sub">docs</span>
         </a>
         <nav>
           {NAV.map((g) => (
