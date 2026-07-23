@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hoodtrade"
+version = "0.4.1"
+description = "Pre-trade safety scanner for Robinhood Chain — checks a swap before you sign it."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["robinhood-chain", "defi", "pre-trade", "safety", "mev", "honeypot", "uniswap"]
+authors = [{ name = "hoodtrade contributors" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Environment :: Console",
+]
+
+dependencies = [
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "typer>=0.12",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+ai = ["anthropic>=0.40"]
+mcp = ["mcp>=1.2"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "respx>=0.21",
+    "mcp>=1.2",
+]
+
+[project.scripts]
+hoodtrade = "hoodtrade.cli:app"
+hoodtrade-mcp = "hoodtrade.mcp_server:main"
+
+[project.urls]
+Homepage = "https://hoodtrade.pro"
+Repository = "https://github.com/qumiann/hoodtrade"
+Issues = "https://github.com/qumiann/hoodtrade/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hoodtrade"]
+
+[tool.hatch.build.targets.sdist]
+# Ship only the code and its docs — not the site assets, brand PDFs or banners.
+include = [
+    "src/hoodtrade",
+    "tests",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Typer's idiom is to call Option()/Argument() in parameter defaults.
+"src/hoodtrade/cli.py" = ["B008"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
