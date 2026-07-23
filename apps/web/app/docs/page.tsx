@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GithubIcon, XIcon } from "@/components/Icons";
+import { Logo } from "@/components/Logo";
 
 export const metadata: Metadata = {
   title: "Aegis Docs — the two-way shield for agentic trading",
@@ -21,7 +22,7 @@ export default function Docs() {
     <div className="docs">
       <aside className="docs-side">
         <a className="docs-brand" href="/">
-          <span className="mark">◇</span> AEGIS <span className="docs-brand-sub">docs</span>
+          <span className="mark"><Logo size={20} /></span> AEGIS <span className="docs-brand-sub">docs</span>
         </a>
         <nav>
           {NAV.map((g) => (
