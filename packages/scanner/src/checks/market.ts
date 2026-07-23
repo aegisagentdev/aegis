@@ -1,5 +1,5 @@
 /**
- * Market & pool checks. Ported from Hood Trade (MIT).
+ * Market & pool checks. Part of the Aegis token-scanning skill.
  *
  * Thin liquidity, near-zero volume, and an oversized trade relative to pool
  * depth are the quiet ways a position becomes unexitable. On a young chain

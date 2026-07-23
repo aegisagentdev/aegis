@@ -1,5 +1,5 @@
 /**
- * Honeypot detection. Ported from Hood Trade (MIT).
+ * Honeypot detection. Part of the Aegis token-scanning skill.
  *
  * A honeypot lets you buy but blocks or taxes sells. Upstream, a read-only
  * eth_call simulates transfer()/approve() and the revert reason is classified

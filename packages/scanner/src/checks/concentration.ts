@@ -1,5 +1,5 @@
 /**
- * Holder-concentration checks. Ported from Hood Trade (MIT).
+ * Holder-concentration checks. Part of the Aegis token-scanning skill.
  *
  * When a small set of wallets — or the token contract itself — controls a large
  * share of supply, the rug risk is high. Burned supply is reported too: a token

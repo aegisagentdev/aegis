@@ -1,6 +1,6 @@
 /**
  * Contract-level checks: does the token exist as code, is ownership renounced,
- * is the supply sane. Ported from Hood Trade (MIT).
+ * is the supply sane. Part of the Aegis token-scanning skill.
  */
 
 import type { CheckResult, TokenSnapshot } from "../types.js";

@@ -193,7 +193,7 @@ export default function Home() {
               </div>
               <div>
                 <span className="p">$</span>{" "}
-                <span className="v">pipx install &quot;aegis-scanner[mcp]&quot; &amp;&amp; hoodtrade-mcp</span>
+                <span className="v">pipx install &quot;aegis-scanner[mcp]&quot; &amp;&amp; aegis-mcp</span>
               </div>
               <div>&nbsp;</div>
               <div>
@@ -246,7 +246,7 @@ export default function Home() {
             </div>
             <div style={{ marginTop: 8, maxWidth: 420, lineHeight: 1.6 }}>
               Two-way security shield for agentic trading on Robinhood Chain. MIT-licensed. Built on{" "}
-              Hood Trade + the Vault firewall design.
+              Aegis + the Vault firewall design.
             </div>
           </div>
           <div style={{ display: "flex", gap: 22 }}>

@@ -1,5 +1,5 @@
 /**
- * Robinhood Chain tokenized-stock (RIF) checks. Ported from Hood Trade (MIT).
+ * Robinhood Chain tokenized-stock (RIF) checks. Part of the Aegis token-scanning skill.
  *
  * RIF tokens wrap a real equity. Two things matter that don't apply to a normal
  * memecoin: is the token actually disclosed/backed as a stock token, and does

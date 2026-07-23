@@ -1,6 +1,6 @@
 /**
- * Scan engine: run the battery, aggregate, decide a verdict. Ported from Hood
- * Trade (MIT).
+ * Scan engine: run the battery, aggregate, decide a verdict. Part of the Aegis
+ * token-scanning skill.
  *
  * The verdict is decided here, deterministically, from the summed risk score
  * and any DANGER-severity finding. A summary layer may *explain* the result but

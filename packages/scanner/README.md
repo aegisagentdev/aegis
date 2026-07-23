@@ -4,8 +4,8 @@ A deterministic pre-trade safety scanner. Feed it a `TokenSnapshot` and a
 `TradeRequest`; get a reproducible **GO / CAUTION / NO-GO** verdict with every
 finding and its evidence.
 
-TypeScript port of the [Hood Trade](https://github.com/qumiann/hoodtrade) check
-battery (MIT). The upstream Python engine — including live RPC, GoPlus and
+The deterministic check
+battery. The Python engine — including live RPC, GoPlus and
 DexScreener data collection and the MCP server — lives in
 [`packages/scanner-py`](../scanner-py).
 

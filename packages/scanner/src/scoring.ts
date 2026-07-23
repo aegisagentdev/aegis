@@ -1,5 +1,5 @@
 /**
- * Scoring utilities for risk aggregation. Ported from Hood Trade (MIT).
+ * Scoring utilities for risk aggregation. Part of the Aegis token-scanning skill.
  *
  * Severity weighting mirrors the firewall's, so a trader reads one consistent
  * scale across both gates.

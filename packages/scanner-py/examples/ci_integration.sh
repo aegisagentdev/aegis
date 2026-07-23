@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Example: integrate Hood Trade into a CI pipeline.
+# Example: integrate Aegis into a CI pipeline.
 # Block a deployment if the pre-trade check fails.
 
 set -euo pipefail
@@ -8,7 +8,7 @@ TOKEN="${TOKEN_ADDRESS:?TOKEN_ADDRESS env var required}"
 QUOTE="${QUOTE_ADDRESS:?QUOTE_ADDRESS env var required}"
 AMOUNT="${TRADE_AMOUNT:-1000}"
 
-echo "Running Hood Trade pre-trade scan..."
+echo "Running Aegis pre-trade scan..."
 echo "  Token:  $TOKEN"
 echo "  Quote:  $QUOTE"
 echo "  Amount: \$$AMOUNT"

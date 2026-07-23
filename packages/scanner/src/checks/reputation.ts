@@ -1,6 +1,6 @@
 /**
- * Reputation checks backed by the GoPlus token-security dataset. Ported from
- * Hood Trade (MIT). These corroborate the on-chain simulation with a
+ * Reputation checks backed by the GoPlus token-security dataset. Part of the
+ * Aegis token-scanning skill. These corroborate the on-chain simulation with a
  * third-party label set: honeypot / cannot-sell-all, dangerous owner
  * permissions, and source-verification / proxy signals.
  */

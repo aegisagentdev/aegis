@@ -1,7 +1,7 @@
 /**
  * Core types for the pre-trade scanner.
  *
- * Ported from Hood Trade (MIT). These are the contract between the on-chain /
+ * Part of the Aegis token-scanning skill. These are the contract between the on-chain /
  * market data layer, the deterministic check battery, and the human-facing
  * summary. The verdict is decided by the engine from validated, structured
  * signals — never from a raw data blob and never by an LLM.

@@ -1,5 +1,5 @@
 /**
- * The default check battery, in execution order. Ported from Hood Trade (MIT).
+ * The default check battery, in execution order. Part of the Aegis token-scanning skill.
  *
  * Each check is a pure function of the snapshot (and, for a few, the trade
  * request / settings). They are independent and safe to run in any order — the

@@ -1,7 +1,7 @@
 {
   "name": "@aegis/scanner",
   "version": "0.1.0",
-  "description": "Pre-trade safety scanner — deterministic GO / CAUTION / NO-GO verdict from an on-chain + market snapshot. TypeScript port of the Hood Trade check battery.",
+  "description": "Pre-trade safety scanner — deterministic GO / CAUTION / NO-GO verdict from an on-chain + market snapshot. Deterministic check battery, part of the Aegis token-scanning skill.",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",

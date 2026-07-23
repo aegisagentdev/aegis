@@ -44,8 +44,7 @@ Scans every MCP tool response before the agent reads it.
 
 ### Gate 2 — Pre-trade safety scanner (`packages/scanner`, `packages/scanner-py`)
 
-Checks the token before the agent signs. Ported from
-[Hood Trade](https://github.com/qumiann/hoodtrade).
+Checks the token before the agent signs.
 
 - Simulates transfer/approve (honeypot), reads holder concentration, burned
   supply, pool integrity.
@@ -54,7 +53,7 @@ Checks the token before the agent signs. Ported from
 - **Any DANGER finding forces NO-GO** — the gate a model can never override.
 
 The TypeScript `@aegis/scanner` powers the web demo; `packages/scanner-py` is the
-production Python engine with live RPC + an MCP server (`hoodtrade-mcp`).
+production Python engine with live RPC + an MCP server (`aegis-mcp`).
 
 ### On-chain receipts (`contracts/AegisRegistry.sol`)
 
@@ -68,8 +67,8 @@ agents point a safety badge at their latest receipt.
 aegis/
 ├── apps/web           Next.js landing + two live, real demos
 ├── packages/firewall  TS prompt-injection firewall + action guard
-├── packages/scanner   TS pre-trade scanner (Hood Trade port)
-├── packages/scanner-py Python engine + MCP server (upstream Hood Trade)
+├── packages/scanner   TS pre-trade scanner
+├── packages/scanner-py Python engine + MCP server (CLI + agent skill)
 └── contracts          AegisRegistry.sol — on-chain receipts + badges
 ```
 
@@ -84,7 +83,4 @@ npm run build        # production build (what Vercel runs)
 
 ## License & attribution
 
-MIT. Aegis merges two MIT projects: the pre-trade scanner from
-[Hood Trade](https://github.com/qumiann/hoodtrade), and a firewall inspired by the
-design of [Vault](https://github.com/vaultmcp/vault). Their copyright notices are
-kept — see [`NOTICE.md`](NOTICE.md).
+MIT. The prompt-injection firewall is inspired by the design of [Vault](https://github.com/vaultmcp/vault) (MIT); see [`NOTICE.md`](NOTICE.md).
