@@ -31,7 +31,7 @@ export default function Home() {
       <nav>
         <div className="wrap">
           <div className="brand">
-            <span className="mark"><Logo size={20} /></span> AEGIS
+            <span className="mark"><Logo size={34} /></span> AEGIS
           </div>
           <div className="nav-links">
             <a href="#agents">Agents</a>
@@ -238,7 +238,7 @@ export default function Home() {
         <div className="wrap">
           <div>
             <div className="brand" style={{ fontSize: 14 }}>
-              <span className="mark"><Logo size={20} /></span> AEGIS
+              <span className="mark"><Logo size={26} /></span> AEGIS
             </div>
             <div style={{ marginTop: 8, maxWidth: 440, lineHeight: 1.6 }}>
               Two-way security shield for agentic trading on Robinhood Chain — a prompt-injection

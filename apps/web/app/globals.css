@@ -179,12 +179,10 @@ nav .wrap {
   font-size: 16px;
 }
 .brand .mark {
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
   color: var(--green);
-  filter: drop-shadow(0 0 8px var(--green-glow));
+  filter: drop-shadow(0 0 12px var(--green-glow));
 }
 .nav-links {
   display: flex;
