@@ -88,7 +88,7 @@ export default function ScannerDemo() {
           <label>network</label>
           <select value={chain} onChange={(e) => setChain(e.target.value)}>
             {chains.map((c) => (
-              <option key={c.key} value={c.key}>{c.label}{c.live ? "" : " (no reputation data)"}</option>
+              <option key={c.key} value={c.key}>{c.label}</option>
             ))}
           </select>
           <label>trade size (usd)</label>

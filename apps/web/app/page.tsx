@@ -6,7 +6,7 @@ import { GithubIcon, XIcon } from "@/components/Icons";
 
 const GITHUB = "https://github.com/aegisagentdev/aegis";
 const X = "https://x.com/aegismcp";
-const DOCS = "https://github.com/aegisagentdev/aegis#readme";
+const DOCS = "/docs";
 
 export default function Home() {
   return (
@@ -45,7 +45,7 @@ export default function Home() {
             <a href="#scanner">Scan a contract</a>
             <a href="#stats">Stats</a>
             <a href="#install">Install</a>
-            <a href={DOCS} target="_blank" rel="noreferrer">Docs</a>
+            <a href={DOCS}>Docs</a>
             <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub">
               <GithubIcon />
             </a>
@@ -255,7 +255,7 @@ export default function Home() {
           <div className="foot-links">
             <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon /></a>
             <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="X / Twitter"><XIcon /></a>
-            <a href={DOCS} target="_blank" rel="noreferrer">Docs</a>
+            <a href={DOCS}>Docs</a>
             <a href="#scanner">Scan</a>
           </div>
         </div>
