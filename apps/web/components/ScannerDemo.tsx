@@ -45,7 +45,7 @@ const inputStyle: React.CSSProperties = {
 export default function ScannerDemo() {
   const [chains, setChains] = useState<ChainOpt[]>([]);
   const [address, setAddress] = useState("");
-  const [chain, setChain] = useState("ethereum");
+  const [chain, setChain] = useState("robinhood");
   const [amount, setAmount] = useState(1000);
   const [rep, setRep] = useState<Report | null>(null);
   const [loading, setLoading] = useState(false);

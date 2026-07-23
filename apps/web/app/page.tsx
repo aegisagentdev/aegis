@@ -16,18 +16,20 @@ export default function Home() {
         <div className="wrap">
           <div className="ca">
             <b>CA:</b> <span className="addr">soon</span>
+          </div>
+          <div className="tick-right">
             <span className="tick-new">
               <span style={{ color: "var(--green)" }}>● NEW</span> Robinhood Chain shipped
               agent-executed trading. Aegis ships the shield for it.
             </span>
-          </div>
-          <div className="tick-social">
-            <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="Aegis on X">
-              <XIcon />
-            </a>
-            <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="Aegis on GitHub">
-              <GithubIcon />
-            </a>
+            <div className="tick-social">
+              <a className="ic" href={X} target="_blank" rel="noreferrer" aria-label="Aegis on X">
+                <XIcon />
+              </a>
+              <a className="ic" href={GITHUB} target="_blank" rel="noreferrer" aria-label="Aegis on GitHub">
+                <GithubIcon />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -61,9 +63,9 @@ export default function Home() {
             <span className="dot" /> Two-way shield for agentic trading · Robinhood Chain
           </span>
           <h1>
-            Stop bad input.
+            Every injection blocked.
             <br />
-            <span className="glow">Stop bad trades.</span>
+            <span className="glow">Every contract cleared.</span>
           </h1>
           <p className="sub">
             Aegis is a drop-in security layer for MCP agents. A <b>prompt-injection firewall</b>{" "}
@@ -184,8 +186,8 @@ export default function Home() {
               <div><span className="p">$</span> <span className="v">pip install aegis-scan</span></div>
               <div>&nbsp;</div>
               <div><span className="c"># scan a contract straight from the terminal</span></div>
-              <div><span className="p">$</span> <span className="v">aegis scan 0x6b175474e89094c44da98b954eedeac495271d0f --chain ethereum</span></div>
-              <div><span className="c">  → verdict: GO   risk score: 3</span></div>
+              <div><span className="p">$</span> <span className="v">aegis scan 0x020bfc650a365f8bb26819deaabf3e21291018b4 --chain robinhood</span></div>
+              <div><span className="c">  → Cash Cat (CASHCAT)   verdict: GO   risk score: 5</span></div>
               <div>&nbsp;</div>
               <div><span className="c"># or run the MCP server so any agent can call it</span></div>
               <div><span className="p">$</span> <span className="v">aegis-mcp</span></div>

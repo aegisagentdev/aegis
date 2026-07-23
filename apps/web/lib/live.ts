@@ -14,6 +14,7 @@
 import type { TokenSnapshot } from "@aegis/scanner";
 
 export const LIVE_CHAINS: { key: string; label: string; goplus: number | null }[] = [
+  { key: "robinhood", label: "Robinhood Chain", goplus: null },
   { key: "ethereum", label: "Ethereum", goplus: 1 },
   { key: "base", label: "Base", goplus: 8453 },
   { key: "bsc", label: "BNB Chain", goplus: 56 },
@@ -21,7 +22,6 @@ export const LIVE_CHAINS: { key: string; label: string; goplus: number | null }[
   { key: "polygon", label: "Polygon", goplus: 137 },
   { key: "optimism", label: "Optimism", goplus: 10 },
   { key: "avalanche", label: "Avalanche", goplus: 43114 },
-  { key: "robinhood", label: "Robinhood Chain", goplus: null },
 ];
 
 const ZERO_OWNERS = new Set(["", "0x0000000000000000000000000000000000000000", "0x000000000000000000000000000000000000dead"]);
