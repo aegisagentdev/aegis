@@ -4,7 +4,9 @@ import AgentsSection from "@/components/AgentsSection";
 import StatsBoard from "@/components/StatsBoard";
 import { GithubIcon, XIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
+import CopyCA from "@/components/CopyCA";
 
+const CA = "0xfcff51c0b8d08dcc98c74a67776988fbe3d4575f";
 const GITHUB = "https://github.com/aegisagentdev/aegis";
 const X = "https://x.com/aegismcp";
 const DOCS = "/docs";
@@ -16,7 +18,8 @@ export default function Home() {
       <div className="ticker">
         <div className="wrap">
           <div className="ca">
-            <b>CA:</b> <span className="addr">soon</span>
+            <b>CA:</b> <span className="addr">{CA}</span>
+            <CopyCA address={CA} />
           </div>
           <div className="tick-right">
             <span className="tick-new">
