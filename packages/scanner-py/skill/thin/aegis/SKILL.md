@@ -24,7 +24,7 @@ Check whether the scanner is already installed:
 
 If that command is not found, install it from PyPI:
 
-    pip install aegis
+    pip install aegis-scan
 
 ## How to run a scan
 

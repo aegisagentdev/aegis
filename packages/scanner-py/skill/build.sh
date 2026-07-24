@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Rebuild the two downloadable Agent Skill archives.
 #
-#   skill/aegis-skill.zip          thin  — SKILL.md only, installs `pip install aegis`
+#   skill/aegis-skill.zip          thin  — SKILL.md only, installs `pip install aegis-scan`
 #   skill/aegis-skill-offline.zip  offline — bundles the wheels for an airgapped install
 #
 # The archives are release artifacts (attached to a GitHub Release), not committed to git.

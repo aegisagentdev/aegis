@@ -200,16 +200,17 @@ export default function Home() {
         <div className="wrap">
           <div className="soon">
             <div>
-              <span className="pill">Coming soon</span>
+              <span className="pill">Live</span>
               <h3>The Aegis Skill for any AI agent</h3>
               <p>
-                A one-install skill for Claude and any MCP agent: drop it in and your agent scans
-                every contract and every tool response natively, before it acts — no glue code. The
-                CLI and MCP server above are live today; the packaged neural-agent skill lands next.
+                A drop-in skill for Claude and any MCP agent: hand it the folder and your agent
+                scans every contract before it signs and screens every tool response for injection
+                before it acts — no glue code. Ships in the repo under <code>/skill</code>, plus an
+                MCP server (<code>aegis-mcp</code>) any agent can call.
               </p>
             </div>
-            <a className="btn btn-primary" href={GITHUB} target="_blank" rel="noreferrer">
-              ▸ Watch on GitHub
+            <a className="btn btn-primary" href={`${GITHUB}/tree/main/skill`} target="_blank" rel="noreferrer">
+              ▸ Get the skill
             </a>
           </div>
         </div>

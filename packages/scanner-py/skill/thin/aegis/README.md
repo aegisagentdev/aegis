@@ -12,7 +12,7 @@ Aegis from PyPI.
 3. Restart / reload the agent. It will read `SKILL.md` and use Aegis when you ask about
    token safety.
 
-The first scan runs `pip install aegis` if the CLI isn't present. Requires internet + Python.
+The first scan runs `pip install aegis-scan` if the CLI isn't present. Requires internet + Python.
 
 ## Use
 
