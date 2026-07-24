@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const GITHUB = "https://github.com/aegisagentdev/aegis";
-const X = "https://x.com/aegismcp";
+const X = "https://x.com/Aegis_agent";
 
 const NAV = [
   { h: "Getting started", items: [["introduction", "Introduction"], ["quickstart", "Quickstart"], ["concepts", "Core concepts"]] },

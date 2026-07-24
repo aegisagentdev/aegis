@@ -8,7 +8,7 @@ import CopyCA from "@/components/CopyCA";
 
 const CA = "0xfcff51c0b8d08dcc98c74a67776988fbe3d4575f";
 const GITHUB = "https://github.com/aegisagentdev/aegis";
-const X = "https://x.com/aegismcp";
+const X = "https://x.com/Aegis_agent";
 const DOCS = "/docs";
 
 export default function Home() {
